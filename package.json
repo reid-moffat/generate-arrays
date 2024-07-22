@@ -31,7 +31,7 @@
   "scripts": {
     "lint": "tsc",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' nyc mocha"
+    "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' nyc mocha --ui tdd"
   },
   "files": [
     "CHANGELOG.md",
