@@ -1,5 +1,11 @@
 # generate-array
 
+## 0.0.5
+
+### Patch Changes
+
+- 3e41aca: Updated generated files to module types
+
 ## 0.0.4
 
 ### Patch Changes
