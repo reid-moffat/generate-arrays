@@ -1,12 +1,50 @@
 {
   "name": "generate-array",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "Easily generate arrays with a huge amount of potential parameters",
+  "author": "Reid Moffat <reid.moffat9@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "lint": "tsc",
+    "build": "tsup index.ts --format cjs,esm --dts --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "array",
+    "generate",
+    "generator",
+    "test",
+    "testing",
+    "data",
+    "generate data",
+    "test array",
+    "faker",
+    "fake data generator",
+    "fake data",
+    "fake-data",
+    "generate-array",
+    "generate array",
+    "generate arrays",
+    "generate-arrays",
+    "array generator",
+    "array-generate"
+  ],
+  "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "tsup": "^8.2.2",
+    "typescript": "^5.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reid-moffat/generate-array.git"
+  },
+  "bugs": "https://github.com/reid-moffat/generate-array/issues",
+  "packageManager": "pnpm@9.6.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 }
