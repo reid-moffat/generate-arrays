@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-describe('Simple test 1', () => {
-        it('should pass',
+suite('Simple test 1', () => {
+        test('should pass',
             () => { expect(1).to.eq(1) }
         );
     }
