@@ -6,9 +6,9 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
+    "lint": "tsc",
     "build": "tsup index.ts --format cjs,esm --dts --minify",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "tsc"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "array",
