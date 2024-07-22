@@ -1,9 +1,12 @@
 #
-# npm files
+# Output files & dependencies
 #
 
 node_modules/
+
 dist/
+
+.nyc_output/
 
 #
 # WebStorm files
