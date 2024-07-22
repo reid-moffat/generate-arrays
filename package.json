@@ -1,6 +1,6 @@
 {
   "name": "generate-arrays",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Easily generate arrays with a huge amount of potential parameters",
   "author": "Reid Moffat <reid.moffat9@gmail.com>",
   "license": "MIT",
