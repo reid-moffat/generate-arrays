@@ -4,18 +4,6 @@
   "description": "Easily generate arrays with a huge amount of potential parameters",
   "author": "Reid Moffat <reid.moffat9@gmail.com>",
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "lint": "tsc",
-    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "files": [
-    "CHANGELOG.md",
-    "dist"
-  ],
   "keywords": [
     "array",
     "generate",
@@ -35,6 +23,19 @@
     "generate-arrays",
     "array generator",
     "array-generate"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "lint": "tsc",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "CHANGELOG.md",
+    "dist"
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
