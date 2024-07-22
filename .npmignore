@@ -1,0 +1,9 @@
+.idea/ # IDE settings (all dev-related)
+
+.github/ # Github workflows
+
+.changesets/ # Directory for generating changeset data - pushed to CHANGELOG.md on publish
+
+src/ # Source code - compiled to dist/ so not needed
+
+tsconfig.json # Typescript is dev-only
