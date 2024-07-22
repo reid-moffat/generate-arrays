@@ -9,9 +9,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "tsc",
-    "build": "tsup index.ts --format cjs,esm --dts --minify",
+    "build": "tsup src/index.ts --format cjs,esm --dts --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "CHANGELOG.md",
+    "dist"
+  ],
   "keywords": [
     "array",
     "generate",
@@ -39,9 +43,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reid-moffat/generate-array.git"
+    "url": "https://github.com/reid-moffat/generate-arrays.git"
   },
-  "bugs": "https://github.com/reid-moffat/generate-array/issues",
+  "bugs": "https://github.com/reid-moffat/generate-arrays/issues",
   "packageManager": "pnpm@9.6.0",
   "engines": {
     "node": ">=18.0.0",
