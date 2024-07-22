@@ -10,8 +10,7 @@
   "scripts": {
     "lint": "tsc",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "publish": "npm publish --access=public"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "array",
