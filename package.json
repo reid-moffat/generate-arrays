@@ -1,12 +1,29 @@
 {
   "name": "generate-array",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Easily generate arrays with a huge amount of potential parameters",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "array",
+    "generate",
+    "generator",
+    "faker",
+    "fake data generator",
+    "fake data",
+    "fake-data",
+    "generate-array",
+    "generate array",
+    "generate arrays",
+    "generate-arrays",
+    "array generator",
+    "array-generate"
+  ],
   "author": "",
-  "license": "ISC"
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.3"
+  }
 }
