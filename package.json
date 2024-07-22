@@ -2,9 +2,13 @@
   "name": "generate-array",
   "version": "1.0.0",
   "description": "Easily generate arrays with a huge amount of potential parameters",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup index.ts --format cjs,esm --dts --minify",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "tsc"
   },
   "keywords": [
     "array",
@@ -24,6 +28,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
+    "tsup": "^8.2.2",
     "typescript": "^5.5.3"
   }
 }
