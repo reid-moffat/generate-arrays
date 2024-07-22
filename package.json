@@ -12,6 +12,10 @@
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files": [
+    "CHANGELOG.md",
+    "dist"
+  ],
   "keywords": [
     "array",
     "generate",
