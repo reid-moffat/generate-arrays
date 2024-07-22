@@ -31,7 +31,7 @@
   "scripts": {
     "lint": "tsc",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' nyc mocha"
   },
   "files": [
     "CHANGELOG.md",
@@ -39,6 +39,13 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.7",
+    "chai": "^5.1.1",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.7.0",
+    "nyc": "^17.0.0",
+    "ts-node": "^10.9.2",
     "tsup": "^8.2.2",
     "typescript": "^5.5.3"
   },
