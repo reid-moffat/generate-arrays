@@ -1,6 +1,6 @@
 {
   "name": "generate-array",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Easily generate arrays with a huge amount of potential parameters",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
