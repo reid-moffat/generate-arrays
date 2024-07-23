@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { generateArray } from "../src/index.ts";
+import { generateArray } from "../src/simple.ts";
 
 suite('Simple test 3', () => {
         test('should pass',
