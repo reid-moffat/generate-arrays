@@ -1,3 +1,5 @@
+import GenerateArrayError from "./GenerateArraysError.ts";
+
 /**
  *
  */

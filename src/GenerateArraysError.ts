@@ -6,3 +6,5 @@ class GenerateArrayError extends Error {
         this.stack = (new Error()).stack;
     }
 }
+
+export default GenerateArrayError;
