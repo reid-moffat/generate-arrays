@@ -7,7 +7,7 @@ suite("Multi-dimensional array test", () => {
 
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => MultidimensionalArray.empty(1.2, 1)).to.throw("Array length must be an integer: value 'a' is invalid");
+                expect(() => MultidimensionalArray.empty(1.2, 1)).to.throw("Array length must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
@@ -15,8 +15,7 @@ suite("Multi-dimensional array test", () => {
             });
 
             test("Depth not an integer", () => {
-                expect(() => MultidimensionalArray.empty(1, 1.2)).to.throw("Array depth must be an integer: value 'a'" +
-                    " is invalid");
+                expect(() => MultidimensionalArray.empty(1, 1.2)).to.throw("Array depth must be an integer: value '1.2' is invalid");
             });
 
             test("Depth less than 1", () => {
@@ -32,7 +31,11 @@ suite("Multi-dimensional array test", () => {
 
             test("Length 3 Depth 3", () => {
                 const arr = MultidimensionalArray.empty(3, 3);
-                expect(arr).to.deep.equal([[[[], []], [[], []], [[], []]], [[[], []], [[], []], [[], []]], [[[], []], [[], []], [[], []]]]);
+                expect(arr.length).to.equal(3);
+                expect(arr[0].length).to.equal(3);
+                // @ts-ignore
+                expect(arr[0][0].length).to.equal(0);
+                expect(arr).to.deep.equal([[[], [], []], [[], [], []],[[], [], []]]);
             });
         });
     });
