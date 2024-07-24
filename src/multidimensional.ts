@@ -10,7 +10,7 @@ class MultidimensionalArray {
             if (typeof baseArray === "function") {
                 return baseArray();
             }
-            return baseArray;
+            return baseArray.slice();
         }
 
         return Array.from({ length }, () => this._deepArray(baseArray, length, depth - 1));
@@ -138,6 +138,41 @@ class MultidimensionalArray {
     }
 
     /**
+     * Returns the array as a string
+     */
+    public toString(): string {
+        return this.array.toString();
+    }
+
+    /**
+     * Returns true if the provided MultidimensionalArray is equal to this array
+     * @param other
+     */
+    public equals(other: MultidimensionalArray): boolean {
+        return this.array.toString() === other.array.toString();
+    }
+
+    /**
+     * Returns true if the provided array is equal to this array
+     * @param other
+     */
+    public equalsArray(other: any[]): boolean {
+        return this.array.toString() === other.toString();
+    }
+
+    /**
+     * Multiplies the array within itself n times (i.e. repeats the elements in the array n times)
+     *
+     * Example:
+     * arr = [1, 2] && arr.multiplyLength(3) -> [1, 2, 1, 2, 1, 2]
+     *
+     * @param factor
+     */
+    public multiplyLength(factor: number): void {
+        this.array = this.array.flatMap(item => Array.from({ length: n }, () => item));
+    }
+
+    /**
      * Makes multiples of the array, placing the result in a new array
      *
      * Example:
@@ -145,12 +180,26 @@ class MultidimensionalArray {
      *
      * @param factor Number of times to multiply the array
      */
-    public multiply(factor: number): void {
+    public multiplyDimensional(factor: number): void {
         const newArray = [];
         for (let i = 0; i < factor; i++) {
             newArray.push(this.array);
         }
         this.array = newArray;
+    }
+
+    /**
+     * Adds the specified number of dimensions to the array (i.e. wraps the array in arrays the specified number of times)
+     *
+     * Example:
+     * arr.addDimensions(1) -> [arr]
+     * arr.addDimensions(2) -> [[arr]]
+     * arr.addDimensions(3) -> [[[arr]]]
+     *
+     * @param depth
+     */
+    public addDimensions(depth: number): void {
+        this.array = MultidimensionalArray._deepArray(this.array, 1, depth + 1);
     }
 }
 
