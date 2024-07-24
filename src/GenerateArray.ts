@@ -1,9 +1,14 @@
+import Validation from "./Validation.ts";
+
 class GenerateArray {
     /**
      * Generate an array of the specified length filled with undefined values
      * @param length Size of array
      */
     public static blank(length: number) {
+
+        Validation.integer(length, 1, "length");
+
         return Array(length);
     }
 
@@ -13,6 +18,9 @@ class GenerateArray {
      * @param value Value to fill array with
      */
     public static uniform(length: number, value: any) {
+
+        Validation.integer(length, 1, "length");
+
         return Array(length).fill(value);
     }
 
@@ -27,6 +35,9 @@ class GenerateArray {
      * @param length Size of array
      */
     public static custom = (generator: () => any, length: number): any[] => {
+
+        Validation.integer(length, 1, "length");
+
         return Array.from({ length }, generator);
     }
 }
