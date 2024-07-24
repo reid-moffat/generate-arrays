@@ -123,6 +123,35 @@ class MultidimensionalArray {
 
         return this._deepArray(arrayGen, length, depth);
     }
+
+    private array: any[];
+
+    public MultidimensionalArray(array: any[]) {
+        this.array = array;
+    }
+
+    /**
+     * Returns the array
+     */
+    public getArray(): any[] {
+        return this.array;
+    }
+
+    /**
+     * Makes multiples of the array, placing the result in a new array
+     *
+     * Example:
+     * arr.multiply(3) -> [arr, arr, arr]
+     *
+     * @param factor Number of times to multiply the array
+     */
+    public multiply(factor: number): void {
+        const newArray = [];
+        for (let i = 0; i < factor; i++) {
+            newArray.push(this.array);
+        }
+        this.array = newArray;
+    }
 }
 
 export default MultidimensionalArray;
