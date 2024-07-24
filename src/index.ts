@@ -1,3 +1,5 @@
-import { emptyArray, uniformArray, randomArray, generateArray } from './simple';
+import GenerateArray from './GenerateArray.ts';
+import MultidimensionalArray from "./MultidimensionalArray.ts";
+import GenerateArrayError from "./GenerateArraysError.ts";
 
-export { emptyArray, uniformArray, randomArray, generateArray };
+export { GenerateArray, MultidimensionalArray, GenerateArrayError };
