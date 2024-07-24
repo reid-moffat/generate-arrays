@@ -1,4 +1,4 @@
-import GenerateArrayError from "./GenerateArraysError.ts";
+import Validation from "./Validation.ts";
 
 /**
  *
@@ -33,19 +33,8 @@ class MultidimensionalArray {
      */
     public static empty = (length: number, depth: number): [][] => {
 
-        if (!Number.isInteger(length)) {
-            throw new GenerateArrayError(`Array length must be an integer: value '${length}' is invalid`);
-        }
-        if (length < 1) {
-            throw new GenerateArrayError("Array length must be greater than 0 to generate array");
-        }
-
-        if (!Number.isInteger(depth)) {
-            throw new GenerateArrayError(`Array depth must be an integer: value '${depth}' is invalid`);
-        }
-        if (depth < 1) {
-            throw new GenerateArrayError("Array depth must be at least 1 to generate array");
-        }
+        Validation.integer(length, 1, "length");
+        Validation.integer(depth, 1, "depth");
 
         return this._deepArray([], length, depth);
     }
@@ -70,18 +59,8 @@ class MultidimensionalArray {
      */
     public static uniform = (value: any, length: number, depth: number): any[] => {
 
-        if (!Number.isInteger(length)) {
-            throw new GenerateArrayError(`Array length must be an integer: value '${length}' is invalid`);
-        }
-        if (length < 1) {
-            throw new GenerateArrayError("Array length must be greater than 0 to generate array");
-        }
-        if (!Number.isInteger(depth)) {
-            throw new GenerateArrayError(`Array depth must be an integer: value '${depth}' is invalid`);
-        }
-        if (depth < 1) {
-            throw new GenerateArrayError("Array depth must be at least 1 to generate array");
-        }
+        Validation.integer(length, 1, "length");
+        Validation.integer(depth, 1, "depth");
 
         const baseArray = [];
         if (Array.isArray(value)) {
@@ -108,18 +87,8 @@ class MultidimensionalArray {
      */
     public static custom = (arrayGen: () => any[], length: number, depth: number): any[] => {
 
-        if (!Number.isInteger(length)) {
-            throw new GenerateArrayError(`Array length must be an integer: value '${length}' is invalid`);
-        }
-        if (length < 1) {
-            throw new GenerateArrayError("Array length must be greater than 0 to generate array");
-        }
-        if (!Number.isInteger(depth)) {
-            throw new GenerateArrayError(`Array depth must be an integer: value '${depth}' is invalid`);
-        }
-        if (depth < 1) {
-            throw new GenerateArrayError("Array depth must be at least 1 to generate array");
-        }
+        Validation.integer(length, 1, "length");
+        Validation.integer(depth, 1, "depth");
 
         return this._deepArray(arrayGen, length, depth);
     }

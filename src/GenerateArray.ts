@@ -1,5 +1,3 @@
-import GenerateArrayError from "./GenerateArraysError.ts";
-
 class GenerateArray {
     /**
      * Generate an array of the specified length filled with undefined values
