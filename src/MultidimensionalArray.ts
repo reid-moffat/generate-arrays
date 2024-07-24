@@ -77,7 +77,7 @@ class MultidimensionalArray {
      * Examples:
      * MultidimensionalArray.custom(() => Math.floor(Math.random() * 10), 3, 2) -> [[7], [2], [5]] (possible output)
      *
-     * @param arrayGen Function to generate the base array. Note this function is called once for each base array,
+     * @param generator Function to generate the base array. Note this function is called once for each base array,
      * so to have multiple values, this function should return an array of multiple values (e.g.
      * GenerateArray.custom(() => ..., len))
      * @param length Number of arrays in each array (>= 1), excluding the base array (array at the lowest depth)
@@ -85,12 +85,13 @@ class MultidimensionalArray {
      * allowed to reduce confusion as it would just put the value of one function call in an array, e.g. () => 7 -> [7]
      * (to get a 1-D array with multiple values, use GenerateArray.custom(() => ..., len) instead)
      */
-    public static custom = (arrayGen: () => any[], length: number, depth: number): any[] => {
+    public static custom = (generator: () => any[], length: number, depth: number): any[] => {
 
+        Validation.function(generator, "generator", true);
         Validation.integer(length, 1, "length");
         Validation.integer(depth, 2, "depth");
 
-        return this._deepArray(arrayGen, length, depth);
+        return this._deepArray(generator, length, depth);
     }
 
     private array: any[];

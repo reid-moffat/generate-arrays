@@ -36,6 +36,7 @@ class GenerateArray {
      */
     public static custom = (generator: () => any, length: number): any[] => {
 
+        Validation.function(generator, "generator");
         Validation.integer(length, 1, "length");
 
         return Array.from({ length }, generator);

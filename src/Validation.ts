@@ -9,6 +9,25 @@ class Validation {
             throw new GenerateArrayError(`Parameter '${paramName}' must be at least ${min}: value '${value}' is invalid`);
         }
     }
+
+    static function(value: any, paramName: string, returnArray: boolean = false): void {
+        if (typeof value !== "function") {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be a function: value '${value}' is invalid`);
+        }
+        if (value.length !== 0) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be a function with no parameters: value '${value}' is invalid`);
+        }
+
+        let result;
+        try {
+            result = (value as Function)();
+        } catch (e) {
+            throw new GenerateArrayError(`Error occurred while executing function '${paramName}': ${e}`);
+        }
+        if (returnArray && !Array.isArray(result)) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be a function that returns an array: value '${value}' is invalid`);
+        }
+    }
 }
 
 export default Validation;
