@@ -169,7 +169,7 @@ class MultidimensionalArray {
      * @param factor
      */
     public multiplyLength(factor: number): void {
-        this.array = this.array.flatMap(item => Array.from({ length: n }, () => item));
+        this.array = this.array.flatMap(item => Array.from({ length: factor }, () => item));
     }
 
     /**
