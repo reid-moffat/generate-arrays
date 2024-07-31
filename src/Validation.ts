@@ -30,10 +30,6 @@ class Validation {
         } catch (e) {
             throw new GenerateArrayError(`Error occurred while executing function '${paramName}': ${e}`);
         }
-
-        if (!returnArray && Array.isArray(result)) {
-            throw new GenerateArrayError(`Parameter '${paramName}' must be a function that returns a non-array value: value '${value}' is invalid`);
-        }
         if (returnArray && !Array.isArray(result)) {
             throw new GenerateArrayError(`Parameter '${paramName}' must be a function that returns an array: value '${value}' is invalid`);
         }

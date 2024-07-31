@@ -2,7 +2,22 @@ import Validation from "./Validation.ts";
 
 class CustomArray {
 
+    /**
+     * Generate an array of the specified length. Each value is obtained from a random generator with equal chances
+     *
+     * Example:
+     * CustomArray.random(5, [() => Math.random(), () => Math.floor(Math.random() * 10)]) -> [0.12345, 7, 0.101112, 1, 3] (possible values)
+     *
+     * @param length Size of array to be generated (>= 1)
+     * @param generators Array of functions that generate values. Returned value can be anything
+     */
+    public static generators = (length: number, generators: (() => any)[]): any[] => {
 
+        Validation.integer(length, 1, "length");
+        Validation.array(generators, "generators");
+
+        return Array.from({ length }, () => generators[Math.floor(Math.random() * generators.length)]());
+    }
 
     /**
      * Generate array of the specified length with the specified generators. Each generator has a weighted chance of
@@ -52,6 +67,7 @@ class CustomArray {
 
         return result;
     }
+
 }
 
 export default CustomArray;
