@@ -1,4 +1,4 @@
-import GenerateArrayError from "./GenerateArraysError.ts";
+import GenerateArrayError from "./GenerateArrayError.ts";
 
 class Validation {
     static integer(value: any, min: number, paramName: string): void {

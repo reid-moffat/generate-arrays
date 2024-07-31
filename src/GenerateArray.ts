@@ -1,4 +1,5 @@
 import Validation from "./Validation.ts";
+import GenerateArrayError from "./GenerateArrayError.ts";
 
 class GenerateArray {
     /**
@@ -40,6 +41,59 @@ class GenerateArray {
         Validation.integer(length, 1, "length");
 
         return Array.from({ length }, generator);
+    }
+
+    /**
+     * Generate an array of integers starting from the start to end values (inclusive) with the given step value
+     *
+     * @param start
+     * @param end
+     * @param step
+     */
+    public static counting = (start: number, end: number, step = 1): number[] => {
+
+        Validation.integer(start, 0, "start");
+        Validation.integer(end, 0, "end");
+        Validation.integer(step, 1, "step");
+
+        const length = Math.ceil((end - start) / step + 1);
+        return Array.from({ length }, (_, i) => start + i * step);
+    }
+
+    /**
+     * Generate an array of random integers of the specified length within the given range
+     *
+     * @param length
+     * @param min
+     * @param max
+     */
+    public static numbers = (length: number, min: number = 0, max: number = 100) => {
+        ;
+    }
+
+    /**
+     * Generate an array of random decimals of the specified length within the given range
+     *
+     * Examples:
+     * GenerateArray.decimals(5, 0, 1) -> [0.12345, 0.6789, 0.101112, 0.131415, 0.161718] (possible values)
+     * GenerateArray.decimals(6, 0, 10) -> [7.12345, 2.6789, 5.101112, 9.131415, 1.161718, 3.192021] (possible values)
+     *
+     * @param length Size of array (>= 1)
+     * @param min Minimum value (inclusive)
+     * @param max Maximum value (exclusive)
+     */
+    public static decimals = (length: number, min: number = 0, max: number = 1) => {
+
+        Validation.integer(length, 1, "length");
+        if (typeof min !== "number" || typeof max !== "number") {
+            throw new GenerateArrayError("Parameters 'min' and 'max' must be numbers");
+        }
+        if (min >= max) {
+            throw new Error(`Parameter 'min' must be less than 'max': min '${min}' and max '${max}' are invalid`);
+        }
+
+        const range = max - min;
+        return Array.from({ length }, () => Math.random() * range + min);
     }
 
     // Helper for generating multidimensional arrays
