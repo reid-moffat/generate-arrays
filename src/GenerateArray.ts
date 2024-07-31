@@ -138,8 +138,8 @@ class GenerateArray {
      * Generate an array of random strings of the specified length within the given range
      *
      * @param length Size of array (>= 1)
-     * @param minLength Minimum length of string (>= 1)
-     * @param maxLength Maximum length of string (>= minLength)
+     * @param minLength Minimum length of string (>= 1), default 1
+     * @param maxLength Maximum length of string (>= minLength), default 10
      * @param specialChars If true, includes special characters (!@#$%^&*()_+/\{}[]|;:'",.<>?`~) in the generated
      * strings. By default, only letters and numbers are used (a-zA-Z0-9)
      */
@@ -149,7 +149,7 @@ class GenerateArray {
         Validation.integer(minLength, 1, "minLength");
         Validation.integer(maxLength, minLength, "maxLength");
 
-        const range = maxLength - minLength;
+        const range = maxLength - minLength + 1;
         const chars = specialChars ? this._charactersWithSpecial : this._characters;
         const charLength = chars.length;
 

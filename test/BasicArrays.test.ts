@@ -210,23 +210,35 @@ suite("Basic array functions", () => {
     suite("Strings array", () => {
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.strings(1.2)).to.throw("Array length must be an integer: value '1.2' is invalid");
+                expect(() => GenerateArray.strings(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.strings(0)).to.throw("Array length must be greater than 0 to generate array");
+                expect(() => GenerateArray.strings(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
             });
         });
 
         suite("Valid input", () => {
             test("Length 1", () => {
                 const arr = GenerateArray.strings(1);
-                expect(arr).to.deep.equal([""]);
+                expect(arr).to.be.an("array");
+                expect(arr.length).to.equal(1);
+                arr.forEach((val) => {
+                    expect(val).to.be.a("string");
+                    expect(val.length).to.be.at.least(1);
+                    expect(val.length).to.be.at.most(10);
+                });
             });
 
             test("Length 3", () => {
                 const arr = GenerateArray.strings(3);
-                expect(arr).to.deep.equal(["", "", ""]);
+                expect(arr).to.be.an("array");
+                expect(arr.length).to.equal(3);
+                arr.forEach((val) => {
+                    expect(val).to.be.a("string");
+                    expect(val.length).to.be.at.least(1);
+                    expect(val.length).to.be.at.most(10);
+                });
             });
         });
     });
