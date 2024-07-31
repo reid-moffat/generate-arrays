@@ -92,37 +92,36 @@ suite("Multi-dimensional array functions", () => {
 
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.customND(() => [1, 2, 3], 1.2, 1)).to.throw("Array length must be an" +
-                    " integer: value '1.2' is invalid");
+                expect(() => GenerateArray.customND(() => [1, 2, 3], 1.2, 1)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.customND(() => [1, 2, 3], 0, 1)).to.throw("Array length must be greater than 0 to generate array");
+                expect(() => GenerateArray.customND(() => [1, 2, 3], 0, 1)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
             });
 
             test("Depth not an integer", () => {
-                expect(() => GenerateArray.customND(() => [1, 2, 3], 1, 1.2)).to.throw("Array depth must be an integer: value '1.2' is invalid");
+                expect(() => GenerateArray.customND(() => [1, 2, 3], 1, 1.2)).to.throw("Parameter 'depth' must be an integer: value '1.2' is invalid");
             });
 
             test("Depth less than 1", () => {
-                expect(() => GenerateArray.customND(() => [1, 2, 3], 1, 0)).to.throw("Array depth must be at least 1 to generate array");
+                expect(() => GenerateArray.customND(() => [1, 2, 3], 1, 0)).to.throw("Parameter 'depth' must be at least 2: value '0' is invalid");
             });
         });
 
         suite("Valid input", () => {
-            test("Value [1, 2, 3] Length 1 Depth 1", () => {
-                const arr = GenerateArray.customND(() => [1, 2, 3], 1, 1);
-                expect(arr).to.deep.equal([1, 2, 3]);
-            });
-
-            test("Value [1, 2, 3] Length 3 Depth 1", () => {
-                const arr = GenerateArray.customND(() => [1, 2, 3], 3, 1);
-                expect(arr).to.deep.equal([1, 2, 3]);
+            test("Value [1, 2, 3] Length 1 Depth 2", () => {
+                const arr = GenerateArray.customND(() => [1, 2, 3], 1, 2);
+                expect(arr).to.deep.equal([[1, 2, 3]]);
             });
 
             test("Value [1, 2, 3] Length 3 Depth 2", () => {
                 const arr = GenerateArray.customND(() => [1, 2, 3], 3, 2);
                 expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+            });
+
+            test("Value [1, 2, 3] Length 4 Depth 2", () => {
+                const arr = GenerateArray.customND(() => [1, 2, 3], 4, 2);
+                expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]]);
             });
         });
     });
