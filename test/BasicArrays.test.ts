@@ -1,7 +1,7 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
 
-suite("GenerateArray test", () => {
+suite("Basic array functions", () => {
 
     suite("Blank array", () => {
 
@@ -46,10 +46,11 @@ suite("GenerateArray test", () => {
         });
     });
 
-    suite("counting array", () => {
+    suite("Counting array", () => {
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.counting(1.2)).to.throw("Array length must be an integer: value '1.2' is invalid");
+                expect(() => GenerateArray.counting(1.2)).to.throw("Array length must be an integer: value '1.2' is" +
+                    " invalid");
             });
 
             test("Length less than 1", () => {
