@@ -158,19 +158,6 @@ class MultidimensionalArray {
         this.array = newArray;
     }
 
-    /**
-     * Adds the specified number of dimensions to the array (i.e. wraps the array in arrays the specified number of times)
-     *
-     * Example:
-     * arr.addDimensions(1) -> [arr]
-     * arr.addDimensions(2) -> [[arr]]
-     * arr.addDimensions(3) -> [[[arr]]]
-     *
-     * @param depth
-     */
-    public addDimensions(depth: number): void {
-        this.array = MultidimensionalArray._deepArray(this.array, 1, depth + 1);
-    }
 }
 
 export default MultidimensionalArray;

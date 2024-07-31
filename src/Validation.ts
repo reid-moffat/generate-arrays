@@ -10,6 +10,12 @@ class Validation {
         }
     }
 
+    static array(value: any, paramName: string): void {
+        if (!Array.isArray(value)) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be an array: value '${value}' is invalid`);
+        }
+    }
+
     static function(value: any, paramName: string, returnArray: boolean = false): void {
         if (typeof value !== "function") {
             throw new GenerateArrayError(`Parameter '${paramName}' must be a function: value '${value}' is invalid`);
@@ -23,6 +29,10 @@ class Validation {
             result = (value as Function)();
         } catch (e) {
             throw new GenerateArrayError(`Error occurred while executing function '${paramName}': ${e}`);
+        }
+
+        if (!returnArray && Array.isArray(result)) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be a function that returns a non-array value: value '${value}' is invalid`);
         }
         if (returnArray && !Array.isArray(result)) {
             throw new GenerateArrayError(`Parameter '${paramName}' must be a function that returns an array: value '${value}' is invalid`);
