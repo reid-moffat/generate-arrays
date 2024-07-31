@@ -3,7 +3,7 @@ import Validation from "./Validation.ts";
 /**
  *
  */
-class MultidimensionalArray {
+class Multidimensional {
 
     private static _deepArray = (baseArray: any[] | (() => any[]), length: number, depth: number): any[] => {
         if (depth === 1) {
@@ -93,71 +93,6 @@ class MultidimensionalArray {
 
         return this._deepArray(generator, length, depth);
     }
-
-    private array: any[];
-
-    public MultidimensionalArray(array: any[]) {
-        this.array = array;
-    }
-
-    /**
-     * Returns the array
-     */
-    public getArray(): any[] {
-        return this.array;
-    }
-
-    /**
-     * Returns the array as a string
-     */
-    public toString(): string {
-        return this.array.toString();
-    }
-
-    /**
-     * Returns true if the provided MultidimensionalArray is equal to this array
-     * @param other
-     */
-    public equals(other: MultidimensionalArray): boolean {
-        return this.array.toString() === other.array.toString();
-    }
-
-    /**
-     * Returns true if the provided array is equal to this array
-     * @param other
-     */
-    public equalsArray(other: any[]): boolean {
-        return this.array.toString() === other.toString();
-    }
-
-    /**
-     * Multiplies the array within itself n times (i.e. repeats the elements in the array n times)
-     *
-     * Example:
-     * arr = [1, 2] && arr.multiplyLength(3) -> [1, 2, 1, 2, 1, 2]
-     *
-     * @param factor
-     */
-    public multiplyLength(factor: number): void {
-        this.array = this.array.flatMap(item => Array.from({ length: factor }, () => item));
-    }
-
-    /**
-     * Makes multiples of the array, placing the result in a new array
-     *
-     * Example:
-     * arr.multiply(3) -> [arr, arr, arr]
-     *
-     * @param factor Number of times to multiply the array
-     */
-    public multiplyDimensional(factor: number): void {
-        const newArray = [];
-        for (let i = 0; i < factor; i++) {
-            newArray.push(this.array);
-        }
-        this.array = newArray;
-    }
-
 }
 
-export default MultidimensionalArray;
+export default Multidimensional;
