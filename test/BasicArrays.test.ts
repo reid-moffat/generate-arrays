@@ -5,6 +5,39 @@ suite("Basic array functions", () => {
 
     suite("Blank array", () => {
 
+        suite("Invalid input", () => {
+            test("Length not an integer", () => {
+                expect(() => GenerateArray.blank(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
+            });
+
+            test("Length less than 1", () => {
+                expect(() => GenerateArray.blank(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
+            });
+
+            test("Negative length", () => {
+                expect(() => GenerateArray.blank(-7)).to.throw("Parameter 'length' must be at least 1: value '-7' is invalid");
+            });
+        })
+
+        suite("Valid input", () => {
+            test("Length 1", () => {
+                const arr = GenerateArray.blank(1);
+                expect(arr).to.deep.equal([undefined]);
+            });
+
+            test("Length 3", () => {
+                const arr = GenerateArray.blank(3);
+                expect(arr).to.deep.equal([undefined, undefined, undefined]);
+            });
+
+            test("Length 100", () => {
+                const arr = GenerateArray.blank(100);
+                expect(arr.length).to.equal(100);
+                arr.forEach((val) => {
+                    expect(val).to.be.undefined;
+                });
+            });
+        });
     });
 
     suite("Uniform array", () => {
