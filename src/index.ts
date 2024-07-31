@@ -1,5 +1,5 @@
 import GenerateArray from './GenerateArray.ts';
-import CustomArray from "./CustomArrayGen.ts";
+import CustomArray from "./CustomArray.ts";
 import ArrayUtils from "./ArrayUtils.ts";
 import GenerateArrayError from "./GenerateArrayError.ts";
 
