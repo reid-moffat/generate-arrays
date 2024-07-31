@@ -113,7 +113,8 @@ class GenerateArray {
     }
 
     /**
-     * Generate an array of random decimals of the specified length within the given range
+     * Generate an array of random decimals of the specified length within the given range. May sometimes produce
+     * integers if the range is significantly large
      *
      * Examples:
      * GenerateArray.decimals(5) -> [0.12345, 0.6789, 0.101112, 0.131415, 0.161718] (possible values)
