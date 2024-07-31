@@ -42,6 +42,37 @@ suite("Basic array functions", () => {
 
     suite("Uniform array", () => {
 
+        suite("Invalid input", () => {
+            test("Length not an integer", () => {
+                expect(() => GenerateArray.uniform(1.2, 7)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
+            });
+
+            test("Length less than 1", () => {
+                expect(() => GenerateArray.uniform(0, 7)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
+            });
+        });
+
+        suite("Valid input", () => {
+            test("Value 1 Length 1", () => {
+                const arr = GenerateArray.uniform(1, 1);
+                expect(arr).to.deep.equal([1]);
+            });
+
+            test("Value 7 Length 3", () => {
+                const arr = GenerateArray.uniform(3, 7);
+                expect(arr).to.deep.equal([7, 7, 7]);
+            });
+
+            test("Value [1, 2, 3] Length 3", () => {
+                const arr = GenerateArray.uniform(3, [1, 2, 3]);
+                expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
+            });
+
+            test("Value [1, 2, 3] Length 1", () => {
+                const arr = GenerateArray.uniform(1, [1, 2, 3]);
+                expect(arr).to.deep.equal([[1, 2, 3]]);
+            });
+        });
     });
 
     suite("Custom array", () => {
