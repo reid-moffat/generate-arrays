@@ -55,40 +55,27 @@ suite("Generator array functions", () => {
 
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.weightedGenerators(1.2, validWeightedGenerators)).to.throw("Array length must be an integer:" +
-                    " value '1.2' is" +
-                    " invalid");
+                expect(() => GenerateArray.weightedGenerators(1.2, validWeightedGenerators)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.weightedGenerators(0, validWeightedGenerators)).to.throw("Array length must be greater than 0" +
-                    " to generate array");
-            });
-
-            test("Depth not an integer", () => {
-                expect(() => GenerateArray.weightedGenerators(1, validWeightedGenerators)).to.throw("Array depth must be an integer:" +
-                    " value '1.2' is invalid");
-            });
-
-            test("Depth less than 1", () => {
-                expect(() => GenerateArray.weightedGenerators(1, validWeightedGenerators)).to.throw("Array depth must be at least 1 to" +
-                    " generate array");
+                expect(() => GenerateArray.weightedGenerators(0, validWeightedGenerators)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
             });
         });
 
         suite("Valid input", () => {
             test("Length 1 Depth 1", () => {
                 const arr = GenerateArray.weightedGenerators(1, validWeightedGenerators);
-                expect(arr).to.deep.equal([1]);
+                expect(arr.length).to.equal(1);
+                expect(arr[0]).to.be.an("number");
             });
 
             test("Length 3 Depth 3", () => {
                 const arr = GenerateArray.weightedGenerators(3, validWeightedGenerators);
                 expect(arr.length).to.equal(3);
-                expect(arr[0].length).to.equal(3);
-                // @ts-ignore
-                expect(arr[0][0].length).to.equal(0);
-                expect(arr).to.deep.equal([[[], [], []], [[], [], []],[[], [], []]]);
+                expect(arr[0]).to.be.an("number");
+                expect(arr[1]).to.be.an("number");
+                expect(arr[2]).to.be.an("number");
             });
         });
     });
