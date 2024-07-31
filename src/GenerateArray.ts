@@ -1,7 +1,10 @@
 import Validation from "./Validation.ts";
-import GenerateArrayError from "./GenerateArrayError.ts";
 
 class GenerateArray {
+
+    private static _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    private static _charactersWithSpecial = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+/\\{}[]|;:\'",.<>?`~';
+
     /**
      * Generate an array of the specified length filled with undefined values
      * @param length Size of array
@@ -44,31 +47,42 @@ class GenerateArray {
     }
 
     /**
-     * Generate an array of integers starting from the start to end values (inclusive) with the given step value
+     * Generate an array of numbers from the start to end values (inclusive) with the given step value
      *
-     * @param start
-     * @param end
-     * @param step
+     * Examples:
+     * GenerateArray.counting(0, 5) -> [0, 1, 2, 3, 4, 5]
+     * GenerateArray.counting(1, 10, 2) -> [1, 3, 5, 7, 9]
+     * GenerateArray.counting(1.2, 37.9, 4.7) -> [1.2, 5.9, 10.6, 15.3, 20, 24.7, 29.4, 34.1]
+     *
+     * @param start Number to start at
+     * @param max Maximum highest value (will not be included if it's not a multiple of the step value plus the starting value)
+     * @param step Value added at each step (default 1)
      */
-    public static counting = (start: number, end: number, step = 1): number[] => {
-
-        Validation.integer(start, 0, "start");
-        Validation.integer(end, 0, "end");
-        Validation.integer(step, 1, "step");
-
-        const length = Math.ceil((end - start) / step + 1);
-        return Array.from({ length }, (_, i) => start + i * step);
+    public static counting = (start: number, max: number, step: number = 1): number[] => {
+        const result: number[] = [];
+        for (let i = start; i <= max; i += step) {
+            result.push(i);
+        }
+        return result;
     }
 
     /**
      * Generate an array of random integers of the specified length within the given range
      *
-     * @param length
-     * @param min
-     * @param max
+     * @param length Size of array (>= 1)
+     * @param min Minimum value (inclusive), default 0
+     * @param max Maximum value (exclusive), default 100
      */
-    public static numbers = (length: number, min: number = 0, max: number = 100) => {
-        ;
+    public static integers = (length: number, min: number = 0, max: number = 100) => {
+
+        Validation.integer(length, 1, "length");
+
+        if (min >= max) {
+            throw new Error(`Parameter 'min' must be less than 'max': min '${min}' and max '${max}' are invalid`);
+        }
+
+        const range = max - min;
+        return Array.from({ length }, () => Math.floor(Math.random() * range) + min);
     }
 
     /**
@@ -79,21 +93,44 @@ class GenerateArray {
      * GenerateArray.decimals(6, 0, 10) -> [7.12345, 2.6789, 5.101112, 9.131415, 1.161718, 3.192021] (possible values)
      *
      * @param length Size of array (>= 1)
-     * @param min Minimum value (inclusive)
-     * @param max Maximum value (exclusive)
+     * @param min Minimum value (inclusive), default 0
+     * @param max Maximum value (exclusive), default 1
      */
     public static decimals = (length: number, min: number = 0, max: number = 1) => {
 
-        Validation.integer(length, 1, "length");
-        if (typeof min !== "number" || typeof max !== "number") {
-            throw new GenerateArrayError("Parameters 'min' and 'max' must be numbers");
-        }
+        Validation.integer(length, -Infinity, "length");
+
         if (min >= max) {
             throw new Error(`Parameter 'min' must be less than 'max': min '${min}' and max '${max}' are invalid`);
         }
 
         const range = max - min;
         return Array.from({ length }, () => Math.random() * range + min);
+    }
+
+    /**
+     * Generate an array of random strings of the specified length within the given range
+     *
+     * @param length Size of array (>= 1)
+     * @param minLength Minimum length of string (>= 1)
+     * @param maxLength Maximum length of string (>= minLength)
+     * @param specialChars If true, includes special characters (!@#$%^&*()_+/\{}[]|;:'",.<>?`~) in the generated
+     * strings. By default, only letters and numbers are used (a-zA-Z0-9)
+     */
+    public static strings = (length: number, minLength: number = 1, maxLength: number = 10, specialChars: boolean = false) => {
+
+        Validation.integer(length, 1, "length");
+        Validation.integer(minLength, 1, "minLength");
+        Validation.integer(maxLength, minLength, "maxLength");
+
+        const range = maxLength - minLength;
+        const chars = specialChars ? this._charactersWithSpecial : this._characters;
+        const charLength = chars.length;
+
+        return Array.from({ length }, () => {
+            const len = Math.floor(Math.random() * range) + minLength;
+            return Array.from({ length: len }, () => chars[Math.floor(Math.random() * charLength)]).join("");
+        });
     }
 
     // Helper for generating multidimensional arrays
