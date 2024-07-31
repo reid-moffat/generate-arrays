@@ -49,23 +49,25 @@ suite("Basic array functions", () => {
     suite("Counting array", () => {
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.counting(1.2)).to.throw("Array length must be an integer: value '1.2' is" +
+                expect(() => GenerateArray.counting(1.2, 2)).to.throw("Array length must be an integer: value '1.2'" +
+                    " is" +
                     " invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.counting(0)).to.throw("Array length must be greater than 0 to generate array");
+                expect(() => GenerateArray.counting(0, 3)).to.throw("Array length must be greater than 0 to generate" +
+                    " array");
             });
         });
 
         suite("Valid input", () => {
             test("Length 1", () => {
-                const arr = GenerateArray.counting(1);
+                const arr = GenerateArray.counting(1, 7);
                 expect(arr).to.deep.equal([0]);
             });
 
             test("Length 3", () => {
-                const arr = GenerateArray.counting(3);
+                const arr = GenerateArray.counting(3, 4);
                 expect(arr).to.deep.equal([0, 1, 2]);
             });
         });
