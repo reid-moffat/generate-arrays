@@ -136,23 +136,37 @@ suite("Basic array functions", () => {
     suite("Integer array", () => {
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.integers(1.2)).to.throw("Array length must be an integer: value '1.2' is invalid");
+                expect(() => GenerateArray.integers(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.integers(0)).to.throw("Array length must be greater than 0 to generate array");
+                expect(() => GenerateArray.integers(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
             });
         });
 
         suite("Valid input", () => {
             test("Length 1", () => {
                 const arr = GenerateArray.integers(1);
-                expect(arr).to.deep.equal([0]);
+                expect(arr).to.be.an("array");
+                expect(arr.length).to.equal(1);
+                arr.forEach((val) => {
+                    expect(val).to.be.a("number");
+                    expect(val).to.satisfy((num: number) => Number.isInteger(num));
+                    expect(val).to.be.at.least(0);
+                    expect(val).to.be.lessThan(100);
+                });
             });
 
             test("Length 3", () => {
                 const arr = GenerateArray.integers(3);
-                expect(arr).to.deep.equal([0, 1, 2]);
+                expect(arr).to.be.an("array");
+                expect(arr.length).to.equal(3);
+                arr.forEach((val) => {
+                    expect(val).to.be.a("number");
+                    expect(val).to.satisfy((num: number) => Number.isInteger(num));
+                    expect(val).to.be.at.least(0);
+                    expect(val).to.be.lessThan(100);
+                });
             });
         });
     });
