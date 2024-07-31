@@ -79,11 +79,11 @@ suite("Basic array functions", () => {
 
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.custom(() => 1, 1.2)).to.throw("Array length must be an integer: value '1.2' is invalid");
+                expect(() => GenerateArray.custom(() => 1, 1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.custom(() => 1, 0)).to.throw("Array length must be greater than 0 to generate array");
+                expect(() => GenerateArray.custom(() => 1, 0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
             });
         });
 
