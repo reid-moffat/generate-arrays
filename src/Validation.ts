@@ -10,6 +10,18 @@ class Validation {
         }
     }
 
+    static number(value: any, threshold: number, paramName: string, above: boolean = true): void {
+        if (typeof value !== "number") {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be a number: value '${value}' is invalid`);
+        }
+        if (above && value <= threshold) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be greater than ${threshold}: value '${value}' is invalid`);
+        }
+        if (!above && value >= threshold) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be less than ${threshold}: value '${value}' is invalid`);
+        }
+    }
+
     static array(value: any, paramName: string): void {
         if (!Array.isArray(value)) {
             throw new GenerateArrayError(`Parameter '${paramName}' must be an array: value '${value}' is invalid`);

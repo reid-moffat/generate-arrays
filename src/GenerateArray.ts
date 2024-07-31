@@ -1,4 +1,5 @@
 import Validation from "./Validation.ts";
+import GenerateArrayError from "./GenerateArrayError.ts";
 
 class GenerateArray {
 
@@ -7,6 +8,10 @@ class GenerateArray {
 
     /**
      * Generate an array of the specified length filled with undefined values
+     *
+     * Example:
+     * GenerateArray.blank(5) -> [undefined, undefined, undefined, undefined, undefined]
+     *
      * @param length Size of array
      */
     public static blank(length: number) {
@@ -18,6 +23,10 @@ class GenerateArray {
 
     /**
      * Generate an array of the specified length filled with the specified value
+     *
+     * Example:
+     * GenerateArray.uniform(5, 7) -> [7, 7, 7, 7, 7]
+     *
      * @param length Size of array
      * @param value Value to fill array with
      */
@@ -47,27 +56,48 @@ class GenerateArray {
     }
 
     /**
-     * Generate an array of numbers from the start to end values (inclusive) with the given step value
+     * Generate an array of numbers from the start value up to a max/min value (both inclusive) with the given step value
      *
      * Examples:
      * GenerateArray.counting(0, 5) -> [0, 1, 2, 3, 4, 5]
      * GenerateArray.counting(1, 10, 2) -> [1, 3, 5, 7, 9]
      * GenerateArray.counting(1.2, 37.9, 4.7) -> [1.2, 5.9, 10.6, 15.3, 20, 24.7, 29.4, 34.1]
+     * GenerateArray.counting(10, 1, 2, true) -> [10, 8, 6, 4, 2]
      *
      * @param start Number to start at
-     * @param max Maximum highest value (will not be included if it's not a multiple of the step value plus the starting value)
+     * @param end Value to stop at (may not be included in resulting array)
      * @param step Value added at each step (default 1)
+     * @param subtract If true, subtracts the step each time
      */
-    public static counting = (start: number, max: number, step: number = 1): number[] => {
+    public static counting = (start: number, end: number, step: number = 1, subtract: boolean = false): number[] => {
+
         const result: number[] = [];
-        for (let i = start; i <= max; i += step) {
-            result.push(i);
+
+        if (subtract) {
+            Validation.number(end, start, "end", false);
+            Validation.number(step, 0, "step", false);
+
+            for (let i = start; i >= end; i -= step) {
+                result.push(i);
+            }
+        } else {
+            Validation.number(end, start, "end", true);
+            Validation.number(step, 0, "step", true);
+
+            for (let i = start; i <= end; i += step) {
+                result.push(i);
+            }
         }
+
         return result;
     }
 
     /**
      * Generate an array of random integers of the specified length within the given range
+     *
+     * Examples:
+     * GenerateArray.integers(6) -> [23, 59, 2, 91, 45, 21] (possible values)
+     * GenerateArray.integers(5, 10, 20) -> [15, 17, 12, 19, 11] (possible values)
      *
      * @param length Size of array (>= 1)
      * @param min Minimum value (inclusive), default 0
@@ -76,10 +106,8 @@ class GenerateArray {
     public static integers = (length: number, min: number = 0, max: number = 100) => {
 
         Validation.integer(length, 1, "length");
-
-        if (min >= max) {
-            throw new Error(`Parameter 'min' must be less than 'max': min '${min}' and max '${max}' are invalid`);
-        }
+        Validation.integer(min, -Infinity, "min");
+        Validation.integer(max, min, "max");
 
         const range = max - min;
         return Array.from({ length }, () => Math.floor(Math.random() * range) + min);
@@ -89,7 +117,7 @@ class GenerateArray {
      * Generate an array of random decimals of the specified length within the given range
      *
      * Examples:
-     * GenerateArray.decimals(5, 0, 1) -> [0.12345, 0.6789, 0.101112, 0.131415, 0.161718] (possible values)
+     * GenerateArray.decimals(5) -> [0.12345, 0.6789, 0.101112, 0.131415, 0.161718] (possible values)
      * GenerateArray.decimals(6, 0, 10) -> [7.12345, 2.6789, 5.101112, 9.131415, 1.161718, 3.192021] (possible values)
      *
      * @param length Size of array (>= 1)
@@ -98,11 +126,9 @@ class GenerateArray {
      */
     public static decimals = (length: number, min: number = 0, max: number = 1) => {
 
-        Validation.integer(length, -Infinity, "length");
-
-        if (min >= max) {
-            throw new Error(`Parameter 'min' must be less than 'max': min '${min}' and max '${max}' are invalid`);
-        }
+        Validation.integer(length, 1, "length");
+        Validation.number(min, -Infinity, "min");
+        Validation.number(max, min, "max");
 
         const range = max - min;
         return Array.from({ length }, () => Math.random() * range + min);
@@ -133,9 +159,9 @@ class GenerateArray {
         });
     }
 
-    // / / / / / / / / / / / / / / / / //
-    // Arrays with multiple generators //
-    // / / / / / / / / / / / / / / / / //
+    // / / / / / / / / / / / / / / / / / / / / //
+    // Multiple generator functions per array  //
+    // / / / / / / / / / / / / / / / / / / / / //
 
     /**
      * Generate an array of the specified length. Each value is obtained from a random generator with equal chances
@@ -144,12 +170,15 @@ class GenerateArray {
      * CustomArray.random(5, [() => Math.random(), () => Math.floor(Math.random() * 10)]) -> [0.12345, 7, 0.101112, 1, 3] (possible values)
      *
      * @param length Size of array to be generated (>= 1)
-     * @param generators Array of functions that generate values. Returned value can be anything
+     * @param generators Array of functions that generate a value (value can be anything)
      */
     public static generators = (length: number, generators: (() => any)[]): any[] => {
 
         Validation.integer(length, 1, "length");
-        Validation.array(generators, "generators");
+
+        for (let i = 0; i < generators.length; i++) {
+            Validation.function(generators[i], "generators");
+        }
 
         return Array.from({ length }, () => generators[Math.floor(Math.random() * generators.length)]());
     }
@@ -159,7 +188,7 @@ class GenerateArray {
      * being used for each element in the array
      *
      * Example:
-     * CustomArray.randomChance(6, [{ generator: () => Math.random(), chance: 0.3 }, { generator: () => Math.floor(Math.random() * 10), chance: 0.7 }]) -> [4, 0.12345, 7, 0.101112, 7, 1] (possible values)
+     * CustomArray.randomChance(7, [{ generator: () => Math.random(), chance: 0.3 }, { generator: () => Math.floor(Math.random() * 10), chance: 0.7 }]) -> [4, 0.12345, 7, 0.101112, 7, 1, 8] (possible values)
      *
      * @param length Size of array to be generated (>= 1)
      * @param generators Array of objects in the form { generator: () => any, chance: number }. Chance for all
@@ -210,8 +239,10 @@ class GenerateArray {
      * @param length Size of array to be generated (>= 1)
      * @param generators Array of objects in the form { generator: () => any, count: number }. Generators must
      * return a value (any value), and the count of all generators combined must equal the length of the array
+     * @param random If true (default), the order of the generated values is random. If false, all values from a
+     * specific generator are next to each other in a sequence
      */
-    public static fixedCountGenerators = (length: number, generators: { generator: () => any, count: number }[]) => {
+    public static fixedCountGenerators = (length: number, generators: { generator: () => any, count: number }[], random: boolean = true) => {
 
         Validation.integer(length, 1, "length");
 
@@ -229,6 +260,14 @@ class GenerateArray {
         for (let i = 0; i < generators.length; ++i) {
             for (let j = 0; j < generators[i].count; ++j) {
                 result.push(generators[i].generator());
+            }
+        }
+
+        // Shuffle if random
+        if (random) {
+            for (let i = result.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [result[i], result[j]] = [result[j], result[i]];
             }
         }
 
@@ -253,7 +292,7 @@ class GenerateArray {
     }
 
     /**
-     * Generates an array of arrays of the specific length (number of arrays in each array) and depth (how many
+     * Generates an multidimensional array of the specific length (number of arrays in each array) and depth (how many
      * levels of arrays to generate before stopping) where the base array is empty.
      *
      * Examples:
@@ -263,8 +302,8 @@ class GenerateArray {
      * GenerateArray.emptyND(2, 3) -> [[[], []], [[], []]] (There are 2 arrays in each array, and 3 levels of arrays)
      *
      * @param length Number of arrays in each array (>= 1), excluding the base array (array at the lowest depth)
-     * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Depth of 1
-     * isn't allowed to reduce confusion as it would just be on empty array ([]) regardless of the length.
+     * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Dept of 1 is
+     * just [] regardless of length, so not allowed to reduce confusion
      */
     public static emptyND = (length: number, depth: number): [][] => {
 
@@ -275,7 +314,7 @@ class GenerateArray {
     }
 
     /**
-     * Generates an array of arrays of the specific length (number of arrays in each array) and depth (how many
+     * Generates a multidimensional array of the specific length (number of arrays in each array) and depth (how many
      * levels of arrays to generate before stopping) where all base arrays are filled with the given value(s).
      *
      * If the value is an array, the base arrays will be filled with the values of the array instead of adding an
@@ -307,7 +346,7 @@ class GenerateArray {
     }
 
     /**
-     * Generates an array of arrays of the specific length (number of arrays in each array) and depth (how many
+     * Generates a multidimensional array of the specific length (number of arrays in each array) and depth (how many
      * levels of arrays to generate before stopping) where the base arrays are generated by the given function.
      *
      * Examples:
