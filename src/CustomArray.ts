@@ -68,6 +68,37 @@ class CustomArray {
         return result;
     }
 
+    /**
+     * Generates an array of the specified length with the specified generators. Each generator is called a fixed
+     * amount of times
+     *
+     * @param length Size of array to be generated (>= 1)
+     * @param generators Array of objects in the form { generator: () => any, count: number }. Generators must
+     * return a value (any value), and the count of all generators combined must equal the length of the array
+     */
+    public static fixedCountGenerators = (length: number, generators: { generator: () => any, count: number }[]) => {
+
+        Validation.integer(length, 1, "length");
+
+        let totalCount = 0;
+        for (let i = 0; i < generators.length; ++i) {
+            Validation.function(generators[i].generator, "generator");
+            Validation.integer(generators[i].count, 1, "count");
+            totalCount += generators[i].count;
+        }
+        if (Math.abs(totalCount - length) > 1e-6) {
+            throw new Error(`Total count of all generators must equal the length of the array (${length}): count '${totalCount}' is invalid`);
+        }
+
+        const result: any[] = [];
+        for (let i = 0; i < generators.length; ++i) {
+            for (let j = 0; j < generators[i].count; ++j) {
+                result.push(generators[i].generator());
+            }
+        }
+
+        return result;
+    }
 }
 
 export default CustomArray;
