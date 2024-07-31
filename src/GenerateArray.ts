@@ -1,5 +1,4 @@
 import Validation from "./Validation.ts";
-import GenerateArrayError from "./GenerateArrayError.ts";
 
 class GenerateArray {
 

@@ -1,4 +1,4 @@
-import MultidimensionalArray from "../src/MultidimensionalArray.ts";
+import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
 
 suite("Multi-dimensional array test", () => {
