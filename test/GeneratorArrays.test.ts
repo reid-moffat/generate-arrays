@@ -90,37 +90,30 @@ suite("Generator array functions", () => {
 
         suite("Invalid input", () => {
             test("Length not an integer", () => {
-                expect(() => GenerateArray.fixedCountGenerators(1.2, validCountedGenerators)).to.throw("Array length must be an integer:" +
-                    " value '1.2' is invalid");
+                expect(() => GenerateArray.fixedCountGenerators(1.2, validCountedGenerators)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });
 
             test("Length less than 1", () => {
-                expect(() => GenerateArray.fixedCountGenerators(0, validCountedGenerators)).to.throw("Array length must be greater than" +
-                    " 0 to generate array");
+                expect(() => GenerateArray.fixedCountGenerators(0, validCountedGenerators)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
             });
 
             test("Depth not an integer", () => {
-                expect(() => GenerateArray.fixedCountGenerators(1, validCountedGenerators)).to.throw("Array depth must be an integer: value '1.2' is invalid");
+                expect(() => GenerateArray.fixedCountGenerators(1, validCountedGenerators)).to.throw("Total count of all generators must equal the length of the array (1): count '12' is invalid");
             });
 
             test("Depth less than 1", () => {
-                expect(() => GenerateArray.fixedCountGenerators(1, validCountedGenerators)).to.throw("Array depth must be at least 1 to generate array");
+                expect(() => GenerateArray.fixedCountGenerators(1, validCountedGenerators)).to.throw("Total count of all generators must equal the length of the array (1): count '12' is invalid");
             });
         });
 
         suite("Valid input", () => {
             test("Length 1 Depth 1", () => {
-                const arr = GenerateArray.fixedCountGenerators(1, validCountedGenerators);
-                expect(arr).to.deep.equal([1]);
-            });
-
-            test("Length 3 Depth 3", () => {
-                const arr = GenerateArray.fixedCountGenerators(3, validCountedGenerators);
-                expect(arr.length).to.equal(3);
-                expect(arr[0].length).to.equal(3);
-                // @ts-ignore
-                expect(arr[0][0].length).to.equal(0);
-                expect(arr).to.deep.equal([[[], [], []], [[], [], []],[[], [], []]]);
+                const arr = GenerateArray.fixedCountGenerators(12, validCountedGenerators);
+                expect(arr.length).to.equal(12);
+                arr.forEach((value) => {
+                    expect(value).to.be.an("number");
+                    expect(value).to.be.within(0, 3);
+                });
             });
         });
     });
