@@ -1,6 +1,6 @@
-class CustomArrayGen {
+class CustomArray {
 
-    public CustomArrayGen() {}
+    public CustomArray() {}
 }
 
-export default CustomArrayGen;
+export default CustomArray;

@@ -74,8 +74,26 @@ class ArrayUtils {
         return result;
     }
 
-    static removeDuplicates(array) {
-        return array.filter((value, index, self) => self.indexOf(value) === index);
+    /**
+     * Returns a copy of the given array with any duplicate values removed
+     *
+     * @param arr Array to remove duplicates from
+     */
+    static removeDuplicates(arr: any[]) {
+
+        Validation.array(arr, "arr");
+
+        const seen: { [index: string]: boolean } = {};
+        const result: any[] = [];
+
+        for (let i = 0; i < arr.length; i++) {
+            if (!seen[arr[i]]) {
+                seen[arr[i]] = true;
+                result.push(arr[i]);
+            }
+        }
+
+        return result;
     }
 }
 
