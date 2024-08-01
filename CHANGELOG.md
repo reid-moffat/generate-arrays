@@ -1,5 +1,11 @@
 # generate-array
 
+## 1.0.0
+
+### Major Changes
+
+- 0fc42b4: First major release! Added in basic generator for generating arrays of strings/numbers/custom/etc, added custom weighted array generator support and added in generators for multi-dimensional arrays. Additionally added in some array utility methods, and many more changes under the hood
+
 ## 0.0.5
 
 ### Patch Changes
