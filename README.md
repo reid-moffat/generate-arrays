@@ -1,6 +1,6 @@
 # generate-arrays
 
-Dead simple, lightweight and flexible array generation
+Simple, lightweight and flexible array generation
 
 ## 📦 Installation
 
