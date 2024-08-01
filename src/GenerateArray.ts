@@ -305,7 +305,7 @@ class GenerateArray {
      * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Dept of 1 is
      * just [] regardless of length, so not allowed to reduce confusion
      */
-    public static emptyND = (length: number, depth: number): [][] => {
+    public static emptyND = (length: number, depth: number): any[] => {
 
         Validation.integer(length, 1, "length");
         Validation.integer(depth, 2, "depth");
@@ -321,8 +321,8 @@ class GenerateArray {
      * extra depth of arrays, e.g. 7 -> [7], [1, 2, 3] -> [1, 2, 3] (put the array in an array if you'd like this)
      *
      * Examples:
-     * GenerateArray.customND(7, 3, 2) -> [[7], [7], [7]]
-     * GenerateArray.customND([1, 2, 3], 3, 2) -> [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
+     * GenerateArray.uniformND(7, 3, 2) -> [[7], [7], [7]]
+     * GenerateArray.uniformND([1, 2, 3], 3, 2) -> [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
      *
      * @param value Value of the base array. If not an array, the base array will be an array filled with this value.
      * @param length Number of arrays in each array (>= 1), excluding the base array (array at the lowest depth)
