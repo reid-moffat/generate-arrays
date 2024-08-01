@@ -11,7 +11,7 @@ npm i generate-arrays
 pnpm i generate-arrays
 
 # Or
-yarn install generate-arrays
+yarn add generate-arrays
 ```
 
 ## 📘Usage
