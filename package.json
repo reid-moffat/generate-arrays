@@ -29,7 +29,6 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "tsc",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
     "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' nyc mocha --ui tdd"
   },
