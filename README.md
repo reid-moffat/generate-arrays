@@ -1,6 +1,6 @@
 # generate-arrays
 
-Simple, lightweight and flexible array generation
+Simple, flexible, lightweight and fast array generation
 
 ## 📦 Installation
 
