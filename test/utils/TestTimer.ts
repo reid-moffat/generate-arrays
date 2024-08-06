@@ -34,10 +34,6 @@ class TestTimer {
     }
 
     public static start(path: TestPath): void {
-        if (this.currentTest !== undefined) {
-            throw new Error("Current test data present - call .stop() first before starting a new timer");
-        }
-
         this.makePath(path);
         this.currentTest = path;
 

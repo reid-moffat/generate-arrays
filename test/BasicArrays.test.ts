@@ -18,21 +18,30 @@ suite("Basic array functions", () => {
                         name: name
                     };
 
+                    let err;
                     try {
                         TestTimer.start(path);
                         GenerateArray.blank(length);
-                    } catch (err: any) {
+                    } catch (e: any) {
                         TestTimer.stop();
-
-                        if (!(err instanceof GenerateArrayError)) {
-                            throw err;
-                        }
-                        if (err.message !== `Parameter 'length' must be an integer: value '${length}' is invalid`) {
-                            throw err;
-                        }
+                        err = e;
                     }
+
+                    const message = Number.isInteger(length)
+                        ? `Parameter 'length' must be at least 1: value '${length}' is invalid`
+                        : `Parameter 'length' must be an integer: value '${length}' is invalid`;
+
+                    expect(err).to.be.an.instanceOf(GenerateArrayError);
+                    expect(err.message).to.be.a("string");
+                    expect(err.message).to.equal(message);
                 });
             }
+
+            _test("Length 1.7",1.7);
+
+            _test("Length 1.7",1.7);
+
+            _test("Length 1.7",1.7);
 
             _test("Length 1.7",1.7);
 
