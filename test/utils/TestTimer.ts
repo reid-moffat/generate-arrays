@@ -71,7 +71,7 @@ class TestTimer {
                 for (const [type, timings] of types) {
                     console.log(`\n${type}`);
                     for (const [name, timing] of timings) {
-                        console.log(`${name}: ${timing.runtime}µs`);
+                        console.log(`${name}: ${(timing.runtime / 1000).toFixed(2)}ms`);
                     }
                 }
             }
