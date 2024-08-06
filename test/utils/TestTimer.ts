@@ -62,6 +62,21 @@ class TestTimer {
     public static getResult(test: TestPath): TestResult | undefined {
         return this.TestResults?.get(test.namespace)?.get(test.method)?.get(test.type)?.get(test.name);
     }
+
+    public static printTimings(): void {
+        for (const [namespace, methods] of this.TestResults) {
+            console.log(`\n${namespace}`);
+            for (const [method, types] of methods) {
+                console.log(`\n${method}`);
+                for (const [type, timings] of types) {
+                    console.log(`\n${type}`);
+                    for (const [name, timing] of timings) {
+                        console.log(`${name}: ${timing.runtime}µs`);
+                    }
+                }
+            }
+        }
+    }
 }
 
 export { TestTimer, TestPath };

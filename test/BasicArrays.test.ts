@@ -34,28 +34,20 @@ suite("Basic array functions", () => {
                     expect(err).to.be.an.instanceOf(GenerateArrayError);
                     expect(err.message).to.be.a("string");
                     expect(err.message).to.equal(message);
+
+                    console.log("Timing: \n" + JSON.stringify(TestTimer.getResult(path), null, 4));
                 });
             }
 
-            _test("Length 1.7",1.7);
+            _test("Length decimal (1.7)",1.7);
 
-            _test("Length 1.7",1.7);
+            _test("Length decimal (0.3)",0.3);
 
-            _test("Length 1.7",1.7);
+            _test("Length of zero",0);
 
-            _test("Length 1.7",1.7);
+            _test("Length negative (-1)",-1);
 
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.blank(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
-
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.blank(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-
-            test("Negative length", () => {
-                expect(() => GenerateArray.blank(-7)).to.throw("Parameter 'length' must be at least 1: value '-7' is invalid");
-            });
+            _test("Length negative decimal (-3.6)", -3.6);
         })
 
         suite("Valid input", () => {
