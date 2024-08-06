@@ -7,7 +7,7 @@ interface TestResult {
 }
 
 interface TestPath {
-    namespace: string
+    namespace: "Basic functions" | "Multi Generators" | "Multi Dimensional" | "Generators" | "Array Utils",
     method: string
     type: "Invalid" | "Valid"
     name: string

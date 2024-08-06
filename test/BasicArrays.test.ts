@@ -9,13 +9,13 @@ suite("Basic array functions", () => {
 
         suite("Invalid input", () => {
 
-            const _test = (length: any) => {
-                test(`Length ${length}`, () => {
+            const _test = (name: string, length: any) => {
+                test(name, () => {
                     const path: TestPath = {
                         namespace: "Basic functions",
                         method: "Blank array",
                         type: "Invalid",
-                        name: `Length ${length}`
+                        name: name
                     };
 
                     try {
@@ -31,12 +31,10 @@ suite("Basic array functions", () => {
                             throw err;
                         }
                     }
-
-                    console.log(TestTimer.getResult(path));
                 });
             }
 
-            _test(1.7);
+            _test("Length 1.7",1.7);
 
             test("Length not an integer", () => {
                 expect(() => GenerateArray.blank(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
