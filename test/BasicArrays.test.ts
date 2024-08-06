@@ -1,11 +1,43 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
+import { TestTimer, TestPath } from "./utils/TestTimer.ts";
+import GenerateArrayError from "../src/GenerateArrayError.ts";
 
 suite("Basic array functions", () => {
 
     suite("Blank array", () => {
 
         suite("Invalid input", () => {
+
+            const _test = (length: any) => {
+                test(`Length ${length}`, () => {
+                    const path: TestPath = {
+                        namespace: "Basic functions",
+                        method: "Blank array",
+                        type: "Invalid",
+                        name: `Length ${length}`
+                    };
+
+                    try {
+                        TestTimer.start(path);
+                        GenerateArray.blank(length);
+                    } catch (err: any) {
+                        TestTimer.stop();
+
+                        if (!(err instanceof GenerateArrayError)) {
+                            throw err;
+                        }
+                        if (err.message !== `Parameter 'length' must be an integer: value '${length}' is invalid`) {
+                            throw err;
+                        }
+                    }
+
+                    console.log(TestTimer.getResult(path));
+                });
+            }
+
+            _test(1.7);
+
             test("Length not an integer", () => {
                 expect(() => GenerateArray.blank(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
             });

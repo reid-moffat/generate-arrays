@@ -1,72 +1,71 @@
+import microseconds from "microseconds";
+
+interface TestResult {
+    startTime: number
+    endTime: number
+    runtime: number
+}
+
+interface TestPath {
+    namespace: string
+    method: string
+    type: "Invalid" | "Valid"
+    name: string
+}
+
 class TestTimer {
-    private startTimes: Map<string, number> = new Map();
-    private executionTimes: Map<string, number[]> = new Map();
-    private errorCounts: Map<string, number> = new Map();
 
-    /**
-     * Start timing for a specific test or suite.
-     * @param {string} key - Unique identifier for the test or suite.
-     */
-    startTiming(key: string): void {
-        this.startTimes.set(key, Date.now());
-    }
+    private static TestResults: Map<string, Map<string, Map<"Invalid" | "Valid", Map<string, TestResult>>>> = new Map();
 
-    /**
-     * Stop timing for a specific test or suite and record the execution time.
-     * @param {string} key - Unique identifier for the test or suite.
-     */
-    stopTiming(key: string): void {
-        const startTime = this.startTimes.get(key);
-        if (startTime !== undefined) {
-            const elapsed = Date.now() - startTime;
-            this.executionTimes.set(key, [...(this.executionTimes.get(key) || []), elapsed]);
-            this.startTimes.delete(key);
+    private static currentTest: undefined | TestPath = undefined;
+    private static currentStartTime: number = 0;
+
+    // Makes sure all the maps exist for a given TC
+    private static makePath(path: TestPath) {
+        if (!this.TestResults.has(path.namespace)) {
+            this.TestResults.set(path.namespace, new Map());
+        } // @ts-ignore
+        if (!this.TestResults.get(path.namespace).has(path.method)) { // @ts-ignore
+            this.TestResults.get(path.namespace).set(path.method, new Map());
+        } // @ts-ignore
+        if (!this.TestResults.get(path.namespace).get(path.method).has(path.type)) { // @ts-ignore
+            this.TestResults.get(path.namespace).get(path.method).set(path.type, new Map());
         }
     }
 
-    /**
-     * Get the total execution time for a specific test or suite.
-     * @param {string} key - Unique identifier for the test or suite.
-     * @returns {number} - Total execution time in milliseconds.
-     */
-    getTotalTime(key: string): number {
-        const times = this.executionTimes.get(key);
-        return times ? times.reduce((acc, time) => acc + time, 0) : 0;
+    public static start(path: TestPath): void {
+        if (this.currentTest !== undefined) {
+            throw new Error("Current test data present - call .stop() first before starting a new timer");
+        }
+
+        this.makePath(path);
+        this.currentTest = path;
+
+        this.currentStartTime = microseconds.now();
     }
 
-    /**
-     * Get the average execution time for a specific test or suite.
-     * @param {string} key - Unique identifier for the test or suite.
-     * @returns {number} - Average execution time in milliseconds.
-     */
-    getAverageTime(key: string): number {
-        const times = this.executionTimes.get(key);
-        return times ? this.getTotalTime(key) / times.length : 0;
+    public static stop(): void {
+        const endTime = microseconds.now();
+
+        if (this.currentTest === undefined) {
+            throw new Error("No current test running - call .start() first");
+        }
+
+        const { namespace, method, type, name } = this.currentTest;
+        const startTime = this.currentStartTime;
+        const result: TestResult = {
+            startTime: startTime,
+            endTime: endTime,
+            runtime: endTime - startTime,
+        };
+
+        // @ts-ignore
+        this.TestResults.get(namespace).get(method).get(type).set(name, result);
     }
 
-    /**
-     * Record an error occurrence for a specific test or suite.
-     * @param {string} key - Unique identifier for the test or suite.
-     */
-    recordError(key: string): void {
-        this.errorCounts.set(key, (this.errorCounts.get(key) || 0) + 1);
-    }
-
-    /**
-     * Get the number of errors for a specific test or suite.
-     * @param {string} key - Unique identifier for the test or suite.
-     * @returns {number} - Number of errors.
-     */
-    getErrorCount(key: string): number {
-        return this.errorCounts.get(key) || 0;
-    }
-
-    /**
-     * Clear all recorded timings and errors.
-     */
-    clear(): void {
-        this.startTimes.clear();
-        this.executionTimes.clear();
-        this.errorCounts.clear();
+    public static getResult(test: TestPath): TestResult | undefined {
+        return this.TestResults?.get(test.namespace)?.get(test.method)?.get(test.type)?.get(test.name);
     }
 }
+
+export { TestTimer, TestPath };
