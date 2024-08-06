@@ -35,9 +35,19 @@ suite("Basic array functions", () => {
                     expect(err.message).to.be.a("string");
                     expect(err.message).to.equal(message);
 
-                    console.log("Timing: \n" + JSON.stringify(TestTimer.getResult(path), null, 4));
+                    TestTimer.printTestTiming(path);
                 });
             }
+
+            _test("Length undefined", undefined);
+
+            _test("Length null", null);
+
+            _test("Length object", {});
+
+            _test("Length array", []);
+
+            _test("Length string ('1')", "1");
 
             _test("Length decimal (1.7)",1.7);
 
@@ -48,26 +58,48 @@ suite("Basic array functions", () => {
             _test("Length negative (-1)",-1);
 
             _test("Length negative decimal (-3.6)", -3.6);
+
+            _test("Length large decimal (1e+15 + 0.1)", 1e+15 + 0.1);
+
+            _test("Length large negative decimal (-1e+15 + 0.1)", -1e+15 + 0.1);
+
+            _test("Length large negative integer (-1e+20)", -1e+20);
         })
 
         suite("Valid input", () => {
-            test("Length 1", () => {
-                const arr = GenerateArray.blank(1);
-                expect(arr).to.deep.equal([undefined]);
-            });
 
-            test("Length 3", () => {
-                const arr = GenerateArray.blank(3);
-                expect(arr).to.deep.equal([undefined, undefined, undefined]);
-            });
+            const _test = (name: string, length: number) => {
+                test(name, () => {
+                    const path: TestPath = {
+                        namespace: "Basic functions",
+                        method: "Blank array",
+                        type: "Valid",
+                        name: name
+                    };
 
-            test("Length 100", () => {
-                const arr = GenerateArray.blank(100);
-                expect(arr.length).to.equal(100);
-                arr.forEach((val) => {
-                    expect(val).to.be.undefined;
+                    TestTimer.start(path);
+                    const arr = GenerateArray.blank(length);
+                    TestTimer.stop();
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.undefined;
+                    });
+
+                    TestTimer.printTestTiming(path);
                 });
-            });
+            }
+
+            _test("Length 1", 1);
+
+            _test("Length 3", 3);
+
+            _test("Length 1,000", 1_000);
+
+            _test("Length 100,000", 100_000);
+
+            _test("Length 100 million", 100_000_000);
         });
     });
 

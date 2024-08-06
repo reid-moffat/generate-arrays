@@ -63,6 +63,16 @@ class TestTimer {
         return this.TestResults?.get(test.namespace)?.get(test.method)?.get(test.type)?.get(test.name);
     }
 
+    public static printTestTiming(test: TestPath): void {
+        const result = this.getResult(test);
+        if (result === undefined) {
+            console.log(`No timing found for ${test.namespace} ${test.method} ${test.type} ${test.name}`);
+            return;
+        }
+
+        console.log("Timing: \n" + JSON.stringify(result, null, 4));
+    }
+
     public static printTimings(): void {
         for (const [namespace, methods] of this.TestResults) {
             console.log(`\n${namespace}`);
