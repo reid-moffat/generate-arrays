@@ -1,6 +1,5 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
-import { TestTimer, TestPath } from "./utils/TestTimer.ts";
 import GenerateArrayError from "../src/GenerateArrayError.ts";
 
 suite("Basic array functions", () => {
