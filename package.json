@@ -47,9 +47,9 @@
     "@types/node": "^22.1.0",
     "chai": "^5.1.1",
     "cross-env": "^7.0.3",
-    "microseconds": "^0.2.0",
     "mocha": "^10.7.0",
     "nyc": "^17.0.0",
+    "suite-metrics": "^1.0.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.2.2",
     "typescript": "^5.5.3"
