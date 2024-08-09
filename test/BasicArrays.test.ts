@@ -1,6 +1,9 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
 import GenerateArrayError from "../src/GenerateArrayError.ts";
+import SuiteMetrics from "suite-metrics";
+
+const TestTimer = new SuiteMetrics();
 
 suite("Basic array functions", () => {
 
@@ -10,19 +13,14 @@ suite("Basic array functions", () => {
 
             const _test = (name: string, length: any) => {
                 test(name, () => {
-                    const path: TestPath = {
-                        namespace: "Basic functions",
-                        method: "Blank array",
-                        type: "Invalid",
-                        name: name
-                    };
+                    const path = ["Basic functions", "Blank array", "Invalid", name];
 
                     let err;
                     try {
-                        TestTimer.start(path);
+                        TestTimer.startTest(path);
                         GenerateArray.blank(length);
                     } catch (e: any) {
-                        TestTimer.stop();
+                        TestTimer.stopTest();
                         err = e;
                     }
 
@@ -33,8 +31,6 @@ suite("Basic array functions", () => {
                     expect(err).to.be.an.instanceOf(GenerateArrayError);
                     expect(err.message).to.be.a("string");
                     expect(err.message).to.equal(message);
-
-                    TestTimer.printTestTiming(path);
                 });
             }
 
@@ -69,24 +65,17 @@ suite("Basic array functions", () => {
 
             const _test = (name: string, length: number) => {
                 test(name, () => {
-                    const path: TestPath = {
-                        namespace: "Basic functions",
-                        method: "Blank array",
-                        type: "Valid",
-                        name: name
-                    };
+                    const path = ["Basic functions", "Blank array", "Valid", name];
 
-                    TestTimer.start(path);
+                    TestTimer.startTest(path);
                     const arr = GenerateArray.blank(length);
-                    TestTimer.stop();
+                    TestTimer.stopTest();
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
                     arr.forEach((val) => {
                         expect(val).to.be.undefined;
                     });
-
-                    TestTimer.printTestTiming(path);
                 });
             }
 
@@ -306,3 +295,5 @@ suite("Basic array functions", () => {
     });
 
 });
+
+export { TestTimer };
