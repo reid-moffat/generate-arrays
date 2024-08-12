@@ -6,6 +6,33 @@ class GenerateArray {
     private static readonly _charactersWithSpecial = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+/\\{}[]|;:\'",.<>?`~';
 
     /**
+     * Create an array from any given value
+     *
+     * Return values:
+     * -null, undefined -> []
+     * -Array -> Array (no change)
+     * -Any other value -> [value]
+     * -Function -> [function return value]
+     *
+     * @param prototype Value to create an array from
+     */
+    public static from(prototype: any) {
+        if (Array.isArray(prototype)) {
+            return prototype;
+        }
+
+        if (!prototype) {
+            return [];
+        }
+
+        if (typeof prototype === "function") {
+            return [prototype()];
+        }
+
+        return [prototype];
+    }
+
+    /**
      * Generate an array of the specified length filled with undefined values
      *
      * Example:
