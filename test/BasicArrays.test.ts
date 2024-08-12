@@ -3,7 +3,7 @@ import { expect } from "chai";
 import GenerateArrayError from "../src/GenerateArrayError.ts";
 import SuiteMetrics from "suite-metrics";
 
-const TestTimer = new SuiteMetrics();
+const TestTimer = SuiteMetrics.getInstance();
 
 suite("Basic array functions", () => {
 
