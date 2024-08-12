@@ -36,8 +36,8 @@ importers:
         specifier: ^17.0.0
         version: 17.0.0
       suite-metrics:
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.2.0
+        version: 1.2.0
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@22.1.0)(typescript@5.5.3)
@@ -1502,8 +1502,8 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     hasBin: true
 
-  suite-metrics@1.1.0:
-    resolution: {integrity: sha512-mWGgqcckvdmMIi2Yn6Fe/DAJ+fjZfaLKipe1aZf6W5KfenYMbj/JM+4qcS4+uqggkjog14PiqUkFUOwMyrd53g==}
+  suite-metrics@1.2.0:
+    resolution: {integrity: sha512-Z1ukK4fJ4x1ybgqRUeGIbsd1l8ejk61Fxwaz5GffXihKLZmGDVpP9jG4L9g7HfvIrnwrpOmhh0Fe9qgBor9XCA==}
 
   supports-color@5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -3192,7 +3192,7 @@ snapshots:
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
 
-  suite-metrics@1.1.0:
+  suite-metrics@1.2.0:
     dependencies:
       microtime: 3.1.1
 
