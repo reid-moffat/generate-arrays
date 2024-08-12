@@ -2,8 +2,8 @@ import Validation from "./Validation.ts";
 
 class GenerateArray {
 
-    private static _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    private static _charactersWithSpecial = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+/\\{}[]|;:\'",.<>?`~';
+    private static readonly _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    private static readonly _charactersWithSpecial = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+/\\{}[]|;:\'",.<>?`~';
 
     /**
      * Generate an array of the specified length filled with undefined values
