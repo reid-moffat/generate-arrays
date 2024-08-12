@@ -53,12 +53,25 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
 }
 
 /**
+ * Generator for a random boolean value
+ *
+ * @param trueChance Chance for the value to be true (between 0 and 1)
+ */
+const boolean = (trueChance: number = 0.5) => {
+    if (trueChance < 0 || trueChance > 1) {
+        throw new GenerateArrayError('Chance for true value must be between 0 and 1');
+    }
+
+    return () => Math.random() < trueChance;
+}
+
+/**
  * Generator for a random UUID
  */
 const uuid = () => {
-    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+    return () => "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
         (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
     );
 }
 
-export { integer, decimal, string, uuid };
+export { integer, decimal, string, boolean, uuid };
