@@ -52,4 +52,13 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
     return () => Array.from({ length }, () => String.fromCharCode(Math.floor(Math.random() * (max - min + 1)) + min)).join('');
 }
 
-export { integer, decimal, string };
+/**
+ * Generator for a random UUID
+ */
+const uuid = () => {
+    return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+        (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    );
+}
+
+export { integer, decimal, string, uuid };
