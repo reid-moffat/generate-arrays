@@ -66,6 +66,16 @@ const boolean = (trueChance: number = 0.5) => {
 }
 
 /**
+ * Generator for a random date. By default, the date is between 1970-01-01 and the current date
+ *
+ * @param min Lower bound for the date
+ * @param max Upper bound for the date
+ */
+const date = (min: Date = new Date(0), max: Date = new Date()) => {
+    return () => new Date(min.getTime() + Math.random() * (max.getTime() - min.getTime()));
+}
+
+/**
  * Generator for a random UUID
  */
 const uuid = () => {
@@ -74,4 +84,4 @@ const uuid = () => {
     );
 }
 
-export { integer, decimal, string, boolean, uuid };
+export { integer, decimal, string, boolean, date, uuid };
