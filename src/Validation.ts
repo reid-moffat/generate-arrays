@@ -1,12 +1,27 @@
 import GenerateArrayError from "./GenerateArrayError.ts";
 
 class Validation {
+
+    private static readonly maxArrayLength: number = 4294967295; // 2^32 - 1
+
     static integer(value: any, min: number, paramName: string): void {
         if (!Number.isInteger(value)) {
             throw new GenerateArrayError(`Parameter '${paramName}' must be an integer: value '${value}' is invalid`);
         }
         if (value < min) {
             throw new GenerateArrayError(`Parameter '${paramName}' must be at least ${min}: value '${value}' is invalid`);
+        }
+    }
+
+    static arrayLength(length: any, min: number, paramName: string): void {
+        if (!Number.isInteger(length)) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be an integer: value '${length}' is invalid`);
+        }
+        if (length < min) {
+            throw new GenerateArrayError(`Parameter '${paramName}' must be at least ${min}: value '${length}' is invalid`);
+        }
+        if (length > Validation.maxArrayLength) {
+            throw new GenerateArrayError(`Invalid array length: ${length} exceeds ${Validation.maxArrayLength} (2^32 - 1)`);
         }
     }
 
