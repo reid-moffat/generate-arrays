@@ -154,4 +154,4 @@ const name = () => {
     }
 }
 
-export { integer, decimal, string, boolean, date, phone, uuid };
+export { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, name };
