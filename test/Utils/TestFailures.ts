@@ -61,8 +61,12 @@ abstract class Parameter {
 
     protected static makeValuesMap(paramName: string, values: any[]): Map<string, any> {
         return new Map<string, any>(values.map((value: any) => {
-            if (typeof value === "bigint") value = value.toString(); // stringify() doesn't work on BigInt
-            return [`${paramName}: ${JSON.stringify(value)}`, value]
+            let stringifyVal = value;
+            if (typeof value === "bigint") {
+                stringifyVal = value.toString() + " (BigInt)"; // BigInts are not JSON serializable
+            }
+
+            return [`${paramName}: ${JSON.stringify(stringifyVal)}`, value]
         }));
     }
 }
