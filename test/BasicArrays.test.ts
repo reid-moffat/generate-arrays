@@ -295,5 +295,3 @@ suite("Basic array functions", () => {
     });
 
 });
-
-export { TestTimer };

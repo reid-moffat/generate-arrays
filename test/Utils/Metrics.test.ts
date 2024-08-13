@@ -1,7 +1,9 @@
-import { TestTimer } from "../BasicArrays.test.ts";
+import SuiteMetrics from "suite-metrics";
+
+const TestTimer = SuiteMetrics.getInstance();
 
 suite("Test metrics", () => {
-    test("All suites", () => {
+    test("All suite metrics", () => {
         console.log(TestTimer.printAllSuiteMetrics(true));
     });
 });
