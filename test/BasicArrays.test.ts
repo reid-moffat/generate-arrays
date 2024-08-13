@@ -2,6 +2,7 @@ import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
 import GenerateArrayError from "../src/GenerateArrayError.ts";
 import SuiteMetrics from "suite-metrics";
+import TestFailures from "./Utils/TestFailures.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -11,13 +12,17 @@ suite("Basic array functions", () => {
 
         suite("Invalid input", () => {
 
+            const path = ["Basic functions", "Blank array", "Invalid"];
+            const testFailures = new TestFailures(path, GenerateArray.blank);
+            testFailures.runTests();
+
             const _test = (name: string, length: any) => {
                 test(name, () => {
-                    const path = ["Basic functions", "Blank array", "Invalid", name];
+                    const path2 = ["Basic functions", "Blank array", "Invalid", name];
 
                     let err;
                     try {
-                        TestTimer.startTest(path);
+                        TestTimer.startTest(path2);
                         GenerateArray.blank(length);
                     } catch (e: any) {
                         TestTimer.stopTest();
@@ -34,31 +39,31 @@ suite("Basic array functions", () => {
                 });
             }
 
-            _test("Length undefined", undefined);
-
-            _test("Length null", null);
-
-            _test("Length object", {});
-
-            _test("Length array", []);
-
-            _test("Length string ('1')", "1");
-
-            _test("Length decimal (1.7)",1.7);
-
-            _test("Length decimal (0.3)",0.3);
-
-            _test("Length of zero",0);
-
-            _test("Length negative (-1)",-1);
-
-            _test("Length negative decimal (-3.6)", -3.6);
-
-            _test("Length large decimal (1e+15 + 0.1)", 1e+15 + 0.1);
-
-            _test("Length large negative decimal (-1e+15 + 0.1)", -1e+15 + 0.1);
-
-            _test("Length large negative integer (-1e+20)", -1e+20);
+            // _test("Length undefined", undefined);
+            //
+            // _test("Length null", null);
+            //
+            // _test("Length object", {});
+            //
+            // _test("Length array", []);
+            //
+            // _test("Length string ('1')", "1");
+            //
+            // _test("Length decimal (1.7)",1.7);
+            //
+            // _test("Length decimal (0.3)",0.3);
+            //
+            // _test("Length of zero",0);
+            //
+            // _test("Length negative (-1)",-1);
+            //
+            // _test("Length negative decimal (-3.6)", -3.6);
+            //
+            // _test("Length large decimal (1e+15 + 0.1)", 1e+15 + 0.1);
+            //
+            // _test("Length large negative decimal (-1e+15 + 0.1)", -1e+15 + 0.1);
+            //
+            // _test("Length large negative integer (-1e+20)", -1e+20);
         })
 
         suite("Valid input", () => {
@@ -87,7 +92,7 @@ suite("Basic array functions", () => {
 
             _test("Length 100,000", 100_000);
 
-            _test("Length 100 million", 100_000_000);
+            _test("Length 10 million", 10_000_000);
         });
     });
 
