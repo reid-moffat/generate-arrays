@@ -59,13 +59,11 @@ abstract class Parameter {
         strings: [".", "\\", "a b c d e", "0", "1", "-1.5"],
     }
 
-    private static makeValuesMap(paramName: string, values: any[]): Map<string, any> {
-        return new Map<string, any>(values.map((value: any) => [`${paramName}: ${JSON.stringify(value)}`, value]));
-    }
-
-    protected static nonNumbers(paramName: string): Map<string, any> {
-        const values: any[] = [undefined, null, "", [], {}];
-        return Parameter.makeValuesMap(paramName, values);
+    protected static makeValuesMap(paramName: string, values: any[]): Map<string, any> {
+        return new Map<string, any>(values.map((value: any) => {
+            if (typeof value === "bigint") value = value.toString(); // stringify() doesn't work on BigInt
+            return [`${paramName}: ${JSON.stringify(value)}`, value]
+        }));
     }
 }
 
@@ -76,9 +74,9 @@ class NumberParameter extends Parameter {
     private readonly integer: boolean;
 
     private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {},
-        true, false, [73], { key: "value" }, { value: 1 },
-        -1e+15 + 0.1, -37.9, -1.2, -0.5, -0.0000000001, 0.0000000001, 0.12, 1.01, 65.8, 1e+15 + 0.1, NaN];
-    private readonly potentialValues: number[] = [-Infinity, -54, -1, 0, 1, 2, 3, 93, Infinity];
+        true, false, [2], { key: "value" }, { value: 1 }, () => 5, BigInt(5), Symbol(3), NaN];
+    private readonly potentialValues: number[] = [-Infinity, Number.MIN_SAFE_INTEGER, -1e+15 + 0.1, -54, -37.9, -1.2, -0.5, -1, -0.0000000001, 0,
+        0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), 1e+15 + 0.1, Number.MAX_SAFE_INTEGER, Infinity];
 
     constructor(name: string, integer: boolean, min?: number, max?: number) {
         super(name);
@@ -88,7 +86,16 @@ class NumberParameter extends Parameter {
     }
 
     public getValues(): Map<string, any> {
-        return Parameter.nonNumbers(this.name);
+        const values: any[] = this.values;
+        this.potentialValues.forEach((value: number) => {
+            if (this.integer && !Number.isInteger(value)) {
+                values.push(value);
+            } else if ((this.min === null || value >= this.min) && (this.max === null || value <= this.max)) {
+                values.push(value);
+            }
+        });
+
+        return Parameter.makeValuesMap(this.name, values);
     }
 }
 
