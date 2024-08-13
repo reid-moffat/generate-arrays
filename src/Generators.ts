@@ -123,6 +123,14 @@ const ipAddress = (IPv4 = false) => {
     };
 }
 
-// TODO: emails, names, URLs
+/**
+ * Generator for a random email address
+ */
+const email = () => {
+    return () => {
+        const domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'protonmail.com'];
+        return `${string([5, 15])()}@${domains[integer(0, domains.length - 1)()]}`;
+    }
+}
 
 export { integer, decimal, string, boolean, date, phone, uuid };
