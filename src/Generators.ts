@@ -143,4 +143,15 @@ const url = () => {
     }
 }
 
+/**
+ * Generator for a random name
+ */
+const name = () => {
+    return () => {
+        const firstNames = ['John', 'Jane', 'Michael', 'Emily', 'David', 'Sarah', 'Robert', 'Megan', 'William', 'Olivia', 'James', 'Sophia', 'Joseph', 'Isabella', 'Daniel', 'Grace', 'Matthew'];
+        const lastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson'];
+        return `${firstNames[integer(0, firstNames.length - 1)()]} ${lastNames[integer(0, lastNames.length - 1)()]}`;
+    }
+}
+
 export { integer, decimal, string, boolean, date, phone, uuid };
