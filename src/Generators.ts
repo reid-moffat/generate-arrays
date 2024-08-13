@@ -133,4 +133,14 @@ const email = () => {
     }
 }
 
+/**
+ * Generator for a random URL
+ */
+const url = () => {
+    return () => {
+        const domains = ['com', 'org', 'net', 'gov', 'edu', 'io', 'co', 'uk', 'ca', 'us', 'biz', 'info'];
+        return `https://www.${string([5, 15])()}.${domains[integer(0, domains.length - 1)()]}`;
+    }
+}
+
 export { integer, decimal, string, boolean, date, phone, uuid };
