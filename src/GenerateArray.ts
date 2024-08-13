@@ -11,8 +11,8 @@ class GenerateArray {
      * Return values:
      * -null, undefined -> []
      * -Array -> Array (no change)
-     * -Any other value -> [value]
      * -Function -> [function return value]
+     * -Any other value -> [value]
      *
      * @param prototype Value to create an array from
      */

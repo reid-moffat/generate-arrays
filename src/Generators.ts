@@ -104,4 +104,25 @@ const uuid = () => {
     );
 }
 
+/**
+ * Generator for a random IP address (IPv6 by default)
+ *
+ * @param IPv4 Set to true to generate an IPv4 address
+ */
+const ipAddress = (IPv4 = false) => {
+    if (IPv4) {
+        return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
+    }
+
+    return () => {
+        let address = [];
+        for (let i = 0; i < 8; i++) {
+            address.push(integer(0, 65535)().toString(16).padStart(4, '0'));
+        }
+        return address.join(':');
+    };
+}
+
+// TODO: emails, names, URLs
+
 export { integer, decimal, string, boolean, date, phone, uuid };
