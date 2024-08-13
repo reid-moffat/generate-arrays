@@ -1,42 +1,93 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
+import GenerateArrayError from "../src/GenerateArrayError.ts";
+import SuiteMetrics from "suite-metrics";
+
+const TestTimer = SuiteMetrics.getInstance();
 
 suite("Basic array functions", () => {
 
     suite("Blank array", () => {
 
         suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.blank(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.blank(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
+            const _test = (name: string, length: any) => {
+                test(name, () => {
+                    const path = ["Basic functions", "Blank array", "Invalid", name];
 
-            test("Negative length", () => {
-                expect(() => GenerateArray.blank(-7)).to.throw("Parameter 'length' must be at least 1: value '-7' is invalid");
-            });
+                    let err;
+                    try {
+                        TestTimer.startTest(path);
+                        GenerateArray.blank(length);
+                    } catch (e: any) {
+                        TestTimer.stopTest();
+                        err = e;
+                    }
+
+                    const message = Number.isInteger(length)
+                        ? `Parameter 'length' must be at least 1: value '${length}' is invalid`
+                        : `Parameter 'length' must be an integer: value '${length}' is invalid`;
+
+                    expect(err).to.be.an.instanceOf(GenerateArrayError);
+                    expect(err.message).to.be.a("string");
+                    expect(err.message).to.equal(message);
+                });
+            }
+
+            _test("Length undefined", undefined);
+
+            _test("Length null", null);
+
+            _test("Length object", {});
+
+            _test("Length array", []);
+
+            _test("Length string ('1')", "1");
+
+            _test("Length decimal (1.7)",1.7);
+
+            _test("Length decimal (0.3)",0.3);
+
+            _test("Length of zero",0);
+
+            _test("Length negative (-1)",-1);
+
+            _test("Length negative decimal (-3.6)", -3.6);
+
+            _test("Length large decimal (1e+15 + 0.1)", 1e+15 + 0.1);
+
+            _test("Length large negative decimal (-1e+15 + 0.1)", -1e+15 + 0.1);
+
+            _test("Length large negative integer (-1e+20)", -1e+20);
         })
 
         suite("Valid input", () => {
-            test("Length 1", () => {
-                const arr = GenerateArray.blank(1);
-                expect(arr).to.deep.equal([undefined]);
-            });
 
-            test("Length 3", () => {
-                const arr = GenerateArray.blank(3);
-                expect(arr).to.deep.equal([undefined, undefined, undefined]);
-            });
+            const _test = (name: string, length: number) => {
+                test(name, () => {
+                    const path = ["Basic functions", "Blank array", "Valid", name];
 
-            test("Length 100", () => {
-                const arr = GenerateArray.blank(100);
-                expect(arr.length).to.equal(100);
-                arr.forEach((val) => {
-                    expect(val).to.be.undefined;
+                    TestTimer.startTest(path);
+                    const arr = GenerateArray.blank(length);
+                    TestTimer.stopTest();
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.undefined;
+                    });
                 });
-            });
+            }
+
+            _test("Length 1", 1);
+
+            _test("Length 3", 3);
+
+            _test("Length 1,000", 1_000);
+
+            _test("Length 100,000", 100_000);
+
+            _test("Length 100 million", 100_000_000);
         });
     });
 

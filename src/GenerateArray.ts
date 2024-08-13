@@ -2,8 +2,35 @@ import Validation from "./Validation.ts";
 
 class GenerateArray {
 
-    private static _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    private static _charactersWithSpecial = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+/\\{}[]|;:\'",.<>?`~';
+    private static readonly _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    private static readonly _charactersWithSpecial = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+/\\{}[]|;:\'",.<>?`~';
+
+    /**
+     * Create an array from any given value
+     *
+     * Return values:
+     * -null, undefined -> []
+     * -Array -> Array (no change)
+     * -Function -> [function return value]
+     * -Any other value -> [value]
+     *
+     * @param prototype Value to create an array from
+     */
+    public static from(prototype: any) {
+        if (Array.isArray(prototype)) {
+            return prototype;
+        }
+
+        if (!prototype) {
+            return [];
+        }
+
+        if (typeof prototype === "function") {
+            return [prototype()];
+        }
+
+        return [prototype];
+    }
 
     /**
      * Generate an array of the specified length filled with undefined values

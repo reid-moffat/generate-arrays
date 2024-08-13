@@ -30,8 +30,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "tsc",
+    "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' nyc mocha --ui tdd",
     "build": "tsup src/index.ts --format cjs,esm --dts --minify",
-    "test": "cross-env TS_NODE_PROJECT='./tsconfig.json' nyc mocha --ui tdd"
+    "deployHelp": "echo \"1) Run 'changeset' 2) Merge changes to main 3) Merge changeset PR 4) npm run deploy (verify it looks good)\"",
+    "deploy": "npm run build && npm publish"
   },
   "files": [
     "CHANGELOG.md",
@@ -40,11 +42,14 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
     "@types/chai": "^4.3.16",
+    "@types/microseconds": "^0.2.2",
     "@types/mocha": "^10.0.7",
+    "@types/node": "^22.1.0",
     "chai": "^5.1.1",
     "cross-env": "^7.0.3",
     "mocha": "^10.7.0",
     "nyc": "^17.0.0",
+    "suite-metrics": "^1.2.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.2.2",
     "typescript": "^5.5.3"
