@@ -1,12 +1,4 @@
 import SuiteMetrics from "suite-metrics";
-import GenerateArrayError from "../../src/GenerateArrayError.ts";
-
-enum ParameterConstraint {
-    Number = "number",
-    Integer = "integer",
-    Integer_NonNegative = "integer_nonnegative",
-    Integer_Positive = "integer_positive",
-}
 
 class TestFailures {
 
@@ -14,26 +6,22 @@ class TestFailures {
 
     private readonly path: string[];
     private readonly func: Function;
-    private readonly parameters: Map<string, ParameterConstraint[]> = new Map<string, ParameterConstraint[]>();
+    private readonly parameterTests: Map<string, Parameter> = new Map<string, Parameter>();
 
-    constructor(path: string[], func: Function) {
+    constructor(path: string[], func: Function, parameters: Parameter | Parameter[]) {
         this.path = path;
         this.func = func;
     }
 
-    public addParameter(name: string, constraints: ParameterConstraint[]): void {
-        this.parameters.set(name, constraints);
-    }
-
-    public runTests() {
-        const testValues = new Map<string, any>();
-        this.parameters.forEach((constraints, name) => {
-            testValues.set(name, undefined);
-            testValues.set(name, null);
-            testValues.set(name, "");
-            testValues.set(name, []);
-            testValues.set(name, {});
-        });
+    public runTests(): void {
+        // const testValues = new Map<string, any>();
+        // this.parameters.forEach((constraints, name) => {
+        //     testValues.set(name, undefined);
+        //     testValues.set(name, null);
+        //     testValues.set(name, "");
+        //     testValues.set(name, []);
+        //     testValues.set(name, {});
+        // });
 
         const tests = [];
         tests.push(
@@ -54,13 +42,30 @@ class TestFailures {
         tests.forEach(t => {
             test("test failure test in class", () => t());
         });
-
-        return tests;
-    }
-
-    public getPath(): string[] {
-        return this.path;
     }
 }
 
-export default TestFailures;
+abstract class Parameter {
+
+    protected readonly name: string;
+
+    protected constructor(name: string) {
+        this.name = name;
+    }
+}
+
+class NumberParameter extends Parameter {
+
+    private readonly min: number | null;
+    private readonly max: number | null;
+    private readonly integer: boolean;
+
+    constructor(name: string, integer: boolean, min?: number, max?: number) {
+        super(name);
+        this.min = min ?? null;
+        this.max = max ?? null;
+        this.integer = integer;
+    }
+}
+
+export { TestFailures, NumberParameter };
