@@ -11,7 +11,7 @@ class Validation {
 
     private static readonly maxArrayLength: number = 4294967295; // 2^32 - 1
 
-    static integer(value: any, min: number, paramName: string): void {
+    public static integer(value: any, min: number, paramName: string): void {
         if (!Number.isInteger(value)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(value)}' is invalid`);
         }
@@ -20,7 +20,7 @@ class Validation {
         }
     }
 
-    static arrayLength(length: any, min: number, paramName: string): void {
+    public static arrayLength(length: any, min: number, paramName: string): void {
         if (!Number.isInteger(length)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(length)}' is invalid`);
         }
@@ -32,7 +32,7 @@ class Validation {
         }
     }
 
-    static number(value: any, threshold: number, paramName: string, above: boolean = true): void {
+    public static number(value: any, threshold: number, paramName: string, above: boolean = true): void {
         if (typeof value !== "number") {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
         }
@@ -44,13 +44,13 @@ class Validation {
         }
     }
 
-    static array(value: any, paramName: string): void {
+    public static array(value: any, paramName: string): void {
         if (!Array.isArray(value)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an array: value '${str(value)}' is invalid`);
         }
     }
 
-    static function(value: any, paramName: string, returnArray: boolean = false): void {
+    public static function(value: any, paramName: string, returnArray: boolean = false): void {
         if (typeof value !== "function") {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a function: value '${str(value)}' is invalid`);
         }
