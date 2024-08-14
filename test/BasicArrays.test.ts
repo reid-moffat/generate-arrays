@@ -42,15 +42,10 @@ suite("Basic array functions", () => {
 
     suite("Uniform array", () => {
 
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.uniform(1.2, 7)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
-
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.uniform(0, 7)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        new TestFailures(getPath(this), GenerateArray.uniform, [
+            new NumberParameter("length", true, 1),
+            new NumberParameter("value", true, 1)
+        ]);
 
         suite("Valid input", () => {
             test("Value 1 Length 1", () => {
