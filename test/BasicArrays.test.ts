@@ -129,15 +129,12 @@ suite("Basic array functions", () => {
     });
 
     suite("Integer array", () => {
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.integers(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.integers(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        TestFailures.run(getPath(this), GenerateArray.integers, [
+            new NumberParameter("length", true, 1),
+            new NumberParameter("min", false),
+            new NumberParameter("max", false)
+        ]);
 
         suite("Valid input", () => {
             test("Length 1", () => {

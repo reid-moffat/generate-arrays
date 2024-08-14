@@ -99,7 +99,7 @@ class NumberParameter extends Parameter {
         this.potentialValues.forEach((value: number) => {
             if (this.integer && !Number.isInteger(value)) {
                 values.push(value);
-            } else if ((this.min === undefined || value < this.min) && (this.max === undefined || value > this.max)) {
+            } else if ((this.min !== undefined && value < this.min) || (this.max !== undefined && value > this.max)) {
                 values.push(value);
             }
         });
