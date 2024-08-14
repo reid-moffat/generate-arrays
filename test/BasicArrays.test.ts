@@ -11,59 +11,9 @@ suite("Basic array functions", () => {
     suite("Blank array", () => {
 
         suite("Invalid input", () => {
-
             const path = ["Basic functions", "Blank array", "Invalid"];
             const testFailures = new TestFailures(path, GenerateArray.blank, new NumberParameter("length", true, 1));
             testFailures.runTests();
-
-            const _test = (name: string, length: any) => {
-                test(name, () => {
-                    const path2 = ["Basic functions", "Blank array", "Invalid", name];
-
-                    let err;
-                    try {
-                        TestTimer.startTest(path2);
-                        GenerateArray.blank(length);
-                    } catch (e: any) {
-                        TestTimer.stopTest();
-                        err = e;
-                    }
-
-                    const message = Number.isInteger(length)
-                        ? `Parameter 'length' must be at least 1: value '${length}' is invalid`
-                        : `Parameter 'length' must be an integer: value '${length}' is invalid`;
-
-                    expect(err).to.be.an.instanceOf(GenerateArrayError);
-                    expect(err.message).to.be.a("string");
-                    expect(err.message).to.equal(message);
-                });
-            }
-
-            // _test("Length undefined", undefined);
-            //
-            // _test("Length null", null);
-            //
-            // _test("Length object", {});
-            //
-            // _test("Length array", []);
-            //
-            // _test("Length string ('1')", "1");
-            //
-            // _test("Length decimal (1.7)",1.7);
-            //
-            // _test("Length decimal (0.3)",0.3);
-            //
-            // _test("Length of zero",0);
-            //
-            // _test("Length negative (-1)",-1);
-            //
-            // _test("Length negative decimal (-3.6)", -3.6);
-            //
-            // _test("Length large decimal (1e+15 + 0.1)", 1e+15 + 0.1);
-            //
-            // _test("Length large negative decimal (-1e+15 + 0.1)", -1e+15 + 0.1);
-            //
-            // _test("Length large negative integer (-1e+20)", -1e+20);
         })
 
         suite("Valid input", () => {
