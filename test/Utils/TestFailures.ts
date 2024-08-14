@@ -71,8 +71,8 @@ class NumberParameter extends Parameter {
     private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
         [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
 
-    private readonly potentialValues: number[] = [-Infinity, Number.MIN_SAFE_INTEGER, -1e+15 + 0.1, -54, -37.9, -1.2, -0.5,
-        -1, -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), 1e+15 + 0.1, Number.MAX_SAFE_INTEGER, Infinity];
+    private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5,
+        -1, -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
 
     constructor(name: string, integer: boolean, min?: number, max?: number) {
         super(name);
@@ -86,7 +86,7 @@ class NumberParameter extends Parameter {
         this.potentialValues.forEach((value: number) => {
             if (this.integer && !Number.isInteger(value)) {
                 values.push(value);
-            } else if ((this.min === undefined || value >= this.min) && (this.max === undefined || value <= this.max)) {
+            } else if ((this.min === undefined || value < this.min) && (this.max === undefined || value > this.max)) {
                 values.push(value);
             }
         });
