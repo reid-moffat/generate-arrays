@@ -10,7 +10,7 @@ suite("Basic array functions", () => {
 
     suite("Blank array", function() {
 
-        new TestFailures(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
+        TestFailures.run(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
 
         suite("Valid input", function() {
 
@@ -42,7 +42,7 @@ suite("Basic array functions", () => {
 
     suite("Uniform array", () => {
 
-        new TestFailures(getPath(this), GenerateArray.uniform, [
+        TestFailures.run(getPath(this), GenerateArray.uniform, [
             new NumberParameter("length", true, 1),
             new NumberParameter("value", true, 1)
         ]);

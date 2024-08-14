@@ -7,31 +7,21 @@ class TestFailures {
     private static readonly TestTimer: SuiteMetrics = SuiteMetrics.getInstance();
     private static readonly SuiteName = "Invalid input";
 
-    private readonly path: string[];
-    private readonly func: Function;
-    private readonly parameters: Parameter[];
+    public static run(path: string[], func: Function, parameters: Parameter | Parameter[]): void {
 
-    constructor(path: string[], func: Function, parameters: Parameter | Parameter[]) {
-        this.path = path;
-        this.func = func;
-        this.parameters = Array.isArray(parameters) ? parameters : [parameters];
-
-        this.runTests();
-    }
-
-    private runTests(): void {
+        const params = Array.isArray(parameters) ? parameters : [parameters];
 
         suite(TestFailures.SuiteName, () => {
-            for (const parameter of this.parameters) {
+            for (const parameter of params) {
                 for (const { testName, value } of parameter.getValues()) {
                     test(testName, () => {
-                        const pathWithTest = [...this.path.slice(), TestFailures.SuiteName, testName];
+                        const pathWithTest = [...path.slice(), TestFailures.SuiteName, testName];
 
                         console.log(`Running test: ${pathWithTest.join(" > ")}`);
                         let err;
                         try {
                             TestFailures.TestTimer.startTest(pathWithTest);
-                            this.func(value);
+                            func(value);
                         } catch (e: any) {
                             TestFailures.TestTimer.stopTest();
                             err = e;
@@ -53,6 +43,7 @@ class TestFailures {
                 }
             }
         });
+
     }
 }
 
