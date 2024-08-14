@@ -13,7 +13,7 @@ class TestFailures {
 
         suite(TestFailures.SuiteName, () => {
             for (const parameter of params) {
-                for (const { testName, value } of parameter.getValues()) {
+                for (const { testName, value } of parameter.getTestValues()) {
                     test(testName, () => {
                         const pathWithTest = [...path.slice(), TestFailures.SuiteName, testName];
 
@@ -57,8 +57,11 @@ abstract class Parameter {
         this.name = name;
     }
 
-    // Returns an array of tests to run
-    public abstract getValues(): TestData[];
+    // Returns an array of invalid values to test
+    public abstract getTestValues(): TestData[];
+
+    // If there are multiple parameters, we need valid values for this parameter when the other is being tested
+    public abstract getValidValue(): any;
 
     // Turns an array of values into an array of proper TestData objects
     protected static makeValuesArray(paramName: string, values: any[]): TestData[] {
@@ -75,6 +78,9 @@ abstract class Parameter {
     }
 }
 
+/**
+ * Parameter that must be a number. Can be an integer, or have a min/max
+ */
 class NumberParameter extends Parameter {
 
     private readonly min: number | undefined;
@@ -94,7 +100,7 @@ class NumberParameter extends Parameter {
         this.integer = integer;
     }
 
-    public getValues(): TestData[] {
+    public getTestValues(): TestData[] {
         const values: any[] = this.values;
         this.potentialValues.forEach((value: number) => {
             if (this.integer && !Number.isInteger(value)) {
@@ -105,6 +111,35 @@ class NumberParameter extends Parameter {
         });
 
         return Parameter.makeValuesArray(this.name, values);
+    }
+
+    public getValidValue(): any {
+        if (this.min !== undefined && this.max !== undefined) {
+            return Math.floor(Math.random() * (this.max - this.min + 1)) + this.min;
+        } else if (this.min !== undefined) {
+            return Math.floor(this.min + Math.random() * 100);
+        } else if (this.max !== undefined) {
+            return Math.floor(this.max - Math.random() * 100);
+        }
+        return Math.floor(Math.random() * 100);
+    }
+}
+
+/**
+ * Parameter that can take any value - i.e. no failure cases, but still needs a value to test with other params
+ */
+class GenericParameter extends Parameter {
+
+    constructor(name: string, values: any[]) {
+        super(name);
+    }
+
+    public getTestValues(): TestData[] {
+        return Parameter.makeValuesArray(this.name, []);
+    }
+
+    public getValidValue(): any {
+        return 7;
     }
 }
 
