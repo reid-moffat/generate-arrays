@@ -17,9 +17,9 @@ class TestFailures {
     public runTests(): void {
 
         for (const parameter of this.parameters) {
-            for (const [name, value] of parameter.getValues()) {
-                test(name, () => {
-                    const pathWithTest = [...this.path.slice(), name];
+            for (const { testName, value } of parameter.getValues()) {
+                test(testName, () => {
+                    const pathWithTest = [...this.path.slice(), testName];
 
                     let error;
                     try {
@@ -36,6 +36,8 @@ class TestFailures {
     }
 }
 
+type TestData = { testName: string, value: any };
+
 abstract class Parameter {
 
     protected readonly name: string;
@@ -44,7 +46,7 @@ abstract class Parameter {
         this.name = name;
     }
 
-    public abstract getValues(): Map<string, any>;
+    public abstract getValues(): TestData[];
 
     private static readonly values: { [key: string]: any[] }  = {
         nullish: [undefined, null],
@@ -59,15 +61,15 @@ abstract class Parameter {
         strings: [".", "\\", "a b c d e", "0", "1", "-1.5"],
     }
 
-    protected static makeValuesMap(paramName: string, values: any[]): Map<string, any> {
-        return new Map<string, any>(values.map((value: any) => {
+    protected static makeValuesArray(paramName: string, values: any[]): TestData[] {
+        return values.map((value: any) => {
             let stringifyVal = value;
             if (typeof value === "bigint") {
                 stringifyVal = value.toString() + " (BigInt)"; // BigInts are not JSON serializable
             }
 
-            return [`${paramName}: ${JSON.stringify(stringifyVal)}`, value]
-        }));
+            return { testName: `${paramName}: ${JSON.stringify(stringifyVal)}`, value: value } as TestData;
+        });
     }
 }
 
@@ -77,8 +79,8 @@ class NumberParameter extends Parameter {
     private readonly max: number | null;
     private readonly integer: boolean;
 
-    private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {},
-        true, false, [2], { key: "value" }, { value: 1 }, () => 5, BigInt(5), Symbol(3), NaN];
+    private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
+        [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
     private readonly potentialValues: number[] = [-Infinity, Number.MIN_SAFE_INTEGER, -1e+15 + 0.1, -54, -37.9, -1.2, -0.5, -1, -0.0000000001, 0,
         0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), 1e+15 + 0.1, Number.MAX_SAFE_INTEGER, Infinity];
 
@@ -89,7 +91,7 @@ class NumberParameter extends Parameter {
         this.integer = integer;
     }
 
-    public getValues(): Map<string, any> {
+    public getValues(): TestData[] {
         const values: any[] = this.values;
         this.potentialValues.forEach((value: number) => {
             if (this.integer && !Number.isInteger(value)) {
@@ -99,7 +101,7 @@ class NumberParameter extends Parameter {
             }
         });
 
-        return Parameter.makeValuesMap(this.name, values);
+        return Parameter.makeValuesArray(this.name, values);
     }
 }
 
