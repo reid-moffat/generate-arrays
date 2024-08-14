@@ -2,6 +2,7 @@ import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
 import SuiteMetrics from "suite-metrics";
 import { TestFailures, NumberParameter } from "./Utils/TestFailures.ts";
+import { getPath } from "./Utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -9,9 +10,8 @@ suite("Basic array functions", () => {
 
     suite("Blank array", () => {
 
-        suite("Invalid input", () => {
-            const path = ["Basic functions", "Blank array", "Invalid"];
-            new TestFailures(path, GenerateArray.blank, new NumberParameter("length", true, 1));
+        suite("Invalid input", function() {
+            new TestFailures(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
         })
 
         suite("Valid input", () => {
