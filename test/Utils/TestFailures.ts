@@ -5,6 +5,7 @@ import { expect } from "chai";
 class TestFailures {
 
     private static readonly TestTimer: SuiteMetrics = SuiteMetrics.getInstance();
+    private static readonly SuiteName = "Invalid input";
 
     private readonly path: string[];
     private readonly func: Function;
@@ -20,36 +21,38 @@ class TestFailures {
 
     private runTests(): void {
 
-        for (const parameter of this.parameters) {
-            for (const { testName, value } of parameter.getValues()) {
-                test(testName, () => {
-                    const pathWithTest = [...this.path.slice(), testName];
+        suite(TestFailures.SuiteName, () => {
+            for (const parameter of this.parameters) {
+                for (const { testName, value } of parameter.getValues()) {
+                    test(testName, () => {
+                        const pathWithTest = [...this.path.slice(), TestFailures.SuiteName, testName];
 
-                    console.log(`Running test: ${pathWithTest.join(" > ")}`);
-                    let err;
-                    try {
-                        TestFailures.TestTimer.startTest(pathWithTest);
-                        this.func(value);
-                    } catch (e: any) {
-                        TestFailures.TestTimer.stopTest();
-                        err = e;
-                    }
+                        console.log(`Running test: ${pathWithTest.join(" > ")}`);
+                        let err;
+                        try {
+                            TestFailures.TestTimer.startTest(pathWithTest);
+                            this.func(value);
+                        } catch (e: any) {
+                            TestFailures.TestTimer.stopTest();
+                            err = e;
+                        }
 
-                    console.log(`\nFunction execution completed, verifying...`);
+                        console.log(`\nFunction execution completed, verifying...`);
 
-                    expect(err).to.be.an.instanceOf(Error);
-                    console.log(`(1/3) Error was caught`);
+                        expect(err).to.be.an.instanceOf(Error);
+                        console.log(`(1/3) Error was caught`);
 
-                    expect(err).to.be.an.instanceOf(GenerateArrayError);
-                    console.log(`(2/3) Error is an instance of GenerateArrayError`);
+                        expect(err).to.be.an.instanceOf(GenerateArrayError);
+                        console.log(`(2/3) Error is an instance of GenerateArrayError`);
 
-                    expect(err.message).to.be.a("string");
-                    console.log(`(3/3) Error message is a string`);
+                        expect(err.message).to.be.a("string");
+                        console.log(`(3/3) Error message is a string`);
 
-                    console.log(`Test passed!\n\n`);
-                });
+                        console.log(`Test passed!\n\n`);
+                    });
+                }
             }
-        }
+        });
     }
 }
 

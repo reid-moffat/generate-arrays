@@ -8,19 +8,15 @@ const TestTimer = SuiteMetrics.getInstance();
 
 suite("Basic array functions", () => {
 
-    suite("Blank array", () => {
+    suite("Blank array", function() {
 
-        suite("Invalid input", function() {
-            new TestFailures(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
-        })
+        new TestFailures(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
 
-        suite("Valid input", () => {
+        suite("Valid input", function() {
 
             const _test = (name: string, length: number) => {
                 test(name, () => {
-                    const path = ["Basic functions", "Blank array", "Valid", name];
-
-                    TestTimer.startTest(path);
+                    TestTimer.startTest(getPath(this).concat(name));
                     const arr = GenerateArray.blank(length);
                     TestTimer.stopTest();
 
