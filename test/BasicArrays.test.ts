@@ -1,6 +1,5 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
-import GenerateArrayError from "../src/GenerateArrayError.ts";
 import SuiteMetrics from "suite-metrics";
 import { TestFailures, NumberParameter } from "./Utils/TestFailures.ts";
 
@@ -12,8 +11,7 @@ suite("Basic array functions", () => {
 
         suite("Invalid input", () => {
             const path = ["Basic functions", "Blank array", "Invalid"];
-            const testFailures = new TestFailures(path, GenerateArray.blank, new NumberParameter("length", true, 1));
-            testFailures.runTests();
+            new TestFailures(path, GenerateArray.blank, new NumberParameter("length", true, 1));
         })
 
         suite("Valid input", () => {

@@ -14,9 +14,11 @@ class TestFailures {
         this.path = path;
         this.func = func;
         this.parameters = Array.isArray(parameters) ? parameters : [parameters];
+
+        this.runTests();
     }
 
-    public runTests(): void {
+    private runTests(): void {
 
         for (const parameter of this.parameters) {
             for (const { testName, value } of parameter.getValues()) {
