@@ -48,19 +48,6 @@ abstract class Parameter {
 
     public abstract getValues(): TestData[];
 
-    private static readonly values: { [key: string]: any[] }  = {
-        nullish: [undefined, null],
-        empty: ["", [], {}],
-
-        negativeIntegers: [-Infinity, -1e+15, -54, -1],
-        nonPositiveIntegers: [-Infinity, -1e+15, -54, -1, 0],
-        negativeDecimals: [-1e+15 + 0.1, -1.2, -0.5, -0.0000000001],
-
-        boolean: [true, false],
-
-        strings: [".", "\\", "a b c d e", "0", "1", "-1.5"],
-    }
-
     protected static makeValuesArray(paramName: string, values: any[]): TestData[] {
         return values.map((value: any) => {
             let stringVal = value;
@@ -77,19 +64,20 @@ abstract class Parameter {
 
 class NumberParameter extends Parameter {
 
-    private readonly min: number | null;
-    private readonly max: number | null;
+    private readonly min: number | undefined;
+    private readonly max: number | undefined;
     private readonly integer: boolean;
 
     private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
         [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
-    private readonly potentialValues: number[] = [-Infinity, Number.MIN_SAFE_INTEGER, -1e+15 + 0.1, -54, -37.9, -1.2, -0.5, -1, -0.0000000001, 0,
-        0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), 1e+15 + 0.1, Number.MAX_SAFE_INTEGER, Infinity];
+
+    private readonly potentialValues: number[] = [-Infinity, Number.MIN_SAFE_INTEGER, -1e+15 + 0.1, -54, -37.9, -1.2, -0.5,
+        -1, -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), 1e+15 + 0.1, Number.MAX_SAFE_INTEGER, Infinity];
 
     constructor(name: string, integer: boolean, min?: number, max?: number) {
         super(name);
-        this.min = min ?? null;
-        this.max = max ?? null;
+        this.min = min;
+        this.max = max;
         this.integer = integer;
     }
 
@@ -98,7 +86,7 @@ class NumberParameter extends Parameter {
         this.potentialValues.forEach((value: number) => {
             if (this.integer && !Number.isInteger(value)) {
                 values.push(value);
-            } else if ((this.min === null || value >= this.min) && (this.max === null || value <= this.max)) {
+            } else if ((this.min === undefined || value >= this.min) && (this.max === undefined || value <= this.max)) {
                 values.push(value);
             }
         });
