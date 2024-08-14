@@ -1,4 +1,6 @@
 import SuiteMetrics from "suite-metrics";
+import GenerateArrayError from "../../src/GenerateArrayError.ts";
+import { expect } from "chai";
 
 class TestFailures {
 
@@ -21,15 +23,28 @@ class TestFailures {
                 test(testName, () => {
                     const pathWithTest = [...this.path.slice(), testName];
 
-                    let error;
+                    console.log(`Running test: ${pathWithTest.join(" > ")}`);
+                    let err;
                     try {
                         TestFailures.TestTimer.startTest(pathWithTest);
                         this.func(value);
-                    } catch (err: any) {
+                    } catch (e: any) {
                         TestFailures.TestTimer.stopTest();
-                        error = err;
-                        console.log(JSON.stringify(error, null, 4));
+                        err = e;
                     }
+
+                    console.log(`\nFunction execution completed, verifying...`);
+
+                    expect(err).to.be.an.instanceOf(Error);
+                    console.log(`(1/3) Error was caught`);
+
+                    expect(err).to.be.an.instanceOf(GenerateArrayError);
+                    console.log(`(2/3) Error is an instance of GenerateArrayError`);
+
+                    expect(err.message).to.be.a("string");
+                    console.log(`(3/3) Error message is a string`);
+
+                    console.log(`Test passed!\n\n`);
                 });
             }
         }
@@ -46,8 +61,10 @@ abstract class Parameter {
         this.name = name;
     }
 
+    // Returns an array of tests to run
     public abstract getValues(): TestData[];
 
+    // Turns an array of values into an array of proper TestData objects
     protected static makeValuesArray(paramName: string, values: any[]): TestData[] {
         return values.map((value: any) => {
             let stringVal = value;
@@ -71,8 +88,8 @@ class NumberParameter extends Parameter {
     private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
         [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
 
-    private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5,
-        -1, -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
+    private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1,
+        -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
 
     constructor(name: string, integer: boolean, min?: number, max?: number) {
         super(name);
