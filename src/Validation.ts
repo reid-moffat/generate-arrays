@@ -9,7 +9,7 @@ const str = (value: any) => {
 
 class Validation {
 
-    private static readonly maxArrayLength: number = 4294967295; // 2^32 - 1
+    public static readonly maxArrayLength: number = 4294967295; // 2^32 - 1
 
     public static integer(value: any, min: number, paramName: string): void {
         if (!Number.isInteger(value)) {
