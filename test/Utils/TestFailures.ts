@@ -63,12 +63,14 @@ abstract class Parameter {
 
     protected static makeValuesArray(paramName: string, values: any[]): TestData[] {
         return values.map((value: any) => {
-            let stringifyVal = value;
-            if (typeof value === "bigint") {
-                stringifyVal = value.toString() + " (BigInt)"; // BigInts are not JSON serializable
+            let stringVal = value;
+            if (Array.isArray(value) || typeof value === "object" || typeof value === "string") {
+                stringVal = JSON.stringify(value);
+            } else if (typeof value === "bigint") {
+                stringVal = value + " (BigInt)"; // BigInt(3) is not valid but shows '3', add this to make it clear
             }
 
-            return { testName: `${paramName}: ${JSON.stringify(stringifyVal)}`, value: value } as TestData;
+            return { testName: `${paramName}: ${String(stringVal)}`, value: value } as TestData;
         });
     }
 }
