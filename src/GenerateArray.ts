@@ -100,12 +100,15 @@ class GenerateArray {
 
         const result: number[] = [];
 
+        Validation.numberSimple(start, "start");
+        Validation.numberSimple(end, "end");
+        Validation.numberSimple(step, "step");
+
         if (Math.abs(end - start) / step > Validation.maxArrayLength) {
             throw new GenerateArrayError(`Invalid array length: ${end} to ${start} with step ${step} exceeds ${Validation.maxArrayLength} elements`);
         }
 
         if (subtract) {
-            Validation.numberSimple(start, "start");
             Validation.number(end, start, "end", false);
             Validation.number(step, 0, "step", true);
 
@@ -113,7 +116,6 @@ class GenerateArray {
                 result.push(i);
             }
         } else {
-            Validation.numberSimple(start, "start");
             Validation.number(end, start, "end", true);
             Validation.number(step, 0, "step", true);
 
