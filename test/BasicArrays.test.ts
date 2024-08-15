@@ -108,8 +108,8 @@ suite("Basic array functions", () => {
     suite("Counting array", function() {
 
         TestFailures.run(getPath(this), GenerateArray.counting, [
-            new NumberParameter("start", true, 1),
-            new NumberParameter("end", true, 1),
+            new NumberParameter("start", false),
+            new NumberParameter("end", false),
             new NumberParameter("step", false, 1, 1, true)
         ]);
 
