@@ -36,12 +36,19 @@ class Validation {
         if (typeof value !== "number") {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
         }
+        if (Number.isNaN(value)) {
+            throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
+        }
     }
 
     public static number(value: any, threshold: number, paramName: string, above: boolean = true): void {
         if (typeof value !== "number") {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
         }
+        if (Number.isNaN(value)) {
+            throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
+        }
+
         if (above && value <= threshold) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be greater than ${str(threshold)}: value '${str(value)}' is invalid`);
         }
