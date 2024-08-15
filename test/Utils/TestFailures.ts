@@ -222,4 +222,4 @@ class GenericParameter extends Parameter {
     }
 }
 
-export { TestFailures, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter };
+export { TestFailures, TestFailureParams, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter };
