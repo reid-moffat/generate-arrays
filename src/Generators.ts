@@ -26,7 +26,7 @@ const decimal = (min: number = 0, max: number = 100, precision: number = 5) => {
 
     Validation.number(min, 'Min');
     Validation.number(max, 'Max', min);
-    Validation.integer(precision, 'Precision', 0);
+    Validation.integer(precision, 'precision', 0);
 
     return () => (Math.random() * (max - min) + min).toFixed(precision);
 }
