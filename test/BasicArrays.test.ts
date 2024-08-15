@@ -19,7 +19,7 @@ suite("Basic array functions", () => {
         const failureTestData: TestFailureParams = {
             path: getPath(this),
             func: GenerateArray.blank,
-            parameters: new NumberParameter("length", true, 1)
+            parameters: new NumberParameter({ name: "length", integer: true, min: 1 })
         };
         TestFailures.run(failureTestData);
 
@@ -57,7 +57,7 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.uniform,
             parameters: [
-                new NumberParameter("length", true, 1),
+                new NumberParameter({ name: "length", integer: true, min: 1 }),
                 new GenericParameter("value")
             ]
         };
@@ -93,7 +93,7 @@ suite("Basic array functions", () => {
             func: GenerateArray.custom,
             parameters: [
                 new FunctionParameter("value"),
-                new NumberParameter("length", true, 1)
+                new NumberParameter({ name: "length", integer: true, min: 1 })
             ]
         };
         TestFailures.run(failureTestData);
@@ -127,9 +127,9 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.counting,
             parameters: [
-                new NumberParameter("start", false),
-                new NumberParameter("end", false),
-                new NumberParameter("step", false, undefined, undefined, true)
+                new NumberParameter({ name: "start" }),
+                new NumberParameter({ name: "end" }),
+                new NumberParameter({ name: "step", optional: true })
             ]
         };
         TestFailures.run(failureTestData);
@@ -158,9 +158,9 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.integers,
             parameters: [
-                new NumberParameter("length", true, 1),
-                new NumberParameter("min", false, undefined, undefined, true),
-                new NumberParameter("max", false, undefined, undefined, true)
+                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new NumberParameter({ name: "min", optional: true }),
+                new NumberParameter({ name: "max", optional: true })
             ]
         };
         TestFailures.run(failureTestData);
@@ -198,9 +198,9 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.decimals,
             parameters: [
-                new NumberParameter("length", true, 1),
-                new NumberParameter("min", false, undefined, undefined, true),
-                new NumberParameter("max", false, undefined, undefined, true)
+                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new NumberParameter({ name: "min", optional: true }),
+                new NumberParameter({ name: "max", optional: true }),
             ]
         };
         TestFailures.run(failureTestData);
@@ -236,9 +236,9 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.strings,
             parameters: [
-                new NumberParameter("length", true, 1),
-                new NumberParameter("minLength", true, 1, undefined, true),
-                new NumberParameter("maxLength", true, undefined, undefined, true),
+                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new NumberParameter({ name: "minLength", integer: true, min: 1, optional: true }),
+                new NumberParameter({ name: "maxLength", integer: true, optional: true }),
                 new BooleanParameter("specialChars", true)
             ]
         };
