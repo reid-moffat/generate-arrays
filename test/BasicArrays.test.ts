@@ -125,7 +125,7 @@ suite("Basic array functions", () => {
             });
 
             test("Reverse 7 to 3", () => {
-                const arr = GenerateArray.counting(7, 2, 2, true);
+                const arr = GenerateArray.counting(7, 2, -2);
                 expect(arr).to.deep.equal([7, 5, 3]);
             });
         });

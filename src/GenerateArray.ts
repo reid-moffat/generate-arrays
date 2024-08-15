@@ -94,9 +94,8 @@ class GenerateArray {
      * @param start Number to start at
      * @param end Value to stop at (may not be included in resulting array)
      * @param step Value added at each step (default 1). Always positive - is subtract is 2, this number is just subtracted
-     * @param subtract If true, subtracts the step each time
      */
-    public static counting = (start: number, end: number, step: number = 1, subtract: boolean = false): number[] => {
+    public static counting = (start: number, end: number, step: number = 1): number[] => {
 
         const result: number[] = [];
 
@@ -104,20 +103,21 @@ class GenerateArray {
         Validation.numberSimple(end, "end");
         Validation.numberSimple(step, "step");
 
+        if (step === 0) {
+            throw new GenerateArrayError(`Parameter 'step' must be a non-zero number`);
+        }
         if (Math.abs(end - start) / step > Validation.maxArrayLength) {
             throw new GenerateArrayError(`Invalid array length: ${end} to ${start} with step ${step} exceeds ${Validation.maxArrayLength} elements`);
         }
 
-        if (subtract) {
-            Validation.number(end, start, "end", false);
-            Validation.number(step, 0, "step", true);
+        if (step < 0) {
+            Validation.number(start, end, "start");
 
-            for (let i = start; i >= end; i -= step) {
+            for (let i = start; i >= end; i += step) {
                 result.push(i);
             }
         } else {
-            Validation.number(end, start, "end", true);
-            Validation.number(step, 0, "step", true);
+            Validation.number(end, start, "end");
 
             for (let i = start; i <= end; i += step) {
                 result.push(i);
