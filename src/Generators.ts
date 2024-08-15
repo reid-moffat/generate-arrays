@@ -8,6 +8,10 @@ import Validation from "./Validation.ts";
  * @param max Maximum value
  */
 const integer = (min: number = 0, max: number = 100) => {
+
+    Validation.integer(min, 'Min');
+    Validation.integer(max, 'Max', min);
+
     return () => Math.floor(Math.random() * (max - min + 1) + min);
 }
 
@@ -39,8 +43,8 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
         if (length.length !== 2) {
             throw new GenerateArrayError('Length range must be an array of two numbers: [min, max]');
         }
-        Validation.integer(length[0], 0, 'Length min');
-        Validation.integer(length[1], min, 'Length max');
+        Validation.integer(length[0], 'Length min', 0);
+        Validation.integer(length[1], 'Length max', min);
 
         return () => { // @ts-ignore
             length = Math.floor(Math.random() * (length[1] - length[0] + 1) + length[0]);

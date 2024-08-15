@@ -11,11 +11,11 @@ class Validation {
 
     public static readonly maxArrayLength: number = 4294967295; // 2^32 - 1
 
-    public static integer(value: any, min: number, paramName: string): void {
+    public static integer(value: any, paramName: string, min?: number): void {
         if (!Number.isInteger(value)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(value)}' is invalid`);
         }
-        if (value < min) {
+        if (min && value < min) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be at least ${str(min)}: value '${str(value)}' is invalid`);
         }
     }
