@@ -98,6 +98,14 @@ abstract class Parameter {
     }
 }
 
+type NumberParameterParams = {
+    name: string,
+    integer?: boolean,
+    min?: number,
+    max?: number,
+    optional?: boolean
+};
+
 /**
  * Parameter that must be a number. Can be an integer, or have a min/max
  */
@@ -113,7 +121,7 @@ class NumberParameter extends Parameter {
     private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1,
         -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
 
-    constructor(name: string, integer: boolean, min?: number, max?: number, optional: boolean = false) {
+    constructor({ name, integer = false, min, max, optional = false }: NumberParameterParams) {
         super(name, optional);
         this.min = min;
         this.max = max;

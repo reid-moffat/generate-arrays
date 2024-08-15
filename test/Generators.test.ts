@@ -11,8 +11,8 @@ suite("Generators", () => {
             path: getPath(this),
             func: integer,
             parameters: [
-                new NumberParameter("min", true, undefined, undefined, true),
-                new NumberParameter("max", true, undefined, undefined, true)
+                new NumberParameter({ name: "min", integer: true, optional: true }),
+                new NumberParameter({ name: "max", integer: true, optional: true })
             ]
         };
         TestFailures.run(failureTestData);
@@ -37,9 +37,9 @@ suite("Generators", () => {
             path: getPath(this),
             func: decimal,
             parameters: [
-                new NumberParameter("min", false, undefined, undefined, true),
-                new NumberParameter("max", false, undefined, undefined, true),
-                new NumberParameter("precision", true, 0, undefined, true)
+                new NumberParameter({ name: "min", optional: true }),
+                new NumberParameter({ name: "max", optional: true }),
+                new NumberParameter({ name: "precision", integer: true, min: 0, optional: true })
             ]
         };
         TestFailures.run(failureTestData);
