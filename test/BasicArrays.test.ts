@@ -6,7 +6,7 @@ import {
     NumberParameter,
     GenericParameter,
     BooleanParameter,
-    FunctionParameter
+    FunctionParameter, TestFailureParams
 } from "./Utils/TestFailures.ts";
 import { getPath } from "./Utils/Utils.ts";
 
@@ -16,7 +16,12 @@ suite("Basic array functions", () => {
 
     suite("Blank array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.blank,
+            parameters: new NumberParameter("length", true, 1)
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
 
@@ -48,10 +53,15 @@ suite("Basic array functions", () => {
 
     suite("Uniform array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.uniform, [
-            new NumberParameter("length", true, 1),
-            new GenericParameter("value")
-        ]);
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.uniform,
+            parameters: [
+                new NumberParameter("length", true, 1),
+                new GenericParameter("value")
+            ]
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", () => {
             test("Value 1 Length 1", () => {
@@ -78,10 +88,15 @@ suite("Basic array functions", () => {
 
     suite("Custom array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.custom, [
-            new FunctionParameter("value"),
-            new NumberParameter("length", true, 1)
-        ]);
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.custom,
+            parameters: [
+                new FunctionParameter("value"),
+                new NumberParameter("length", true, 1)
+            ]
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", () => {
             test("Value 7 Length 1", () => {
@@ -108,11 +123,16 @@ suite("Basic array functions", () => {
 
     suite("Counting array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.counting, [
-            new NumberParameter("start", false),
-            new NumberParameter("end", false),
-            new NumberParameter("step", false, undefined, undefined, true)
-        ]);
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.counting,
+            parameters: [
+                new NumberParameter("start", false),
+                new NumberParameter("end", false),
+                new NumberParameter("step", false, undefined, undefined, true)
+            ]
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", () => {
             test("Length 1", () => {
@@ -134,11 +154,16 @@ suite("Basic array functions", () => {
 
     suite("Integer array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.integers, [
-            new NumberParameter("length", true, 1),
-            new NumberParameter("min", false, undefined, undefined, true),
-            new NumberParameter("max", false, undefined, undefined, true)
-        ]);
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.integers,
+            parameters: [
+                new NumberParameter("length", true, 1),
+                new NumberParameter("min", false, undefined, undefined, true),
+                new NumberParameter("max", false, undefined, undefined, true)
+            ]
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", () => {
             test("Length 1", () => {
@@ -169,11 +194,16 @@ suite("Basic array functions", () => {
 
     suite("Decimal array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.decimals, [
-            new NumberParameter("length", true, 1),
-            new NumberParameter("min", false, undefined, undefined, true),
-            new NumberParameter("max", false, undefined, undefined, true)
-        ]);
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.decimals,
+            parameters: [
+                new NumberParameter("length", true, 1),
+                new NumberParameter("min", false, undefined, undefined, true),
+                new NumberParameter("max", false, undefined, undefined, true)
+            ]
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", () => {
             test("Length 1", () => {
@@ -202,12 +232,17 @@ suite("Basic array functions", () => {
 
     suite("Strings array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.strings, [
-            new NumberParameter("length", true, 1),
-            new NumberParameter("minLength", true, 1, undefined, true),
-            new NumberParameter("maxLength", true, undefined, undefined, true),
-            new BooleanParameter("specialChars", true),
-        ]);
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.strings,
+            parameters: [
+                new NumberParameter("length", true, 1),
+                new NumberParameter("minLength", true, 1, undefined, true),
+                new NumberParameter("maxLength", true, undefined, undefined, true),
+                new BooleanParameter("specialChars", true)
+            ]
+        };
+        TestFailures.run(failureTestData);
 
         suite("Valid input", () => {
             test("Length 1", () => {
