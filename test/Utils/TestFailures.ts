@@ -2,14 +2,20 @@ import SuiteMetrics from "suite-metrics";
 import GenerateArrayError from "../../src/GenerateArrayError.ts";
 import { expect } from "chai";
 
+type TestFailureParams = {
+    path: string[],
+    func: Function,
+    parameters: Parameter | Parameter[]
+};
+
 class TestFailures {
 
     private static readonly TestTimer: SuiteMetrics = SuiteMetrics.getInstance();
     private static readonly SuiteName = "Invalid input";
 
-    public static run(path: string[], func: Function, parameters: Parameter | Parameter[]): void {
+    public static run(data: TestFailureParams): void {
 
-        const params = Array.isArray(parameters) ? parameters : [parameters];
+        const params = Array.isArray(data.parameters) ? data.parameters : [data.parameters];
 
         suite(TestFailures.SuiteName, () => {
             for (const parameter of params) {
@@ -20,13 +26,13 @@ class TestFailures {
                     });
 
                     test(testName, () => {
-                        const pathWithTest = [...path, TestFailures.SuiteName, testName];
+                        const pathWithTest = [...data.path, TestFailures.SuiteName, testName];
 
                         console.log(`Running test: ${pathWithTest.join(" > ")}`);
                         let err;
                         try {
                             TestFailures.TestTimer.startTest(pathWithTest);
-                            func(...functionParams);
+                            data.func(...functionParams);
                         } catch (e: any) {
                             TestFailures.TestTimer.stopTest();
                             err = e;
@@ -54,6 +60,9 @@ class TestFailures {
 
 type TestData = { testName: string, value: any };
 
+/**
+ * Base class for parameters that can be tested
+ */
 abstract class Parameter {
 
     protected readonly name: string;
@@ -166,6 +175,9 @@ class BooleanParameter extends Parameter {
     }
 }
 
+/**
+ * Parameter that must be a function
+ */
 class FunctionParameter extends Parameter {
 
     private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, [2],
