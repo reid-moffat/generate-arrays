@@ -111,13 +111,13 @@ class GenerateArray {
         }
 
         if (step < 0) {
-            Validation.number(start, end, "start");
+            Validation.number(start, "start", end);
 
             for (let i = start; i >= end; i += step) {
                 result.push(i);
             }
         } else {
-            Validation.number(end, start, "end");
+            Validation.number(end, "end", start);
 
             for (let i = start; i <= end; i += step) {
                 result.push(i);
@@ -163,8 +163,8 @@ class GenerateArray {
     public static decimals = (length: number, min: number = 0, max: number = 1) => {
 
         Validation.arrayLength(length, "length");
-        Validation.number(min, -Infinity, "min");
-        Validation.number(max, min, "max");
+        Validation.number(min, "min");
+        Validation.number(max, "max", min);
 
         const range = max - min;
         return Array.from({ length }, () => Math.random() * range + min);
