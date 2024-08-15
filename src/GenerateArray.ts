@@ -141,8 +141,8 @@ class GenerateArray {
     public static integers = (length: number, min: number = 0, max: number = 100) => {
 
         Validation.arrayLength(length, "length");
-        Validation.integer(min, -Infinity, "min");
-        Validation.integer(max, min, "max");
+        Validation.integer(min, "min");
+        Validation.integer(max, "max", min);
 
         const range = max - min;
         return Array.from({ length }, () => Math.floor(Math.random() * range) + min);
@@ -182,8 +182,8 @@ class GenerateArray {
     public static strings = (length: number, minLength: number = 1, maxLength: number = 10, specialChars: boolean = false) => {
 
         Validation.arrayLength(length, "length");
-        Validation.integer(minLength, 1, "minLength");
-        Validation.integer(maxLength, minLength, "maxLength");
+        Validation.integer(minLength, "minLength", 1);
+        Validation.integer(maxLength, "maxLength", minLength);
         Validation.boolean(specialChars, "specialChars");
 
         const range = maxLength - minLength + 1;
@@ -286,7 +286,7 @@ class GenerateArray {
         let totalCount = 0;
         for (let i = 0; i < generators.length; ++i) {
             Validation.function(generators[i].generator, "generator");
-            Validation.integer(generators[i].count, 1, "count");
+            Validation.integer(generators[i].count, "count", 1);
             totalCount += generators[i].count;
         }
         if (Math.abs(totalCount - length) > 1e-6) {
@@ -345,7 +345,7 @@ class GenerateArray {
     public static emptyND = (length: number, depth: number): any[] => {
 
         Validation.arrayLength(length, "length");
-        Validation.integer(depth, 2, "depth");
+        Validation.integer(depth, "depth", 2);
 
         return this._deepArray([], length, depth);
     }
@@ -370,7 +370,7 @@ class GenerateArray {
     public static uniformND = (value: any, length: number, depth: number): any[] => {
 
         Validation.arrayLength(length, "length");
-        Validation.integer(depth, 2, "depth");
+        Validation.integer(depth, "depth", 2);
 
         const baseArray = [];
         if (Array.isArray(value)) {
@@ -401,7 +401,7 @@ class GenerateArray {
 
         Validation.function(generator, "generator", true);
         Validation.arrayLength(length, "length");
-        Validation.integer(depth, 2, "depth");
+        Validation.integer(depth, "depth", 2);
 
         return this._deepArray(generator, length, depth);
     }
