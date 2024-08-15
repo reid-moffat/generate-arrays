@@ -44,7 +44,7 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
             throw new GenerateArrayError('Length range must be an array of two numbers: [min, max]');
         }
         Validation.integer(length[0], 'Length min', 0);
-        Validation.integer(length[1], 'Length max', min);
+        Validation.integer(length[1], 'Length max', length[0]);
 
         return () => { // @ts-ignore
             length = Math.floor(Math.random() * (length[1] - length[0] + 1) + length[0]);
