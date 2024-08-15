@@ -10,7 +10,7 @@ suite("Basic array functions", () => {
 
     suite("Blank array", function() {
 
-        TestFailures.run(getPath(this), GenerateArray.blank, new NumberParameter("length", 1, true, 1));
+        TestFailures.run(getPath(this), GenerateArray.blank, new NumberParameter("length", true, 1));
 
         suite("Valid input", function() {
 
@@ -43,8 +43,8 @@ suite("Basic array functions", () => {
     suite("Uniform array", () => {
 
         TestFailures.run(getPath(this), GenerateArray.uniform, [
-            new NumberParameter("length", 1, true, 1),
-            new GenericParameter("value", 2)
+            new NumberParameter("length", true, 1),
+            new GenericParameter("value")
         ]);
 
         suite("Valid input", () => {
@@ -131,9 +131,9 @@ suite("Basic array functions", () => {
     suite("Integer array", () => {
 
         TestFailures.run(getPath(this), GenerateArray.integers, [
-            new NumberParameter("length", 1, true, 1),
-            new NumberParameter("min", 2, false),
-            new NumberParameter("max", 3, false)
+            new NumberParameter("length", true, 1),
+            new NumberParameter("min", false),
+            new NumberParameter("max", false)
         ]);
 
         suite("Valid input", () => {

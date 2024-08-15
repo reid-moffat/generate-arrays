@@ -57,11 +57,9 @@ type TestData = { testName: string, value: any };
 abstract class Parameter {
 
     protected readonly name: string;
-    protected readonly paramNum: number;
 
-    protected constructor(name: string, paramNum: number) {
+    protected constructor(name: string) {
         this.name = name;
-        this.paramNum = paramNum;
     }
 
     public getName(): string {
@@ -104,8 +102,8 @@ class NumberParameter extends Parameter {
     private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1,
         -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
 
-    constructor(name: string, paramNum: number, integer: boolean, min?: number, max?: number) {
-        super(name, paramNum);
+    constructor(name: string, integer: boolean, min?: number, max?: number) {
+        super(name);
         this.min = min;
         this.max = max;
         this.integer = integer;
@@ -141,8 +139,8 @@ class NumberParameter extends Parameter {
  */
 class GenericParameter extends Parameter {
 
-    constructor(name: string, paramNum: number) {
-        super(name, paramNum);
+    constructor(name: string) {
+        super(name);
     }
 
     public getTestValues(): TestData[] {
