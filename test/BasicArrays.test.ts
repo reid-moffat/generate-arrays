@@ -105,10 +105,13 @@ suite("Basic array functions", () => {
         });
     });
 
-    suite("Counting array", () => {
-        suite("Invalid input", () => {
+    suite("Counting array", function() {
 
-        });
+        TestFailures.run(getPath(this), GenerateArray.counting, [
+            new NumberParameter("start", true, 1),
+            new NumberParameter("end", true, 1),
+            new NumberParameter("step", false, 1, 1, true)
+        ]);
 
         suite("Valid input", () => {
             test("Length 1", () => {
