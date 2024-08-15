@@ -26,7 +26,14 @@ suite("Generators", () => {
         });
     });
 
-    suite("decimal", () => {
+    suite("decimal", function() {
+
+        TestFailures.run(getPath(this), decimal, [
+            new NumberParameter("min", false, undefined, undefined, true),
+            new NumberParameter("max", false, undefined, undefined, true),
+            new NumberParameter("precision", true, 0, undefined, true)
+        ]);
+
         test("default", () => {
             const gen = decimal();
             expect(gen()).to.be.a("string");
