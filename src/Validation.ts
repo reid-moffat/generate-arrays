@@ -24,7 +24,7 @@ class Validation {
         if (!Number.isInteger(length)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(length)}' is invalid`);
         }
-        if (min && length < min) {
+        if (length < min) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be at least ${str(min)}: value '${str(length)}' is invalid`);
         }
         if (length > Validation.maxArrayLength) {
