@@ -19,10 +19,15 @@ const integer = (min: number = 0, max: number = 100) => {
  * Generator for a random decimal number. By default, the number is between 0 and 100 with a precision of 5
  *
  * @param min Minimum value
- * @param max Maximum value
+ * @param max Maximum value (must be >= min)
  * @param precision Number of decimal places
  */
 const decimal = (min: number = 0, max: number = 100, precision: number = 5) => {
+
+    Validation.number(min, 'Min');
+    Validation.number(max, 'Max', min);
+    Validation.integer(precision, 'Precision', 0);
+
     return () => (Math.random() * (max - min) + min).toFixed(precision);
 }
 
