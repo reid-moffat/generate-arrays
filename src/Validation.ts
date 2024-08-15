@@ -41,7 +41,7 @@ class Validation {
         }
     }
 
-    public static number(value: any, threshold: number, paramName: string): void {
+    public static number(value: any, paramName: string, threshold?: number): void {
         if (typeof value !== "number") {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
         }
@@ -49,7 +49,7 @@ class Validation {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
         }
 
-        if (value <= threshold) {
+        if (threshold && value <= threshold) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be greater than ${str(threshold)}: value '${str(value)}' is invalid`);
         }
     }
