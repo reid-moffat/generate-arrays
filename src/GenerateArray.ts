@@ -43,7 +43,7 @@ class GenerateArray {
      */
     public static blank(length: number) {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
 
         return Array(length);
     }
@@ -59,7 +59,7 @@ class GenerateArray {
      */
     public static uniform(length: number, value: any) {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
 
         return Array(length).fill(value);
     }
@@ -77,7 +77,7 @@ class GenerateArray {
     public static custom = (generator: () => any, length: number): any[] => {
 
         Validation.function(generator, "generator");
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
 
         return Array.from({ length }, generator);
     }
@@ -140,7 +140,7 @@ class GenerateArray {
      */
     public static integers = (length: number, min: number = 0, max: number = 100) => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
         Validation.integer(min, -Infinity, "min");
         Validation.integer(max, min, "max");
 
@@ -162,7 +162,7 @@ class GenerateArray {
      */
     public static decimals = (length: number, min: number = 0, max: number = 1) => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
         Validation.number(min, -Infinity, "min");
         Validation.number(max, min, "max");
 
@@ -181,7 +181,7 @@ class GenerateArray {
      */
     public static strings = (length: number, minLength: number = 1, maxLength: number = 10, specialChars: boolean = false) => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
         Validation.integer(minLength, 1, "minLength");
         Validation.integer(maxLength, minLength, "maxLength");
         Validation.boolean(specialChars, "specialChars");
@@ -211,7 +211,7 @@ class GenerateArray {
      */
     public static generators = (length: number, generators: (() => any)[]): any[] => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
 
         for (let i = 0; i < generators.length; i++) {
             Validation.function(generators[i], "generators");
@@ -233,7 +233,7 @@ class GenerateArray {
      */
     public static weightedGenerators = (length: number, generators: { generator: () => any, chance: number }[]) => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
 
         let totalChance = 0;
         for (let i = 0; i < generators.length; ++i) {
@@ -281,7 +281,7 @@ class GenerateArray {
      */
     public static fixedCountGenerators = (length: number, generators: { generator: () => any, count: number }[], random: boolean = true) => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
 
         let totalCount = 0;
         for (let i = 0; i < generators.length; ++i) {
@@ -344,7 +344,7 @@ class GenerateArray {
      */
     public static emptyND = (length: number, depth: number): any[] => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
         Validation.integer(depth, 2, "depth");
 
         return this._deepArray([], length, depth);
@@ -369,7 +369,7 @@ class GenerateArray {
      */
     public static uniformND = (value: any, length: number, depth: number): any[] => {
 
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
         Validation.integer(depth, 2, "depth");
 
         const baseArray = [];
@@ -400,7 +400,7 @@ class GenerateArray {
     public static customND = (generator: () => any[], length: number, depth: number): any[] => {
 
         Validation.function(generator, "generator", true);
-        Validation.arrayLength(length, 1, "length");
+        Validation.arrayLength(length, "length");
         Validation.integer(depth, 2, "depth");
 
         return this._deepArray(generator, length, depth);

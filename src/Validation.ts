@@ -20,11 +20,11 @@ class Validation {
         }
     }
 
-    public static arrayLength(length: any, min: number, paramName: string): void {
+    public static arrayLength(length: any, paramName: string, min: number = 1): void {
         if (!Number.isInteger(length)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(length)}' is invalid`);
         }
-        if (length < min) {
+        if (min && length < min) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be at least ${str(min)}: value '${str(length)}' is invalid`);
         }
         if (length > Validation.maxArrayLength) {
