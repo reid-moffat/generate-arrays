@@ -1,9 +1,17 @@
 import { integer, decimal, string } from "../src/index.ts";
 import { expect } from "chai";
+import { NumberParameter, TestFailures } from "./Utils/TestFailures.ts";
+import { getPath } from "./Utils/Utils.ts";
 
 suite("Generators", () => {
 
-    suite("integer", () => {
+    suite("integer", function() {
+
+        TestFailures.run(getPath(this), integer, [
+            new NumberParameter("min", true, undefined, undefined, true),
+            new NumberParameter("max", true,  undefined, undefined, true)
+        ]);
+
         test("default", () => {
             const gen = integer();
             expect(gen()).to.be.a("number");
