@@ -40,7 +40,7 @@ suite("Basic array functions", () => {
         });
     });
 
-    suite("Uniform array", () => {
+    suite("Uniform array", function() {
 
         TestFailures.run(getPath(this), GenerateArray.uniform, [
             new NumberParameter("length", true, 1),
@@ -128,7 +128,7 @@ suite("Basic array functions", () => {
         });
     });
 
-    suite("Integer array", () => {
+    suite("Integer array", function() {
 
         TestFailures.run(getPath(this), GenerateArray.integers, [
             new NumberParameter("length", true, 1),

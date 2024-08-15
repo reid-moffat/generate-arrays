@@ -20,7 +20,7 @@ class TestFailures {
                     });
 
                     test(testName, () => {
-                        const pathWithTest = [...path.slice(), TestFailures.SuiteName, testName];
+                        const pathWithTest = [...path, TestFailures.SuiteName, testName];
 
                         console.log(`Running test: ${pathWithTest.join(" > ")}`);
                         let err;
