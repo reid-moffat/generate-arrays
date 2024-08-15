@@ -14,6 +14,11 @@ class TestFailures {
         suite(TestFailures.SuiteName, () => {
             for (const parameter of params) {
                 for (const { testName, value } of parameter.getTestValues()) {
+
+                    const functionParams = params.map((param, index) => {
+                        return parameter.getName() === param.getName() ? value : param.getValidValue();
+                    });
+
                     test(testName, () => {
                         const pathWithTest = [...path.slice(), TestFailures.SuiteName, testName];
 
@@ -21,7 +26,7 @@ class TestFailures {
                         let err;
                         try {
                             TestFailures.TestTimer.startTest(pathWithTest);
-                            func(value);
+                            func(...functionParams);
                         } catch (e: any) {
                             TestFailures.TestTimer.stopTest();
                             err = e;
@@ -52,9 +57,15 @@ type TestData = { testName: string, value: any };
 abstract class Parameter {
 
     protected readonly name: string;
+    protected readonly paramNum: number;
 
-    protected constructor(name: string) {
+    protected constructor(name: string, paramNum: number) {
         this.name = name;
+        this.paramNum = paramNum;
+    }
+
+    public getName(): string {
+        return this.name;
     }
 
     // Returns an array of invalid values to test
@@ -93,8 +104,8 @@ class NumberParameter extends Parameter {
     private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1,
         -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
 
-    constructor(name: string, integer: boolean, min?: number, max?: number) {
-        super(name);
+    constructor(name: string, paramNum: number, integer: boolean, min?: number, max?: number) {
+        super(name, paramNum);
         this.min = min;
         this.max = max;
         this.integer = integer;
@@ -130,8 +141,8 @@ class NumberParameter extends Parameter {
  */
 class GenericParameter extends Parameter {
 
-    constructor(name: string, values: any[]) {
-        super(name);
+    constructor(name: string, paramNum: number) {
+        super(name, paramNum);
     }
 
     public getTestValues(): TestData[] {
@@ -143,4 +154,4 @@ class GenericParameter extends Parameter {
     }
 }
 
-export { TestFailures, NumberParameter };
+export { TestFailures, NumberParameter, GenericParameter };
