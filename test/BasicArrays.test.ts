@@ -1,7 +1,7 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
 import SuiteMetrics from "suite-metrics";
-import { TestFailures, NumberParameter, GenericParameter } from "./Utils/TestFailures.ts";
+import { TestFailures, NumberParameter, GenericParameter, BooleanParameter } from "./Utils/TestFailures.ts";
 import { getPath } from "./Utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
@@ -199,16 +199,14 @@ suite("Basic array functions", () => {
         });
     });
 
-    suite("Strings array", () => {
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.strings(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
+    suite("Strings array", function() {
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.strings(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        TestFailures.run(getPath(this), GenerateArray.strings, [
+            new NumberParameter("length", true, 1),
+            new NumberParameter("minLength", true, 1, undefined, true),
+            new NumberParameter("maxLength", true, undefined, undefined, true),
+            new BooleanParameter("specialChars", true),
+        ]);
 
         suite("Valid input", () => {
             test("Length 1", () => {
