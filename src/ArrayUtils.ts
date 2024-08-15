@@ -16,7 +16,7 @@ class ArrayUtils {
     public static addDimensions<T>(arr: T[], depth: number): T[] {
 
         Validation.array(arr, "arr");
-        Validation.integer(depth, 1, "depth");
+        Validation.integer(depth, "depth", 1);
 
         let newArr: any[] = arr.slice();
         for (let i = 0; i < depth; ++i) {
@@ -53,7 +53,7 @@ class ArrayUtils {
     public static multiplyLength(arr: any[], factor: number, elementWise = false): any[] {
 
         Validation.array(arr, "arr");
-        Validation.integer(factor, 2, "factor");
+        Validation.integer(factor, "factor", 2);
 
         const result: any[] = [];
 
