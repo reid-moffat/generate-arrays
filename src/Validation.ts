@@ -54,6 +54,12 @@ class Validation {
         }
     }
 
+    public static boolean(value: any, paramName: string): void {
+        if (typeof value !== "boolean") {
+            throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a boolean: value '${str(value)}' is invalid`);
+        }
+    }
+
     public static array(value: any, paramName: string): void {
         if (!Array.isArray(value)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an array: value '${str(value)}' is invalid`);

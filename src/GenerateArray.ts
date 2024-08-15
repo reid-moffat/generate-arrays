@@ -184,6 +184,7 @@ class GenerateArray {
         Validation.arrayLength(length, 1, "length");
         Validation.integer(minLength, 1, "minLength");
         Validation.integer(maxLength, minLength, "maxLength");
+        Validation.boolean(specialChars, "specialChars");
 
         const range = maxLength - minLength + 1;
         const chars = specialChars ? this._charactersWithSpecial : this._characters;
