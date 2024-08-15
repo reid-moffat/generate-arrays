@@ -166,16 +166,13 @@ suite("Basic array functions", () => {
         });
     });
 
-    suite("Decimal array", () => {
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.decimals(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
+    suite("Decimal array", function() {
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.decimals(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        TestFailures.run(getPath(this), GenerateArray.decimals, [
+            new NumberParameter("length", true, 1),
+            new NumberParameter("min", false, undefined, undefined, true),
+            new NumberParameter("max", false, undefined, undefined, true)
+        ]);
 
         suite("Valid input", () => {
             test("Length 1", () => {
