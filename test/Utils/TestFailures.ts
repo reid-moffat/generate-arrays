@@ -166,6 +166,32 @@ class BooleanParameter extends Parameter {
     }
 }
 
+class FunctionParameter extends Parameter {
+
+    private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, [2],
+        { key: "value" }, { value: 1 }, true, false, BigInt(3), Symbol("1"), NaN];
+
+    private readonly returnType: string | undefined;
+
+    constructor(name: string, returnType?: string, optional: boolean = false) {
+        super(name, optional);
+        this.returnType = returnType
+    }
+
+    public getTestValues(): TestData[] {
+        const values: any[] = this.values;
+        if (this.optional) {
+            values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
+        }
+
+        return Parameter.makeValuesArray(this.name, values);
+    }
+
+    public getValidValue(): any {
+        return () => Math.floor(Math.random() * 100);
+    }
+}
+
 /**
  * Parameter that can take any value - i.e. no failure cases, but still needs a value to test with other params
  */
@@ -184,4 +210,4 @@ class GenericParameter extends Parameter {
     }
 }
 
-export { TestFailures, NumberParameter, BooleanParameter, GenericParameter };
+export { TestFailures, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter };
