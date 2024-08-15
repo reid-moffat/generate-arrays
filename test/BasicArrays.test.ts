@@ -110,7 +110,7 @@ suite("Basic array functions", () => {
         TestFailures.run(getPath(this), GenerateArray.counting, [
             new NumberParameter("start", false),
             new NumberParameter("end", false),
-            new NumberParameter("step", false, 1, 1, true)
+            new NumberParameter("step", false, undefined, undefined, true)
         ]);
 
         suite("Valid input", () => {
