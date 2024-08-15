@@ -49,7 +49,7 @@ class Validation {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be a number: value '${str(value)}' is invalid`);
         }
 
-        if (threshold && value <= threshold) {
+        if (threshold !== undefined && value <= threshold) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be greater than ${str(threshold)}: value '${str(value)}' is invalid`);
         }
     }
