@@ -15,7 +15,7 @@ class Validation {
         if (!Number.isInteger(value)) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(value)}' is invalid`);
         }
-        if (min && value < min) {
+        if (min !== undefined && value < min) {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be at least ${str(min)}: value '${str(value)}' is invalid`);
         }
     }
