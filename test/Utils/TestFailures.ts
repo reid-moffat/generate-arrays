@@ -57,9 +57,11 @@ type TestData = { testName: string, value: any };
 abstract class Parameter {
 
     protected readonly name: string;
+    protected readonly optional: boolean;
 
-    protected constructor(name: string) {
+    protected constructor(name: string, optional: boolean) {
         this.name = name;
+        this.optional = optional;
     }
 
     public getName(): string {
@@ -102,8 +104,8 @@ class NumberParameter extends Parameter {
     private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1,
         -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
 
-    constructor(name: string, integer: boolean, min?: number, max?: number) {
-        super(name);
+    constructor(name: string, integer: boolean, min?: number, max?: number, optional: boolean = false) {
+        super(name, optional);
         this.min = min;
         this.max = max;
         this.integer = integer;
@@ -111,6 +113,10 @@ class NumberParameter extends Parameter {
 
     public getTestValues(): TestData[] {
         const values: any[] = this.values;
+        if (this.optional) {
+            values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
+        }
+
         this.potentialValues.forEach((value: number) => {
             if (this.integer && !Number.isInteger(value)) {
                 values.push(value);
@@ -140,7 +146,7 @@ class NumberParameter extends Parameter {
 class GenericParameter extends Parameter {
 
     constructor(name: string) {
-        super(name);
+        super(name, false); // Optional is irrelevant here as undefined is valid (like all other values)
     }
 
     public getTestValues(): TestData[] {

@@ -132,8 +132,8 @@ suite("Basic array functions", () => {
 
         TestFailures.run(getPath(this), GenerateArray.integers, [
             new NumberParameter("length", true, 1),
-            new NumberParameter("min", false),
-            new NumberParameter("max", false)
+            new NumberParameter("min", false, undefined, undefined, true),
+            new NumberParameter("max", false, undefined, undefined, true)
         ]);
 
         suite("Valid input", () => {
