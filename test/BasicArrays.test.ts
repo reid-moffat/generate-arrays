@@ -239,7 +239,7 @@ suite("Basic array functions", () => {
                 new NumberParameter({ name: "length", integer: true, min: 1 }),
                 new NumberParameter({ name: "minLength", integer: true, min: 1, optional: true }),
                 new NumberParameter({ name: "maxLength", integer: true, optional: true }),
-                new BooleanParameter("specialChars", true)
+                new BooleanParameter({ name: "specialChars", optional: true })
             ]
         };
         TestFailures.run(failureTestData);

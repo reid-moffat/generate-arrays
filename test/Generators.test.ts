@@ -69,7 +69,7 @@ suite("Generators", () => {
             func: string,
             parameters: [
                 new NumberParameter({ name: "length", integer: true, optional: true }),
-                new BooleanParameter("specialChars", true)
+                new BooleanParameter({ name: "specialChars", optional: true })
             ]
         }
         TestFailures.run(failureTestData);
