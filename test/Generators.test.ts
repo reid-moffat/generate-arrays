@@ -1,6 +1,6 @@
 import { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, name } from "../src/index.ts";
 import { expect } from "chai";
-import { NumberParameter, TestFailureParams, TestFailures } from "./Utils/TestFailures.ts";
+import { BooleanParameter, NumberParameter, TestFailureParams, TestFailures } from "./Utils/TestFailures.ts";
 import { getPath } from "./Utils/Utils.ts";
 
 suite("Generators", () => {
@@ -62,7 +62,18 @@ suite("Generators", () => {
         });
     });
 
-    suite("string", () => {
+    suite("string", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: string,
+            parameters: [
+                new NumberParameter({ name: "length", integer: true, optional: true }),
+                new BooleanParameter("specialChars", true)
+            ]
+        }
+        TestFailures.run(failureTestData);
+
         test("default", () => {
             const gen = string();
             expect(gen()).to.be.a("string");
