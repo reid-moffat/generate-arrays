@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/dt/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
 [![npm](https://img.shields.io/npm/l/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
 
-Simple, flexible, lightweight and fast array generation
+Simple, flexible and lightweight array generation
 
 ## 📦 Installation
 
@@ -45,9 +45,10 @@ import { GenerateArray } from 'generate-arrays';
 
 const generators = [
     () => Math.floor(Math.random() * 100),
+    () => `User${Math.floor(Math.random() * 100)}`,
     () => Math.random() * 100, () => Math.random() > 0.5
 ];
-GenerateArray.generators(3, generators); // [37, 93.2, true]
+GenerateArray.generators(4, generators); // [37, 93.2, true, "User83"]
 
 const weightedGenerators = [
     { generator: () => Math.floor(Math.random() * 100), weight: 0.5 },
