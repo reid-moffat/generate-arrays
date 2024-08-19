@@ -157,6 +157,11 @@ class NumberParameter extends Parameter {
     }
 }
 
+type BooleanParameterParams = {
+    name: string,
+    optional?: boolean
+};
+
 /**
  * Parameter that must be a boolean
  */
@@ -165,7 +170,7 @@ class BooleanParameter extends Parameter {
     private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, [2],
         { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
 
-    constructor(name: string, optional: boolean = false) {
+    constructor({ name, optional = false }: BooleanParameterParams) {
         super(name, optional);
     }
 
