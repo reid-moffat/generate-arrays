@@ -1,4 +1,4 @@
-import { integer, decimal, string } from "../src/index.ts";
+import { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, name } from "../src/index.ts";
 import { expect } from "chai";
 import { NumberParameter, TestFailureParams, TestFailures } from "./Utils/TestFailures.ts";
 import { getPath } from "./Utils/Utils.ts";
