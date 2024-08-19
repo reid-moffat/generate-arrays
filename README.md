@@ -1,5 +1,9 @@
 # generate-arrays
 
+[![npm](https://img.shields.io/npm/v/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+[![npm](https://img.shields.io/npm/dt/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+[![npm](https://img.shields.io/npm/l/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+
 Simple, flexible, lightweight and fast array generation
 
 ## 📦 Installation
