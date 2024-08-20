@@ -59,7 +59,7 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.uniform,
             parameters: [
-                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new ArrayLengthParameter("length"),
                 new GenericParameter("value")
             ]
         };
@@ -95,7 +95,7 @@ suite("Basic array functions", () => {
             func: GenerateArray.custom,
             parameters: [
                 new FunctionParameter("value"),
-                new NumberParameter({ name: "length", integer: true, min: 1 })
+                new ArrayLengthParameter("length")
             ]
         };
         TestFailures.run(failureTestData);
@@ -160,7 +160,7 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.integers,
             parameters: [
-                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new ArrayLengthParameter("length"),
                 new NumberParameter({ name: "min", optional: true }),
                 new NumberParameter({ name: "max", optional: true })
             ]
@@ -200,7 +200,7 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.decimals,
             parameters: [
-                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new ArrayLengthParameter("length"),
                 new NumberParameter({ name: "min", optional: true }),
                 new NumberParameter({ name: "max", optional: true }),
             ]
@@ -238,7 +238,7 @@ suite("Basic array functions", () => {
             path: getPath(this),
             func: GenerateArray.strings,
             parameters: [
-                new NumberParameter({ name: "length", integer: true, min: 1 }),
+                new ArrayLengthParameter("length"),
                 new NumberParameter({ name: "minLength", integer: true, min: 1, optional: true }),
                 new NumberParameter({ name: "maxLength", integer: true, optional: true }),
                 new BooleanParameter({ name: "specialChars", optional: true })
