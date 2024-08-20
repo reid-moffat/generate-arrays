@@ -74,7 +74,7 @@ class GenerateArray {
      * GenerateArray.custom(() => Math.floor(Math.random() * 10), 6) -> [7, 2, 5, 9, 1, 3] (possible values)
      *
      * @param generator Function to generate each array value
-     * @param length Size of array
+     * @param length Size of array (or an array range [min, max])
      */
     public static custom = (generator: () => any, length: ArrayLength): any[] => {
 
@@ -136,7 +136,7 @@ class GenerateArray {
      * GenerateArray.integers(6) -> [23, 59, 2, 91, 45, 21] (possible values)
      * GenerateArray.integers(5, 10, 20) -> [15, 17, 12, 19, 11] (possible values)
      *
-     * @param length Size of array (>= 1)
+     * @param length Size of array >= 1 (or an array range [min, max])
      * @param min Minimum value (inclusive), default 0
      * @param max Maximum value (exclusive), default 100
      */
@@ -158,7 +158,7 @@ class GenerateArray {
      * GenerateArray.decimals(5) -> [0.12345, 0.6789, 0.101112, 0.131415, 0.161718] (possible values)
      * GenerateArray.decimals(6, 0, 10) -> [7.12345, 2.6789, 5.101112, 9.131415, 1.161718, 3.192021] (possible values)
      *
-     * @param length Size of array (>= 1)
+     * @param length Size of array >= 1 (or an array range [min, max])
      * @param min Minimum value (inclusive), default 0
      * @param max Maximum value (exclusive), default 1
      */
@@ -175,7 +175,7 @@ class GenerateArray {
     /**
      * Generate an array of random strings of the specified length within the given range
      *
-     * @param length Size of array (>= 1)
+     * @param length Size of array >= 1 (or an array range [min, max])
      * @param minLength Minimum length of string (>= 1), default 1
      * @param maxLength Maximum length of string (>= minLength), default 10
      * @param specialChars If true, includes special characters (!@#$%^&*()_+/\{}[]|;:'",.<>?`~) in the generated
@@ -208,7 +208,7 @@ class GenerateArray {
      * Example:
      * CustomArray.random(5, [() => Math.random(), () => Math.floor(Math.random() * 10)]) -> [0.12345, 7, 0.101112, 1, 3] (possible values)
      *
-     * @param length Size of array to be generated (>= 1)
+     * @param length Size of array to be generated >= 1 (or an array range [min, max])
      * @param generators Array of functions that generate a value (value can be anything)
      */
     public static generators = (length: ArrayLength, generators: (() => any)[]): any[] => {
@@ -229,7 +229,7 @@ class GenerateArray {
      * Example:
      * CustomArray.randomChance(7, [{ generator: () => Math.random(), chance: 0.3 }, { generator: () => Math.floor(Math.random() * 10), chance: 0.7 }]) -> [4, 0.12345, 7, 0.101112, 7, 1, 8] (possible values)
      *
-     * @param length Size of array to be generated (>= 1)
+     * @param length Size of array to be generated >= 1 (or an array range [min, max])
      * @param generators Array of objects in the form { generator: () => any, chance: number }. Chance for all
      * generators combined must add up to 1
      */
@@ -275,7 +275,7 @@ class GenerateArray {
      * Generates an array of the specified length with the specified generators. Each generator is called a fixed
      * amount of times
      *
-     * @param length Size of array to be generated (>= 1)
+     * @param length Size of array to be generated >= 1 (or an array range [min, max])
      * @param generators Array of objects in the form { generator: () => any, count: number }. Generators must
      * return a value (any value), and the count of all generators combined must equal the length of the array
      * @param random If true (default), the order of the generated values is random. If false, all values from a
@@ -340,7 +340,8 @@ class GenerateArray {
      * GenerateArray.emptyND(1, 3) -> [[[]]] (There is 1 array in each array, and 3 levels of arrays)
      * GenerateArray.emptyND(2, 3) -> [[[], []], [[], []]] (There are 2 arrays in each array, and 3 levels of arrays)
      *
-     * @param length Number of arrays in each array (>= 1), excluding the base array (array at the lowest depth)
+     * @param length Number of arrays in each array (>= 1, or an array range [min, max]), excluding the base array
+     * (array at the lowest depth)
      * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Dept of 1 is
      * just [] regardless of length, so not allowed to reduce confusion
      */
@@ -364,7 +365,7 @@ class GenerateArray {
      * GenerateArray.uniformND([1, 2, 3], 3, 2) -> [[1, 2, 3], [1, 2, 3], [1, 2, 3]]
      *
      * @param value Value of the base array. If not an array, the base array will be an array filled with this value.
-     * @param length Number of arrays in each array (>= 1), excluding the base array (array at the lowest depth)
+     * @param length Number of arrays in each array (>= 1, or an array range [min, max]), excluding the base array (array at the lowest depth)
      * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Depth of 1
      * isn't included to reduce confusion, as it would just return the value in an array (or the value if it's an array)
      * e.g. MultidimensionalArray.uniform([1, 2, 3], 3, 1) -> [1, 2, 3]
@@ -394,7 +395,8 @@ class GenerateArray {
      * @param generator Function to generate the base array. Note this function is called once for each base array,
      * so to have multiple values, this function should return an array of multiple values (e.g.
      * GenerateArray.custom(() => [1, 2, 3], len, depth))
-     * @param length Number of arrays in each array (>= 1), excluding the base array (array at the lowest depth)
+     * @param length Number of arrays in each array (>= 1, or an array range [min, max]), excluding the base array (array
+     * at the lowest depth)
      * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Depth of 1 isn't
      * allowed to reduce confusion as it would just put the value of one function call in an array, e.g. () => 7 -> [7]
      * (to get a 1-D array with multiple values, use GenerateArray.custom(() => ..., len) instead)
