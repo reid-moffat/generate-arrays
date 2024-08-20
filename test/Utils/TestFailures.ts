@@ -1,6 +1,7 @@
 import SuiteMetrics from "suite-metrics";
 import GenerateArrayError from "../../src/GenerateArrayError.ts";
 import { expect } from "chai";
+import Validation from "../../src/Validation.ts";
 
 type TestFailureParams = {
     path: string[],
@@ -260,7 +261,21 @@ class ArrayLengthParameter extends Parameter {
     }
 
     public getTestValues(): TestData[] {
-        const values = this.getInvalidValues((value) => !["number", "array"].includes(typeof value));
+        const values = this.getInvalidValues((value) => {
+            if (!Number.isInteger(value) && !Array.isArray(value)) {
+                return true;
+            }
+            if (Array.isArray(value) && (value.length !== 2 || !value.every((val) => Number.isInteger(val))
+                || value[0] > value[1] || value[0] < 1 || value[1] > Validation.maxArrayLength)) {
+                return true;
+            }
+            if (Number.isInteger(value) && (value < 1 || value > Validation.maxArrayLength)) {
+                return true;
+            }
+
+            return false;
+        });
+
         return Parameter.makeValuesArray(this.name, values);
     }
 
