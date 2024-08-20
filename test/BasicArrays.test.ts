@@ -6,7 +6,9 @@ import {
     NumberParameter,
     GenericParameter,
     BooleanParameter,
-    FunctionParameter, TestFailureParams
+    FunctionParameter,
+    TestFailureParams,
+    ArrayLengthParameter
 } from "./Utils/TestFailures.ts";
 import { getPath } from "./Utils/Utils.ts";
 
@@ -19,7 +21,7 @@ suite("Basic array functions", () => {
         const failureTestData: TestFailureParams = {
             path: getPath(this),
             func: GenerateArray.blank,
-            parameters: new NumberParameter({ name: "length", integer: true, min: 1 })
+            parameters: new ArrayLengthParameter("length")
         };
         TestFailures.run(failureTestData);
 
