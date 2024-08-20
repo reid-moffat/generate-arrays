@@ -56,14 +56,14 @@ class GenerateArray {
      * Example:
      * GenerateArray.uniform(5, 7) -> [7, 7, 7, 7, 7]
      *
-     * @param length Size of array
+     * @param length Size of array (or an array range [min, max])
      * @param value Value to fill array with
      */
-    public static uniform(length: number, value: any) {
+    public static uniform(length: ArrayLength, value: any) {
 
         const len = Validation.arrayLength(length, "length");
 
-        return Array(length).fill(value);
+        return Array(len).fill(value);
     }
 
     /**
@@ -76,12 +76,12 @@ class GenerateArray {
      * @param generator Function to generate each array value
      * @param length Size of array
      */
-    public static custom = (generator: () => any, length: number): any[] => {
+    public static custom = (generator: () => any, length: ArrayLength): any[] => {
 
         Validation.function(generator, "generator");
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
 
-        return Array.from({ length }, generator);
+        return Array.from({ length: len }, generator);
     }
 
     /**
@@ -140,14 +140,14 @@ class GenerateArray {
      * @param min Minimum value (inclusive), default 0
      * @param max Maximum value (exclusive), default 100
      */
-    public static integers = (length: number, min: number = 0, max: number = 100) => {
+    public static integers = (length: ArrayLength, min: number = 0, max: number = 100) => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
         Validation.integer(min, "min");
         Validation.integer(max, "max", min);
 
         const range = max - min;
-        return Array.from({ length }, () => Math.floor(Math.random() * range) + min);
+        return Array.from({ length: len }, () => Math.floor(Math.random() * range) + min);
     }
 
     /**
@@ -162,14 +162,14 @@ class GenerateArray {
      * @param min Minimum value (inclusive), default 0
      * @param max Maximum value (exclusive), default 1
      */
-    public static decimals = (length: number, min: number = 0, max: number = 1) => {
+    public static decimals = (length: ArrayLength, min: number = 0, max: number = 1) => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
         Validation.number(min, "min");
         Validation.number(max, "max", min);
 
         const range = max - min;
-        return Array.from({ length }, () => Math.random() * range + min);
+        return Array.from({ length: len }, () => Math.random() * range + min);
     }
 
     /**
@@ -181,9 +181,9 @@ class GenerateArray {
      * @param specialChars If true, includes special characters (!@#$%^&*()_+/\{}[]|;:'",.<>?`~) in the generated
      * strings. By default, only letters and numbers are used (a-zA-Z0-9)
      */
-    public static strings = (length: number, minLength: number = 1, maxLength: number = 10, specialChars: boolean = false) => {
+    public static strings = (length: ArrayLength, minLength: number = 1, maxLength: number = 10, specialChars: boolean = false) => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
         Validation.integer(minLength, "minLength", 1);
         Validation.integer(maxLength, "maxLength", minLength);
         Validation.boolean(specialChars, "specialChars");
@@ -192,7 +192,7 @@ class GenerateArray {
         const chars = specialChars ? this._charactersWithSpecial : this._characters;
         const charLength = chars.length;
 
-        return Array.from({ length }, () => {
+        return Array.from({ length: len }, () => {
             const len = Math.floor(Math.random() * range) + minLength;
             return Array.from({ length: len }, () => chars[Math.floor(Math.random() * charLength)]).join("");
         });
@@ -211,15 +211,15 @@ class GenerateArray {
      * @param length Size of array to be generated (>= 1)
      * @param generators Array of functions that generate a value (value can be anything)
      */
-    public static generators = (length: number, generators: (() => any)[]): any[] => {
+    public static generators = (length: ArrayLength, generators: (() => any)[]): any[] => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
 
         for (let i = 0; i < generators.length; i++) {
             Validation.function(generators[i], "generators");
         }
 
-        return Array.from({ length }, () => generators[Math.floor(Math.random() * generators.length)]());
+        return Array.from({ length: len }, () => generators[Math.floor(Math.random() * generators.length)]());
     }
 
     /**
@@ -233,9 +233,9 @@ class GenerateArray {
      * @param generators Array of objects in the form { generator: () => any, chance: number }. Chance for all
      * generators combined must add up to 1
      */
-    public static weightedGenerators = (length: number, generators: { generator: () => any, chance: number }[]) => {
+    public static weightedGenerators = (length: ArrayLength, generators: { generator: () => any, chance: number }[]) => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
 
         let totalChance = 0;
         for (let i = 0; i < generators.length; ++i) {
@@ -258,7 +258,7 @@ class GenerateArray {
         }
 
         const result: any[] = [];
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < len; i++) {
             const random = Math.random();
             for (let j = 0; j < cumulativeChances.length; j++) {
                 if (random <= cumulativeChances[j]) {
@@ -281,9 +281,9 @@ class GenerateArray {
      * @param random If true (default), the order of the generated values is random. If false, all values from a
      * specific generator are next to each other in a sequence
      */
-    public static fixedCountGenerators = (length: number, generators: { generator: () => any, count: number }[], random: boolean = true) => {
+    public static fixedCountGenerators = (length: ArrayLength, generators: { generator: () => any, count: number }[], random: boolean = true) => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
 
         let totalCount = 0;
         for (let i = 0; i < generators.length; ++i) {
@@ -291,7 +291,7 @@ class GenerateArray {
             Validation.integer(generators[i].count, "count", 1);
             totalCount += generators[i].count;
         }
-        if (Math.abs(totalCount - length) > 1e-6) {
+        if (Math.abs(totalCount - len) > 1e-6) {
             throw new Error(`Total count of all generators must equal the length of the array (${length}): count '${totalCount}' is invalid`);
         }
 
@@ -344,12 +344,12 @@ class GenerateArray {
      * @param depth Dimension of the returned array (>= 2), i.e. how many layers of arrays there are. Dept of 1 is
      * just [] regardless of length, so not allowed to reduce confusion
      */
-    public static emptyND = (length: number, depth: number): any[] => {
+    public static emptyND = (length: ArrayLength, depth: number): any[] => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
         Validation.integer(depth, "depth", 2);
 
-        return this._deepArray([], length, depth);
+        return this._deepArray([], len, depth);
     }
 
     /**
@@ -369,9 +369,9 @@ class GenerateArray {
      * isn't included to reduce confusion, as it would just return the value in an array (or the value if it's an array)
      * e.g. MultidimensionalArray.uniform([1, 2, 3], 3, 1) -> [1, 2, 3]
      */
-    public static uniformND = (value: any, length: number, depth: number): any[] => {
+    public static uniformND = (value: any, length: ArrayLength, depth: number): any[] => {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
         Validation.integer(depth, "depth", 2);
 
         const baseArray = [];
@@ -381,7 +381,7 @@ class GenerateArray {
             baseArray.push(value);
         }
 
-        return this._deepArray(baseArray, length, depth);
+        return this._deepArray(baseArray, len, depth);
     }
 
     /**
@@ -399,13 +399,13 @@ class GenerateArray {
      * allowed to reduce confusion as it would just put the value of one function call in an array, e.g. () => 7 -> [7]
      * (to get a 1-D array with multiple values, use GenerateArray.custom(() => ..., len) instead)
      */
-    public static customND = (generator: () => any[], length: number, depth: number): any[] => {
+    public static customND = (generator: () => any[], length: ArrayLength, depth: number): any[] => {
 
         Validation.function(generator, "generator", true);
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
         Validation.integer(depth, "depth", 2);
 
-        return this._deepArray(generator, length, depth);
+        return this._deepArray(generator, len, depth);
     }
 }
 
