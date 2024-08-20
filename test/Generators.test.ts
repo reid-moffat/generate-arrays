@@ -134,4 +134,36 @@ suite("Generators", () => {
         });
     });
 
+    suite("uuid", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: uuid,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = uuid();
+            expect(gen()).to.be.a("string");
+        });
+    });
+
+    suite("ipAddress", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: ipAddress,
+            parameters: [
+                new BooleanParameter({name: "IPv4", optional: true})
+            ]
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = ipAddress();
+            expect(gen()).to.be.a("string");
+        });
+    });
+
 });
