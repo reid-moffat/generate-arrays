@@ -70,9 +70,8 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
  * @param trueChance Chance for the value to be true (between 0 and 1)
  */
 const boolean = (trueChance: number = 0.5) => {
-    if (trueChance < 0 || trueChance > 1) {
-        throw new GenerateArrayError('Chance for true value must be between 0 and 1');
-    }
+
+    Validation.number(trueChance, 'trueChance', 0, 1);
 
     return () => Math.random() < trueChance;
 }
