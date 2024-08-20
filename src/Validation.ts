@@ -20,13 +20,13 @@ class Validation {
         }
     }
 
-    public static arrayLength(length: any, paramName: string, min: number = 1): number {
+    public static arrayLength(length: any, paramName: string): number {
         if (typeof length === "number") {
             if (!Number.isInteger(length)) {
                 throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(length)}' is invalid`);
             }
-            if (length < min) {
-                throw new GenerateArrayError(`Parameter '${str(paramName)}' must be at least ${str(min)}: value '${str(length)}' is invalid`);
+            if (length < 1) {
+                throw new GenerateArrayError(`Parameter '${str(paramName)}' must be at least ${str(1)}: value '${str(length)}' is invalid`);
             }
             if (length > Validation.maxArrayLength) {
                 throw new GenerateArrayError(`Invalid array length: ${str(length)} exceeds ${Validation.maxArrayLength} (2^32 - 1)`);
@@ -44,8 +44,8 @@ class Validation {
                 throw new GenerateArrayError(`Parameter '${str(paramName)}' must have an integer as range max: value '${str(length[1])}' is invalid`);
             }
 
-            if (length[0] < min) {
-                throw new GenerateArrayError(`Parameter '${str(paramName)}' min value must be at least ${str(min)}: value '${str(length[0])}' is invalid`);
+            if (length[0] < 1) {
+                throw new GenerateArrayError(`Parameter '${str(paramName)}' min value must be at least ${str(1)}: value '${str(length[0])}' is invalid`);
             }
             if (length[0] > length[1]) {
                 throw new GenerateArrayError(`Parameter '${str(paramName)}' min value must be less than max value: value '${str(length)}' is invalid`);
