@@ -57,6 +57,8 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
         }
     }
 
+    Validation.arrayLength(length, 'Length');
+
     // @ts-ignore
     return () => Array.from({ length }, () => String.fromCharCode(Math.floor(Math.random() * (max - min + 1)) + min)).join('');
 }
