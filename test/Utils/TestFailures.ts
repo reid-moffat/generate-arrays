@@ -90,7 +90,12 @@ abstract class Parameter {
     }
 
     protected getInvalidValues(filter: (value: any) => boolean): any[] {
-        return this.allValues.filter(filter);
+        const values = this.allValues.filter(filter);
+        if (this.optional) {
+            values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
+        }
+
+        return values;
     }
 
     // Returns an array of invalid values to test
@@ -131,12 +136,6 @@ class NumberParameter extends Parameter {
     private readonly max: number | undefined;
     private readonly integer: boolean;
 
-    private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
-        [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
-
-    private readonly potentialValues: number[] = [-Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1,
-        -0.0000000001, 0, 0.0000000001, 0.12, 1, 1.01, 2, 3, 65.8, 93, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity];
-
     constructor({ name, integer = false, min, max, optional = false }: NumberParameterParams) {
         super(name, optional);
         this.min = min;
@@ -145,17 +144,15 @@ class NumberParameter extends Parameter {
     }
 
     public getTestValues(): TestData[] {
-        const values: any[] = this.values;
-        if (this.optional) {
-            values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
-        }
-
-        this.potentialValues.forEach((value: number) => {
-            if (this.integer && !Number.isInteger(value)) {
-                values.push(value);
-            } else if ((this.min !== undefined && value < this.min) || (this.max !== undefined && value > this.max)) {
-                values.push(value);
+        const values = this.getInvalidValues((value) => {
+            if (typeof value !== "number" || (this.integer && !Number.isInteger(value))) {
+                return true;
             }
+            if ((this.min !== undefined && value < this.min) || (this.max !== undefined && value > this.max)) {
+                return true;
+            }
+
+            return false;
         });
 
         return Parameter.makeValuesArray(this.name, values);
@@ -183,19 +180,12 @@ type BooleanParameterParams = {
  */
 class BooleanParameter extends Parameter {
 
-    private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, [2],
-        { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
-
     constructor({ name, optional = false }: BooleanParameterParams) {
         super(name, optional);
     }
 
     public getTestValues(): TestData[] {
-        const values: any[] = this.values;
-        if (this.optional) {
-            values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
-        }
-
+        const values = this.getInvalidValues((value) => typeof value !== "boolean");
         return Parameter.makeValuesArray(this.name, values);
     }
 
@@ -209,9 +199,6 @@ class BooleanParameter extends Parameter {
  */
 class FunctionParameter extends Parameter {
 
-    private readonly values: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, [2],
-        { key: "value" }, { value: 1 }, true, false, BigInt(3), Symbol("1"), NaN];
-
     private readonly returnType: string | undefined;
 
     constructor(name: string, returnType?: string, optional: boolean = false) {
@@ -220,10 +207,24 @@ class FunctionParameter extends Parameter {
     }
 
     public getTestValues(): TestData[] {
-        const values: any[] = this.values;
-        if (this.optional) {
-            values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
-        }
+        const values: any[] = this.getInvalidValues((value) => {
+            if (typeof value !== "function") {
+                return true;
+            }
+
+            let result;
+            try {
+                result = (value as Function)();
+            } catch (e) {
+                return true;
+            }
+
+            if (this.returnType && typeof result !== this.returnType) {
+                return true;
+            }
+
+            return false;
+        });
 
         return Parameter.makeValuesArray(this.name, values);
     }
