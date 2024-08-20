@@ -1,7 +1,9 @@
+import * as Mocha from 'mocha';
+
 /**
  * Gets the path of the current suite
  */
-const getPath = function(suite: Mocha.Suite): string[] {
+const getPath = function(suite: Mocha.Suite | Mocha.Context): string[] {
 
     if (suite === undefined) {
         throw new Error("Suite is undefined in getPath - make sure the suite this is being called from is using the" +
@@ -9,11 +11,11 @@ const getPath = function(suite: Mocha.Suite): string[] {
     }
 
     const suites = [];
-    let currentSuite: Mocha.Suite | undefined = suite;
+    let current: Mocha.Suite | Mocha.Runnable | undefined = suite instanceof Mocha.Context ? suite.test : suite;
 
-    while (currentSuite && currentSuite.title) {
-        suites.unshift(currentSuite.title);
-        currentSuite = currentSuite.parent;
+    while (current && current.title) {
+        suites.unshift(current.title);
+        current = current.parent;
     }
 
     return suites;
