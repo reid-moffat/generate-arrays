@@ -1,6 +1,12 @@
 import { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, name } from "../src/index.ts";
 import { expect } from "chai";
-import { BooleanParameter, NumberParameter, TestFailureParams, TestFailures } from "./Utils/TestFailures.ts";
+import {
+    ArrayLengthParameter,
+    BooleanParameter,
+    NumberParameter,
+    TestFailureParams,
+    TestFailures
+} from "./Utils/TestFailures.ts";
 import { getPath } from "./Utils/Utils.ts";
 
 suite("Generators", () => {
@@ -68,7 +74,7 @@ suite("Generators", () => {
             path: getPath(this),
             func: string,
             parameters: [
-                new NumberParameter({ name: "length", integer: true, optional: true }),
+                new ArrayLengthParameter("length", true),
                 new BooleanParameter({ name: "specialChars", optional: true })
             ]
         }

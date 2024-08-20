@@ -70,14 +70,25 @@ abstract class Parameter {
     protected readonly optional: boolean;
 
     private readonly allValues: any[] = [
-        undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
-        [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"),
+        // Misc
+        undefined, null, true, false, BigInt(3), Symbol("1"), () => Math.floor(Math.random() * 100),
+        () => { throw new Error("Test error") }, () => { return "string" }, () => { return 1; }, () => { return true; },
 
+        // Numbers
         -Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1, -0.0000000001, 0, 0.0000000001,
         0.12, 1.01, 65.8, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity, NaN,
 
-        [], [0], [1], [2], [3], [undefined], [null], [7, 2], [3, 2], [1, Math.pow(2, 32)], ['1', '2'], ['1', 2], [1, '2'],
-        ["7", "1"], [undefined, 2], [null, 3], [undefined, null], [-1, 4], [0, 7], [1.1, 7], [2.4, 7], [3.7, 7], [5, 7.1]
+        // Strings
+        "", "0", "1", "-1.5", "7.6", "-1", "-427", ".", "\\", "a b c d e", "hello", "test", "string", "value", "key",
+        "boolean", "number", "function", "object", "array", "bigint", "symbol", "undefined", "null", "NaN", "Infinity",
+
+        // Arrays
+        [], [0], [1], [2], [3], [156], [undefined], [null], [7, 2], [3, 2], [1, Math.pow(2, 32)], ['1', '2'], ['1', 2],
+        [1, '2'], ["7", "1"], [undefined, 2], [null, 3], [undefined, null], [-1, 4], [0, 7], [1.1, 7], [2.4, 7], [3.7, 7],
+        [5, 7.1], [1, 2], [2.2, 4.7], [1, 2, 3, 4, 5], [7, 2, 9, 4],
+
+        // Objects
+        {}, { key: "value" }, { value: 1 }, { value: 1, key: "value" }, { key: 1 }, { key: 1, value: "value" }, { name: "test" }
     ];
 
     protected constructor(name: string, optional: boolean) {
@@ -257,8 +268,8 @@ class GenericParameter extends Parameter {
  */
 class ArrayLengthParameter extends Parameter {
 
-    constructor(name: string) {
-        super(name, false);
+    constructor(name: string, optional: boolean = false) {
+        super(name, optional);
     }
 
     public getTestValues(): TestData[] {
