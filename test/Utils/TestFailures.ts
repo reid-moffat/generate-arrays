@@ -68,8 +68,16 @@ abstract class Parameter {
     protected readonly name: string;
     protected readonly optional: boolean;
 
-    private readonly invalidValues: any[] = [undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
-        [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"), NaN];
+    private readonly allValues: any[] = [
+        undefined, null, "", "0", "1", "-1.5", ".", "\\", "a b c d e", [], {}, true, false,
+        [2], { key: "value" }, { value: 1 }, () => Math.floor(Math.random() * 100), BigInt(3), Symbol("1"),
+
+        -Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1, -0.0000000001, 0, 0.0000000001,
+        0.12, 1.01, 65.8, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity, NaN,
+
+        [], [0], [1], [2], [3], [undefined], [null], [7, 2], [3, 2], [1, Math.pow(2, 32)], ['1', '2'], ['1', 2], [1, '2'],
+        ["7", "1"], [undefined, 2], [null, 3], [undefined, null], [-1, 4], [0, 7], [1.1, 7], [2.4, 7], [3.7, 7], [5, 7.1]
+    ];
 
     protected constructor(name: string, optional: boolean) {
         this.name = name;
@@ -80,8 +88,8 @@ abstract class Parameter {
         return this.name;
     }
 
-    protected getInvalidValues(exclude: string[]): any[] {
-        return this.invalidValues.filter((value: any) => !exclude.includes(typeof value));
+    protected getInvalidValues(filter: (value: any) => boolean): any[] {
+        return this.allValues.filter(filter);
     }
 
     // Returns an array of invalid values to test
@@ -247,22 +255,13 @@ class GenericParameter extends Parameter {
  */
 class ArrayLengthParameter extends Parameter {
 
-    private readonly values: any[] = this.getInvalidValues(["number", "array"]).concat([
-        // Invalid number values
-        -Infinity, -1e+15 + 0.1, Number.MIN_SAFE_INTEGER, -54, -37.9, -1.2, -0.5, -1, -0.0000000001, 0, 0.0000000001,
-        0.12, 1.01, 65.8, Math.pow(2, 32), Number.MAX_SAFE_INTEGER, 1e+15 + 0.1, Infinity,
-
-        // Invalid array values
-        [], [0], [1], [2], [3], [undefined], [null], [7, 2], [3, 2], [1, Math.pow(2, 32)], ['1', '2'], ['1', 2], [1, '2'],
-        ["7", "1"], [undefined, 2], [null, 3], [undefined, null], [-1, 4], [0, 7], [1.1, 7], [2.4, 7], [3.7, 7], [5, 7.1]
-    ]);
-
     constructor(name: string) {
         super(name, false);
     }
 
     public getTestValues(): TestData[] {
-        return Parameter.makeValuesArray(this.name, this.values);
+        const values = this.getInvalidValues((value) => !["number", "array"].includes(typeof value));
+        return Parameter.makeValuesArray(this.name, values);
     }
 
     public getValidValue(): any {
