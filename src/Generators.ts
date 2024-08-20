@@ -130,6 +130,9 @@ const uuid = () => {
  * @param IPv4 Set to true to generate an IPv4 address
  */
 const ipAddress = (IPv4 = false) => {
+
+    Validation.boolean(IPv4, 'IPv4');
+
     if (IPv4) {
         return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
     }
