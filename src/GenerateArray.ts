@@ -1,6 +1,8 @@
 import Validation from "./Validation.ts";
 import GenerateArrayError from "./GenerateArrayError.js";
 
+type ArrayLength = number | [number, number];
+
 class GenerateArray {
 
     private static readonly _characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -39,9 +41,9 @@ class GenerateArray {
      * Example:
      * GenerateArray.blank(5) -> [undefined, undefined, undefined, undefined, undefined]
      *
-     * @param length Size of array
+     * @param length Size of array: a set length or a range [min, max] (both inclusive, random length will be chosen)
      */
-    public static blank(length: number) {
+    public static blank(length: ArrayLength) {
 
         Validation.arrayLength(length, "length");
 
