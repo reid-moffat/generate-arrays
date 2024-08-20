@@ -20,7 +20,7 @@ class Validation {
         }
     }
 
-    public static arrayLength(length: any, paramName: string, min: number = 1): void {
+    public static arrayLength(length: any, paramName: string, min: number = 1): number {
         if (typeof length === "number") {
             if (!Number.isInteger(length)) {
                 throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(length)}' is invalid`);
@@ -31,6 +31,8 @@ class Validation {
             if (length > Validation.maxArrayLength) {
                 throw new GenerateArrayError(`Invalid array length: ${str(length)} exceeds ${Validation.maxArrayLength} (2^32 - 1)`);
             }
+
+            return length;
         } else if (Array.isArray(length)) {
             if (length.length !== 2) {
                 throw new GenerateArrayError(`Parameter '${str(paramName)}' must have the array format [min, max]: value '${str(length)}' is invalid`);
@@ -51,6 +53,8 @@ class Validation {
             if (length[1] > Validation.maxArrayLength) {
                 throw new GenerateArrayError(`Invalid array length: ${str(length[1])} exceeds ${Validation.maxArrayLength} (2^32 - 1)`);
             }
+
+            return Math.floor(Math.random() * (length[1] - length[0] + 1) + length[0]);
         } else {
             throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer or a [min, max] array: value '${str(length)}' is invalid`);
         }

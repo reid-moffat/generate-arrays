@@ -45,9 +45,9 @@ class GenerateArray {
      */
     public static blank(length: ArrayLength) {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
 
-        return Array(length);
+        return Array(len);
     }
 
     /**
@@ -61,7 +61,7 @@ class GenerateArray {
      */
     public static uniform(length: number, value: any) {
 
-        Validation.arrayLength(length, "length");
+        const len = Validation.arrayLength(length, "length");
 
         return Array(length).fill(value);
     }
