@@ -21,7 +21,7 @@ class Validation {
     }
 
     public static arrayLength(length: any, paramName: string, min: number = 1): void {
-        if (typeof length !== "number") {
+        if (typeof length === "number") {
             if (!Number.isInteger(length)) {
                 throw new GenerateArrayError(`Parameter '${str(paramName)}' must be an integer: value '${str(length)}' is invalid`);
             }
