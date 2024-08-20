@@ -25,6 +25,10 @@ yarn add generate-arrays
 ```js
 import { GenerateArray } from 'generate-arrays';
 
+GenerateArray.from(value); // Turns any value into an array
+
+GenerateArray.empty(4); // [undefined, undefined, undefined, undefined]
+
 GenerateArray.uniform(4, "Test"); // ["Test", "Test", "Test", "Test"]
 
 GenerateArray.custom(() => Math.floor(Math.random() * 100), 4); // [37, 1, 93, 56]
