@@ -84,4 +84,21 @@ suite("Generators", () => {
         });
     });
 
+    suite("boolean", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: boolean,
+            parameters: [
+                new NumberParameter({ name: "trueChance", min: 0, max: 1, optional: true })
+            ]
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = boolean();
+            expect(gen()).to.be.a("boolean");
+        });
+    });
+
 });

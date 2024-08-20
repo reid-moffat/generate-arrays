@@ -67,7 +67,7 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
 /**
  * Generator for a random boolean value
  *
- * @param trueChance Chance for the value to be true (between 0 and 1)
+ * @param trueChance Chance for the value to be true (between 0 and 1), default is 0.5
  */
 const boolean = (trueChance: number = 0.5) => {
 
