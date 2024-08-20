@@ -83,6 +83,11 @@ const boolean = (trueChance: number = 0.5) => {
  * @param max Upper bound for the date
  */
 const date = (min: Date = new Date(0), max: Date = new Date()) => {
+
+    if (!(min instanceof Date) || !(max instanceof Date)) {
+        throw new GenerateArrayError('Date parameters must be of type Date');
+    }
+
     return () => new Date(min.getTime() + Math.random() * (max.getTime() - min.getTime()));
 }
 

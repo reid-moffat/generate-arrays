@@ -101,4 +101,19 @@ suite("Generators", () => {
         });
     });
 
+    suite("date", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: date,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = date();
+            expect(gen()).to.be.a("date");
+        });
+    });
+
 });
