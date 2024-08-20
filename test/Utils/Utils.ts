@@ -1,7 +1,7 @@
 /**
  * Gets the path of the current suite
  */
-const getPath = function(suite: any) {
+const getPath = function(suite: Mocha.Suite): string[] {
 
     if (suite === undefined) {
         throw new Error("Suite is undefined in getPath - make sure the suite this is being called from is using the" +
@@ -9,7 +9,7 @@ const getPath = function(suite: any) {
     }
 
     const suites = [];
-    let currentSuite = suite;
+    let currentSuite: Mocha.Suite | undefined = suite;
 
     while (currentSuite && currentSuite.title) {
         suites.unshift(currentSuite.title);
