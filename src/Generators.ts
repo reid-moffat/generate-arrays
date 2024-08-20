@@ -94,12 +94,12 @@ const date = (min: Date = new Date(0), max: Date = new Date()) => {
 /**
  * Generator for a random phone number
  *
- * @param countryCode Country code for this phone number. False (default) = no code, true = random code, number = specific code
+ * @param countryCode Set to true to generate a random country code each time
  * @param format Whether to format the phone number, e.g. +1 (123)-456-7890. If false (default), string is just numbers
  */
-const phone = (countryCode: boolean | number = false, format: boolean = false) => {
+const phone = (countryCode: boolean = false, format: boolean = false) => {
     return () => {
-        const countryCodeStr = countryCode ? (typeof countryCode === 'number' ? countryCode : integer(1, 999)()) : '';
+        const countryCodeStr = countryCode ? "+" + integer(1, 999)() : '';
         const areaCode = integer(100, 999)();
         const exchange = integer(100, 999)();
         const subscriber = integer(1000, 9999)();
@@ -107,7 +107,7 @@ const phone = (countryCode: boolean | number = false, format: boolean = false) =
         if (!format) {
             return `${countryCodeStr}${areaCode}${exchange}${subscriber}`;
         }
-        return `${countryCodeStr ? '+' + countryCodeStr : ''} (${areaCode})-${exchange}-${subscriber}`;
+        return `${countryCodeStr} (${areaCode})-${exchange}-${subscriber}`;
     }
 }
 

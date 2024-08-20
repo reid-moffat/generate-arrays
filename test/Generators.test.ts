@@ -116,4 +116,19 @@ suite("Generators", () => {
         });
     });
 
+    suite("phone", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: phone,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = phone();
+            expect(gen()).to.be.a("string");
+        });
+    });
+
 });
