@@ -166,4 +166,50 @@ suite("Generators", () => {
         });
     });
 
+    suite("email", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: email,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = email();
+            expect(gen()).to.be.a("string");
+        });
+
+    });
+
+    suite("url", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: url,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = url();
+            expect(gen()).to.be.a("string");
+        });
+    });
+
+    suite("name", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: name,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        test("default", () => {
+            const gen = name();
+            expect(gen()).to.be.a("string");
+        });
+    });
+
 });
