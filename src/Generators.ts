@@ -40,25 +40,18 @@ const decimal = (min: number = 0, max: number = 100, precision: number = 5) => {
 const string = (length: number | [number, number] = 10, specialChars: boolean = false) => {
 
     // ASCII min/max
+    Validation.arrayLength(length, 'length');
     Validation.boolean(specialChars, 'specialChars');
     const min = specialChars ? 33 : 48;
     const max = specialChars ? 126 : 122;
 
     // Variable length
     if (Array.isArray(length)) {
-        if (length.length !== 2) {
-            throw new GenerateArrayError('Length range must be an array of two numbers: [min, max]');
-        }
-        Validation.integer(length[0], 'Length min (length[0])', 0);
-        Validation.integer(length[1], 'Length max (length[1])', length[0]);
-
         return () => { // @ts-ignore
             length = Math.floor(Math.random() * (length[1] - length[0] + 1) + length[0]);
             return Array.from({ length }, () => String.fromCharCode(Math.floor(Math.random() * (max - min + 1)) + min)).join('');
         }
     }
-
-    Validation.arrayLength(length, 'length');
 
     // @ts-ignore
     return () => Array.from({ length }, () => String.fromCharCode(Math.floor(Math.random() * (max - min + 1)) + min)).join('');
