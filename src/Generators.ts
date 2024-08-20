@@ -98,6 +98,10 @@ const date = (min: Date = new Date(0), max: Date = new Date()) => {
  * @param format Whether to format the phone number, e.g. +1 (123)-456-7890. If false (default), string is just numbers
  */
 const phone = (countryCode: boolean = false, format: boolean = false) => {
+
+    Validation.boolean(countryCode, 'countryCode');
+    Validation.boolean(format, 'format');
+
     return () => {
         const countryCodeStr = countryCode ? "+" + integer(1, 999)() : '';
         const areaCode = integer(100, 999)();

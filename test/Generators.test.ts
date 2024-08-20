@@ -121,7 +121,10 @@ suite("Generators", () => {
         const failureTestData: TestFailureParams = {
             path: getPath(this),
             func: phone,
-            parameters: []
+            parameters: [
+                new BooleanParameter({ name: "countryCode", optional: true }),
+                new BooleanParameter({ name: "format", optional: true })
+            ]
         }
         TestFailures.run(failureTestData);
 
