@@ -14,7 +14,7 @@ import { getPath } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
-suite("Basic array functions", () => {
+suite("Basic array functions", function() {
 
     suite("Blank array", function() {
 
@@ -28,8 +28,8 @@ suite("Basic array functions", () => {
         suite("Valid input", function() {
 
             const _test = (name: string, length: number) => {
-                test(name, () => {
-                    TestTimer.startTest(getPath(this).concat(name));
+                test(name, function() {
+                    TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.blank(length);
                     TestTimer.stopTest();
 
@@ -65,23 +65,23 @@ suite("Basic array functions", () => {
         };
         TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Value 1 Length 1", () => {
+        suite("Valid input", function() {
+            test("Value 1 Length 1", function() {
                 const arr = GenerateArray.uniform(1, 1);
                 expect(arr).to.deep.equal([1]);
             });
 
-            test("Value 7 Length 3", () => {
+            test("Value 7 Length 3", function() {
                 const arr = GenerateArray.uniform(3, 7);
                 expect(arr).to.deep.equal([7, 7, 7]);
             });
 
-            test("Value [1, 2, 3] Length 3", () => {
+            test("Value [1, 2, 3] Length 3", function() {
                 const arr = GenerateArray.uniform(3, [1, 2, 3]);
                 expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
             });
 
-            test("Value [1, 2, 3] Length 1", () => {
+            test("Value [1, 2, 3] Length 1", function() {
                 const arr = GenerateArray.uniform(1, [1, 2, 3]);
                 expect(arr).to.deep.equal([[1, 2, 3]]);
             });
@@ -100,23 +100,23 @@ suite("Basic array functions", () => {
         };
         TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Value 7 Length 1", () => {
+        suite("Valid input", function() {
+            test("Value 7 Length 1", function() {
                 const arr = GenerateArray.custom(() => 7, 1);
                 expect(arr).to.deep.equal([7]);
             });
 
-            test("Value 7 Length 3", () => {
+            test("Value 7 Length 3", function() {
                 const arr = GenerateArray.custom(() => 7, 3);
                 expect(arr).to.deep.equal([7, 7, 7]);
             });
 
-            test("Value [1, 2, 3] Length 3", () => {
+            test("Value [1, 2, 3] Length 3", function() {
                 const arr = GenerateArray.custom(() => [1, 2, 3], 3);
                 expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
             });
 
-            test("Value [1, 2, 3] Length 1", () => {
+            test("Value [1, 2, 3] Length 1", function() {
                 const arr = GenerateArray.custom(() => [1, 2, 3], 1);
                 expect(arr).to.deep.equal([[1, 2, 3]]);
             });
@@ -136,18 +136,18 @@ suite("Basic array functions", () => {
         };
         TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Length 1", () => {
+        suite("Valid input", function() {
+            test("Length 1", function() {
                 const arr = GenerateArray.counting(1, 7);
                 expect(arr).to.deep.equal([1, 2, 3, 4, 5, 6, 7]);
             });
 
-            test("Length 3", () => {
+            test("Length 3", function() {
                 const arr = GenerateArray.counting(3, 4);
                 expect(arr).to.deep.equal([3, 4]);
             });
 
-            test("Reverse 7 to 3", () => {
+            test("Reverse 7 to 3", function() {
                 const arr = GenerateArray.counting(7, 2, -2);
                 expect(arr).to.deep.equal([7, 5, 3]);
             });
@@ -167,8 +167,8 @@ suite("Basic array functions", () => {
         };
         TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Length 1", () => {
+        suite("Valid input", function() {
+            test("Length 1", function() {
                 const arr = GenerateArray.integers(1);
                 expect(arr).to.be.an("array");
                 expect(arr.length).to.equal(1);
@@ -180,7 +180,7 @@ suite("Basic array functions", () => {
                 });
             });
 
-            test("Length 3", () => {
+            test("Length 3", function() {
                 const arr = GenerateArray.integers(3);
                 expect(arr).to.be.an("array");
                 expect(arr.length).to.equal(3);
@@ -207,8 +207,8 @@ suite("Basic array functions", () => {
         };
         TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Length 1", () => {
+        suite("Valid input", function() {
+            test("Length 1", function() {
                 const arr = GenerateArray.decimals(1);
                 expect(arr).to.be.an("array");
                 expect(arr.length).to.equal(1);
@@ -219,7 +219,7 @@ suite("Basic array functions", () => {
                 });
             });
 
-            test("Length 3", () => {
+            test("Length 3", function() {
                 const arr = GenerateArray.decimals(3);
                 expect(arr).to.be.an("array");
                 expect(arr.length).to.equal(3);
@@ -246,8 +246,8 @@ suite("Basic array functions", () => {
         };
         TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Length 1", () => {
+        suite("Valid input", function() {
+            test("Length 1", function() {
                 const arr = GenerateArray.strings(1);
                 expect(arr).to.be.an("array");
                 expect(arr.length).to.equal(1);
@@ -258,7 +258,7 @@ suite("Basic array functions", () => {
                 });
             });
 
-            test("Length 3", () => {
+            test("Length 3", function() {
                 const arr = GenerateArray.strings(3);
                 expect(arr).to.be.an("array");
                 expect(arr.length).to.equal(3);
@@ -270,5 +270,4 @@ suite("Basic array functions", () => {
             });
         });
     });
-
 });
