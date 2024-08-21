@@ -184,14 +184,14 @@ suite("Generators", () => {
 
             _test([1, 1]);
 
-            for (let i = 0; i < 100; ++i) {
-                const length = Math.floor(Math.random() * 100);
+            for (let i = 0; i < 500; ++i) {
+                const length = Math.floor(Math.random() * 100) + 1;
                 const specialChars = Math.random() < 0.5;
                 _test(length, specialChars);
             }
 
             for (let i = 0; i < 100; ++i) {
-                const min = Math.floor(Math.random() * 100_000);
+                const min = Math.floor(Math.random() * 100_000) + 1;
                 const max = min + Math.floor(Math.random() * 100_000);
                 const specialChars = Math.random() < 0.5;
                 _test([min, max], specialChars);
