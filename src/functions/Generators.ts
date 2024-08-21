@@ -104,7 +104,7 @@ const phone = (countryCode: boolean = false, format: boolean = false): () => str
     Validation.boolean(format, 'format');
 
     return () => {
-        const countryCodeStr = countryCode ? "+" + integer(1, 999)() : '';
+        const countryCodeStr = countryCode ? "+" + integer(1, 999)() + (format ? ' ' : '') : '';
         const areaCode = integer(100, 999)();
         const exchange = integer(100, 999)();
         const subscriber = integer(1000, 9999)();
@@ -112,7 +112,7 @@ const phone = (countryCode: boolean = false, format: boolean = false): () => str
         if (!format) {
             return `${countryCodeStr}${areaCode}${exchange}${subscriber}`;
         }
-        return `${countryCodeStr} (${areaCode})-${exchange}-${subscriber}`;
+        return `${countryCodeStr}(${areaCode})-${exchange}-${subscriber}`;
     }
 }
 
