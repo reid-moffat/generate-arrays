@@ -25,6 +25,38 @@ suite("Array Utils", () => {
             ]
         };
         TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (name: string, arr: any[], depth: number, expected: any[]) => {
+                test(name, () => {
+
+                    console.log(`Running test: ${name}`);
+                    console.log(`Original array: ${printArray(arr)}`);
+
+                    TestTimer.startTest(getPath(this).concat(name));
+                    const result = ArrayUtils.addDimensions(arr, depth);
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${printArray(result)}`);
+                    console.log(`Verifying it equals ${printArray(expected)}...`);
+                    expect(result).to.deep.equal(expected);
+                    console.log("Success!\n");
+                });
+            }
+
+            _test("Single element", [1], 1, [[1]]);
+
+            _test("Single element, depth 2", [1], 2, [[[1]]]);
+
+            _test("Single element, depth 3", [1], 3, [[[[1]]]]);
+
+            _test("Multiple elements, depth 1", [3, 7], 1, [[3, 7]]);
+
+            _test("Multiple elements, depth 2", [12, 2], 2, [[[12, 2]]]);
+
+            _test("One element, depth 1000", [5], 1000, Array(1001).fill(undefined).reduce(acc => [acc], 5));
+        });
     });
 
     suite("Flatten", function() {
