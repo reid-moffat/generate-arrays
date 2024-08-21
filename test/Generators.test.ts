@@ -390,9 +390,28 @@ suite("Generators", function() {
         }
         TestFailures.run(failureTestData);
 
-        test("default", function() {
-            const gen = uuid();
-            expect(gen()).to.be.a("string");
+        suite("Valid input", function() {
+
+            let testNum = 1;
+            const _test = () => {
+                const testName = `Test #${testNum++}`;
+                test(testName, function() {
+                    console.log(`Running test: ${testName}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const value = uuid()();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("string", "Value is not a string");
+                    expect(value).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/, "Value does not match UUID format");
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            for (let i = 0; i < 1000; ++i) {
+                _test();
+            }
         });
     });
 
