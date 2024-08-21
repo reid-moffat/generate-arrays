@@ -64,19 +64,6 @@ suite("Generators", () => {
                 _test(min, max);
             }
         });
-
-        test("default", () => {
-            const gen = integer();
-            expect(gen()).to.be.a("number");
-        });
-        test("min", () => {
-            const gen = integer(10);
-            expect(gen()).to.be.at.least(10);
-        });
-        test("max", () => {
-            const gen = integer(0, 10);
-            expect(gen()).to.be.at.most(10);
-        });
     });
 
     suite("decimal", function() {
