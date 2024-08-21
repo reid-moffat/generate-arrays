@@ -130,8 +130,9 @@ const uuid = (): () => string => {
  * Generator for a random IP address (IPv6 by default)
  *
  * @param IPv6 Set to true to generate an IPv6 address instead of IPv4
+ * @param mask Set to true to generate an IP address with a subnet mask (/x, 0 <= x <= 32 at the end)
  */
-const ipAddress = (IPv6 = false): () => string => {
+const ipAddress = (IPv6: boolean = false, mask: boolean = false): () => string => {
 
     Validation.boolean(IPv6, 'IPv6');
 
@@ -141,11 +142,11 @@ const ipAddress = (IPv6 = false): () => string => {
             for (let i = 0; i < 8; i++) {
                 address.push(integer(0, 65535)().toString(16).padStart(4, '0'));
             }
-            return address.join(':');
+            return address.join(':') + (mask ? '/' + integer(0, 32)() : '');
         };
     }
 
-    return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
+    return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}` + (mask ? '/' + integer(0, 32)() : '');
 }
 
 /**
