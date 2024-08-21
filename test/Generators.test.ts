@@ -12,7 +12,7 @@ import SuiteMetrics from "suite-metrics";
 
 const TestTimer = SuiteMetrics.getInstance();
 
-suite("Generators", () => {
+suite("Generators", function() {
 
     suite("integer", function() {
 
@@ -29,11 +29,11 @@ suite("Generators", () => {
         suite("Valid input", function() {
 
             const _test = (min: number, max: number) => {
-                test(`Min: ${min}, max: ${max}`, () => {
+                test(`Min: ${min}, max: ${max}`, function() {
 
                     console.log(`Running test: Min: ${min}, max: ${max}`);
 
-                    TestTimer.startTest(getPath(this).concat(`Min: ${min}, max: ${max}`));
+                    TestTimer.startTest(getPath(this));
                     const value = integer(min, max)();
                     TestTimer.stopTest();
 
@@ -86,11 +86,11 @@ suite("Generators", () => {
         suite("Valid input", function() {
 
             const _test = (min: number, max: number, precision: number) => {
-                test(`Min: ${min}, max: ${max}, precision: ${precision}`, () => {
+                test(`Min: ${min}, max: ${max}, precision: ${precision}`, function() {
 
                     console.log(`Running test: Min: ${min}, max: ${max}, precision: ${precision}`);
 
-                    TestTimer.startTest(getPath(this).concat(`Min: ${min}, max: ${max}, precision: ${precision}`));
+                    TestTimer.startTest(getPath(this));
                     const value = decimal(min, max, precision)();
                     TestTimer.stopTest();
 
@@ -148,11 +148,11 @@ suite("Generators", () => {
 
             const _test = (length: number | [number, number], specialChars: boolean = false) => {
                 const testName = `Length: ${printOutput(length)}, specialChars: ${specialChars}`;
-                test(testName, () => {
+                test(testName, function() {
 
                     console.log(`Running test: ${testName}`);
 
-                    TestTimer.startTest(getPath(this).concat(testName));
+                    TestTimer.startTest(getPath(this));
                     const value = string(length, specialChars)();
                     TestTimer.stopTest();
 
@@ -213,10 +213,10 @@ suite("Generators", () => {
         suite("Valid input", function() {
 
             const _test = (trueChance: number, expected?: boolean) => {
-                test(`True chance: ${trueChance}`, () => {
+                test(`True chance: ${trueChance}`, function() {
                     console.log(`Running test: True chance: ${trueChance}`);
 
-                    TestTimer.startTest(getPath(this).concat(`True chance: ${trueChance}`));
+                    TestTimer.startTest(getPath(this));
                     const value = boolean(trueChance)();
                     TestTimer.stopTest();
 
@@ -244,7 +244,7 @@ suite("Generators", () => {
             const _testChance = (chance: number, iterations: number = 100_000, error: number = 0.02) => {
                 const testName = `Chance: ${chance}, iterations: ${iterations}, error: ${error}`;
 
-                test(testName, () => {
+                test(testName, function() {
                     console.log(`Running randomness test: ${testName}`);
 
                     let numTrue = 0;
@@ -277,7 +277,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = date();
             expect(gen()).to.be.a("date");
         });
@@ -295,7 +295,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = phone();
             expect(gen()).to.be.a("string");
         });
@@ -310,7 +310,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = uuid();
             expect(gen()).to.be.a("string");
         });
@@ -327,7 +327,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = ipAddress();
             expect(gen()).to.be.a("string");
         });
@@ -342,7 +342,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = email();
             expect(gen()).to.be.a("string");
         });
@@ -358,7 +358,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = url();
             expect(gen()).to.be.a("string");
         });
@@ -373,7 +373,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
+        test("default", function() {
             const gen = name();
             expect(gen()).to.be.a("string");
         });
