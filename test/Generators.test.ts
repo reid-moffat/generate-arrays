@@ -280,8 +280,9 @@ suite("Generators", function() {
         suite("Valid input", function() {
 
             const _test = (min: Date = new Date(0), max: Date = new Date()) => {
-                test(`Min: ${min.toISOString()}, max: ${max.toISOString()}`, function() {
-                    console.log("Running test: Default");
+                const testName = `Min: ${min.toISOString()}, max: ${max.toISOString()}`;
+                test(testName, function() {
+                    console.log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = date(min, max)();
@@ -323,9 +324,49 @@ suite("Generators", function() {
         }
         TestFailures.run(failureTestData);
 
-        test("default", function() {
-            const gen = phone();
-            expect(gen()).to.be.a("string");
+        suite("Valid input", function() {
+
+            const _test = (countryCode: boolean = false, format: boolean = false) => {
+                const testName = `Country code: ${countryCode}, format: ${format}`;
+                test(testName, function() {
+                    console.log(`Running test: ${testName}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const value = phone(countryCode, format)();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("string", "Value is not a string");
+
+                    if (countryCode && format) {
+                        expect(value).to.match(/^\+?[0-9]{1,3} \([0-9]{3}\)-[0-9]{3}-[0-9]{4}$/, "Value does not match expected format");
+                    } else if (countryCode && !format) {
+                        expect(value).to.match(/^\+?[0-9]{1,3}[0-9]{10}$/, "Value does not match expected format");
+                    } else if (!countryCode && format) {
+                        expect(value).to.match(/^\([0-9]{3}\)-[0-9]{3}-[0-9]{4}$/, "Value does not match expected format");
+                    } else {
+                        expect(value).to.match(/^[0-9]{10}$/, "Value does not match expected format");
+                    }
+
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            _test();
+
+            _test(true);
+
+            _test(false, true);
+
+            _test(true, true);
+
+            _test(false, false);
+
+            for (let i = 0; i < 100; ++i) {
+                const countryCode = Math.random() < 0.5;
+                const format = Math.random() < 0.5;
+                _test(countryCode, format);
+            }
         });
     });
 
