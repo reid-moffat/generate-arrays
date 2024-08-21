@@ -73,10 +73,17 @@ const boolean = (trueChance: number = 0.5): () => boolean => {
 /**
  * Generator for a random date. By default, the date is between 1970-01-01 and the current date
  *
- * @param min Lower bound for the date
- * @param max Upper bound for the date
+ * @param min Lower bound for the date, either a Date object or number of milliseconds since epoch (1970-01-01 00:00:00)
+ * @param max Upper bound for the date, either a Date object or number of milliseconds since epoch (1970-01-01 00:00:00)
  */
-const date = (min: Date = new Date(0), max: Date = new Date()): () => Date => {
+const date = (min: Date | number = new Date(0), max: Date | number = new Date()): () => Date => {
+
+    if (typeof min === 'number') {
+        min = new Date(min);
+    }
+    if (typeof max === 'number') {
+        max = new Date(max);
+    }
 
     if (!(min instanceof Date) || !(max instanceof Date)) {
         throw new GenerateArrayError('Date parameters must be of type Date');
