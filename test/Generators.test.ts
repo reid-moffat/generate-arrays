@@ -144,7 +144,59 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
+        suite("Valid input", function() {
 
+            const _test = (length: number | [number, number], specialChars: boolean = false) => {
+                const testName = `Length: ${printOutput(length)}, specialChars: ${specialChars}`;
+                test(testName, () => {
+
+                    console.log(`Running test: ${testName}`);
+
+                    TestTimer.startTest(getPath(this).concat(testName));
+                    const value = string(length, specialChars)();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${printOutput(value)}`);
+                    expect(value).to.be.a("string", "Value is not a string");
+
+                    if (Array.isArray(length)) {
+                        expect(value).to.have.lengthOf.at.least(length[0], "Value is shorter than min length");
+                        expect(value).to.have.lengthOf.at.most(length[1], "Value is longer than max length");
+                    } else {
+                        expect(value).to.have.lengthOf(length, "Value has incorrect length");
+                    }
+
+                    if (!specialChars) {
+                        expect(value).to.match(/^[0-9a-zA-Z]*$/, "Value contains special characters");
+                    }
+
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            _test(1);
+
+            _test(10);
+
+            _test([5, 10]);
+
+            _test([1, 8]);
+
+            _test([1, 1]);
+
+            for (let i = 0; i < 100; ++i) {
+                const length = Math.floor(Math.random() * 100);
+                const specialChars = Math.random() < 0.5;
+                _test(length, specialChars);
+            }
+
+            for (let i = 0; i < 100; ++i) {
+                const min = Math.floor(Math.random() * 100_000);
+                const max = min + Math.floor(Math.random() * 100_000);
+                const specialChars = Math.random() < 0.5;
+                _test([min, max], specialChars);
+            }
+        });
     });
 
     suite("boolean", function() {
