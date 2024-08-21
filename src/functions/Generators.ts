@@ -1,5 +1,5 @@
-import GenerateArrayError from "./GenerateArrayError.ts";
-import Validation from "./Validation.ts";
+import GenerateArrayError from "../utils/GenerateArrayError.ts";
+import Validation from "../utils/Validation.ts";
 
 /**
  * Generator for a random integer. By default, the number is between 0 and 100 (both inclusive)

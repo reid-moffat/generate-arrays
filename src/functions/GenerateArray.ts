@@ -1,5 +1,5 @@
-import Validation from "./Validation.ts";
-import GenerateArrayError from "./GenerateArrayError.js";
+import Validation from "../utils/Validation.ts";
+import GenerateArrayError from "../utils/GenerateArrayError.js";
 
 type ArrayLength = number | [number, number];
 

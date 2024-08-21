@@ -6,8 +6,8 @@ import {
     NumberParameter,
     TestFailureParams,
     TestFailures
-} from "./Utils/TestFailures.ts";
-import { getPath } from "./Utils/Utils.ts";
+} from "./utils/TestFailures.ts";
+import { getPath } from "./utils/Utils.ts";
 
 suite("Generators", () => {
 

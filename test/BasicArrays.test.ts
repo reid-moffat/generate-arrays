@@ -9,8 +9,8 @@ import {
     FunctionParameter,
     TestFailureParams,
     ArrayLengthParameter
-} from "./Utils/TestFailures.ts";
-import { getPath } from "./Utils/Utils.ts";
+} from "./utils/TestFailures.ts";
+import { getPath } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 

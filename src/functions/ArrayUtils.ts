@@ -1,4 +1,4 @@
-import Validation from "./Validation.ts";
+import Validation from "../utils/Validation.ts";
 
 class ArrayUtils {
 

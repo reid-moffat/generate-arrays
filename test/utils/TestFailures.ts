@@ -1,7 +1,7 @@
 import SuiteMetrics from "suite-metrics";
-import GenerateArrayError from "../../src/GenerateArrayError.ts";
+import GenerateArrayError from "../../src/utils/GenerateArrayError.ts";
 import { expect } from "chai";
-import Validation from "../../src/Validation.ts";
+import Validation from "../../src/utils/Validation.ts";
 
 type TestFailureParams = {
     path: string[],
