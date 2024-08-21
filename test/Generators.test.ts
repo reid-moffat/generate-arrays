@@ -521,7 +521,13 @@ suite("Generators", function() {
                     ? undefined
                     : Math.random() < 0.5
                         ? Math.floor(Math.random() * 10) + 5
-                        : [Math.floor(Math.random() * 10) + 5, Math.floor(Math.random() * 100) + 5];
+                        : [Math.floor(Math.random() * 1000) + 5, Math.floor(Math.random() * 1000) + 5];
+                if (Array.isArray(rngUsername) && rngUsername[0] > rngUsername[1]) {
+                    const temp = rngUsername[0];
+                    rngUsername[0] = rngUsername[1];
+                    rngUsername[1] = temp;
+                }
+
                 _test(rngUsername);
             }
         });
