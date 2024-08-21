@@ -277,9 +277,37 @@ suite("Generators", function() {
         }
         TestFailures.run(failureTestData);
 
-        test("default", function() {
-            const gen = date();
-            expect(gen()).to.be.a("date");
+        suite("Valid input", function() {
+
+            const _test = (min: Date = new Date(0), max: Date = new Date()) => {
+                test(`Min: ${min.toISOString()}, max: ${max.toISOString()}`, function() {
+                    console.log("Running test: Default");
+
+                    TestTimer.startTest(getPath(this));
+                    const value = date(min, max)();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("Date", "Value is not a Date");
+                    expect(value.getTime()).to.be.at.least(min.getTime(), "Value is before min");
+                    expect(value.getTime()).to.be.at.most(max.getTime(), "Value is after max");
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            _test();
+
+            const maxMillis = 1000 * (Math.pow(2, 31) - 1); // year 2038 problem
+            for (let i = 0; i < 100; ++i) {
+                const d1 = new Date(Math.floor(Math.random() * maxMillis));
+                const d2 = new Date(Math.floor(Math.random() * maxMillis));
+
+                if (d1.getTime() > d2.getTime()) {
+                    _test(d2, d1);
+                } else {
+                    _test(d1, d2);
+                }
+            }
         });
     });
 
