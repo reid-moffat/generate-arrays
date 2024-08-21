@@ -409,6 +409,8 @@ suite("Generators", function() {
                 });
             }
 
+            _test();
+
             for (let i = 0; i < 1000; ++i) {
                 _test();
             }
@@ -426,9 +428,40 @@ suite("Generators", function() {
         }
         TestFailures.run(failureTestData);
 
-        test("default", function() {
-            const gen = ipAddress();
-            expect(gen()).to.be.a("string");
+        suite("Valid input", function() {
+
+            const _test = (IPv4: boolean = false) => {
+                const testName = `IPv4: ${IPv4}`;
+                test(testName, function() {
+                    console.log(`Running test: ${testName}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const value = ipAddress(IPv4)();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("string", "Value is not a string");
+
+                    if (IPv4) {
+                        expect(value).to.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, "Value does not match IPv4 format");
+                    } else {
+                        expect(value).to.match(/^[0-9a-f]{4}(:[0-9a-f]{4}){7}$/, "Value does not match IPv6 format");
+                    }
+
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            _test();
+
+            _test(true);
+
+            _test(false);
+
+            for (let i = 0; i < 200; ++i) {
+                const IPv4 = Math.random() < 0.5;
+                _test(IPv4);
+            }
         });
     });
 
