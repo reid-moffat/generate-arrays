@@ -423,29 +423,29 @@ suite("Generators", function() {
             path: getPath(this),
             func: ipAddress,
             parameters: [
-                new BooleanParameter({name: "IPv4", optional: true})
+                new BooleanParameter({name: "IPv6", optional: true})
             ]
         }
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
 
-            const _test = (IPv4: boolean = false) => {
-                const testName = `IPv4: ${IPv4}`;
+            const _test = (IPv6: boolean = false) => {
+                const testName = `IPv6: ${IPv6}`;
                 test(testName, function() {
                     console.log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
-                    const value = ipAddress(IPv4)();
+                    const value = ipAddress(IPv6)();
                     TestTimer.stopTest();
 
                     console.log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
 
-                    if (IPv4) {
-                        expect(value).to.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, "Value does not match IPv4 format");
+                    if (IPv6) {
+                        expect(value).to.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, "Value does not match IPv6 format");
                     } else {
-                        expect(value).to.match(/^[0-9a-f]{4}(:[0-9a-f]{4}){7}$/, "Value does not match IPv6 format");
+                        expect(value).to.match(/^[0-9a-f]{4}(:[0-9a-f]{4}){7}$/, "Value does not match IPv4 format");
                     }
 
                     console.log("Verified successfully!\n");
@@ -459,8 +459,8 @@ suite("Generators", function() {
             _test(false);
 
             for (let i = 0; i < 200; ++i) {
-                const IPv4 = Math.random() < 0.5;
-                _test(IPv4);
+                const IPv6 = Math.random() < 0.5;
+                _test(IPv6);
             }
         });
     });

@@ -129,13 +129,13 @@ const uuid = (): () => string => {
 /**
  * Generator for a random IP address (IPv6 by default)
  *
- * @param IPv4 Set to true to generate an IPv4 address
+ * @param IPv6 Set to true to generate an IPv6 address instead of IPv4
  */
-const ipAddress = (IPv4 = false): () => string => {
+const ipAddress = (IPv6 = false): () => string => {
 
-    Validation.boolean(IPv4, 'IPv4');
+    Validation.boolean(IPv6, 'IPv4');
 
-    if (IPv4) {
+    if (IPv6) {
         return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
     }
 
