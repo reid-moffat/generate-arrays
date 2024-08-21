@@ -165,11 +165,13 @@ const email = (rngUsername?: number | [number, number]): () => string => {
 
 /**
  * Generator for a random URL
+ *
+ * @param protocol Set to false to generate a URL without the https://www. protocol (e.g. example.com)
  */
-const url = (): () => string => {
+const url = (protocol: boolean = true): () => string => {
     return () => {
         const domains = ['com', 'org', 'net', 'gov', 'edu', 'io', 'co', 'uk', 'ca', 'us', 'biz', 'info'];
-        return `https://www.${string([5, 15])()}.${domains[integer(0, domains.length - 1)()]}`;
+        return `${protocol ? "https://www." : ""}${string([5, 15])()}.${domains[integer(0, domains.length - 1)()]}`;
     }
 }
 
