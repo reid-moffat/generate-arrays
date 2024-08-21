@@ -8,6 +8,9 @@ import {
     TestFailures
 } from "./utils/TestFailures.ts";
 import { getPath } from "./utils/Utils.ts";
+import SuiteMetrics from "suite-metrics";
+
+const TestTimer = SuiteMetrics.getInstance();
 
 suite("Generators", () => {
 
@@ -22,6 +25,45 @@ suite("Generators", () => {
             ]
         };
         TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (min: number, max: number) => {
+                test(`Min: ${min}, max: ${max}`, () => {
+
+                    TestTimer.startTest(getPath(this).concat(`Min: ${min}, max: ${max}`));
+                    const value = integer(min, max)();
+                    TestTimer.stopTest();
+
+                    expect(value).to.be.a("number", "Value is not a number");
+                    expect(value).to.satisfy(Number.isInteger, "Value is not an integer");
+                    expect(value).to.be.at.least(min, "Value is less than min");
+                    expect(value).to.be.at.most(max, "Value is greater than max");
+                });
+            }
+
+            _test(0, 10);
+
+            _test(-10, 0);
+
+            _test(-10, 10);
+
+            _test(0, 0);
+
+            _test(-1, -1);
+
+            for (let i = 0; i < 100; ++i) {
+                const min = Math.floor(Math.random() * 100);
+                const max = min + Math.floor(Math.random() * 100);
+                _test(min, max);
+            }
+
+            for (let i = 0; i < 100; ++i) {
+                const min = -Math.floor(Math.random() * 100_000_000);
+                const max = Math.floor(Math.random() * 100_000_000);
+                _test(min, max);
+            }
+        });
 
         test("default", () => {
             const gen = integer();
