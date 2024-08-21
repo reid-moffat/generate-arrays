@@ -7,7 +7,7 @@ import Validation from "../utils/Validation.ts";
  * @param min Minimum value
  * @param max Maximum value
  */
-const integer = (min: number = 0, max: number = 100) => {
+const integer = (min: number = 0, max: number = 100): () => number => {
 
     Validation.integer(min, 'Min');
     Validation.integer(max, 'Max', min);
@@ -38,7 +38,7 @@ const decimal = (min: number = 0, max: number = 100, precision: number = 5): () 
  * @param length Length of the string as a set number or a range [min, max] (both inclusive)
  * @param specialChars True to include special characters
  */
-const string = (length: number | [number, number] = 10, specialChars: boolean = false) => {
+const string = (length: number | [number, number] = 10, specialChars: boolean = false): () => string => {
 
     // ASCII min/max
     Validation.arrayLength(length, 'length');
@@ -63,7 +63,7 @@ const string = (length: number | [number, number] = 10, specialChars: boolean = 
  *
  * @param trueChance Chance for the value to be true (between 0 and 1), default is 0.5
  */
-const boolean = (trueChance: number = 0.5) => {
+const boolean = (trueChance: number = 0.5): () => boolean => {
 
     Validation.number(trueChance, 'trueChance', 0, 1);
 
@@ -76,7 +76,7 @@ const boolean = (trueChance: number = 0.5) => {
  * @param min Lower bound for the date
  * @param max Upper bound for the date
  */
-const date = (min: Date = new Date(0), max: Date = new Date()) => {
+const date = (min: Date = new Date(0), max: Date = new Date()): () => Date => {
 
     if (!(min instanceof Date) || !(max instanceof Date)) {
         throw new GenerateArrayError('Date parameters must be of type Date');
@@ -88,10 +88,10 @@ const date = (min: Date = new Date(0), max: Date = new Date()) => {
 /**
  * Generator for a random phone number
  *
- * @param countryCode Set to true to generate a random country code each time
+ * @param countryCode Generates a random country code each time if true
  * @param format Whether to format the phone number, e.g. +1 (123)-456-7890. If false (default), string is just numbers
  */
-const phone = (countryCode: boolean = false, format: boolean = false) => {
+const phone = (countryCode: boolean = false, format: boolean = false): () => string => {
 
     Validation.boolean(countryCode, 'countryCode');
     Validation.boolean(format, 'format');
@@ -112,7 +112,7 @@ const phone = (countryCode: boolean = false, format: boolean = false) => {
 /**
  * Generator for a random UUID
  */
-const uuid = () => {
+const uuid = (): () => string => {
     return () => "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
         (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
     );
@@ -123,7 +123,7 @@ const uuid = () => {
  *
  * @param IPv4 Set to true to generate an IPv4 address
  */
-const ipAddress = (IPv4 = false) => {
+const ipAddress = (IPv4 = false): () => string => {
 
     Validation.boolean(IPv4, 'IPv4');
 
@@ -143,7 +143,7 @@ const ipAddress = (IPv4 = false) => {
 /**
  * Generator for a random email address
  */
-const email = () => {
+const email = (): () => string => {
     return () => {
         const domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'protonmail.com'];
         return `${string([5, 15])()}@${domains[integer(0, domains.length - 1)()]}`;
@@ -153,7 +153,7 @@ const email = () => {
 /**
  * Generator for a random URL
  */
-const url = () => {
+const url = (): () => string => {
     return () => {
         const domains = ['com', 'org', 'net', 'gov', 'edu', 'io', 'co', 'uk', 'ca', 'us', 'biz', 'info'];
         return `https://www.${string([5, 15])()}.${domains[integer(0, domains.length - 1)()]}`;
@@ -163,7 +163,7 @@ const url = () => {
 /**
  * Generator for a random name
  */
-const name = () => {
+const name = (): () => string => {
     return () => {
         const firstNames = ['John', 'Jane', 'Michael', 'Emily', 'David', 'Sarah', 'Robert', 'Megan', 'William', 'Olivia', 'James', 'Sophia', 'Joseph', 'Isabella', 'Daniel', 'Grace', 'Matthew'];
         const lastNames = ['Smith', 'Johnson', 'Williams', 'Jones', 'Brown', 'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor', 'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson'];
