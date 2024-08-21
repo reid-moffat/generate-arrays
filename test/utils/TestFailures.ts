@@ -296,4 +296,23 @@ class ArrayLengthParameter extends Parameter {
     }
 }
 
-export { TestFailures, TestFailureParams, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter, ArrayLengthParameter };
+/**
+ * Parameter that must be an array
+ */
+class ArrayParameter extends Parameter {
+
+    constructor(name: string, optional: boolean = false) {
+        super(name, optional);
+    }
+
+    public getTestValues(): TestData[] {
+        const values = this.getInvalidValues((value) => !Array.isArray(value));
+        return Parameter.makeValuesArray(this.name, values);
+    }
+
+    public getValidValue(): any {
+        return [1, 2, 3];
+    }
+}
+
+export { TestFailures, TestFailureParams, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter, ArrayLengthParameter, ArrayParameter };
