@@ -12,7 +12,7 @@ import {
 
 const TestTimer = SuiteMetrics.getInstance();
 
-suite("Array Utils", () => {
+suite("Array Utils", function() {
 
     suite("Add Dimensions", function() {
 
@@ -29,12 +29,12 @@ suite("Array Utils", () => {
         suite("Valid input", function() {
 
             const _test = (name: string, arr: any[], depth: number, expected: any[]) => {
-                test(name, () => {
+                test(name, function() {
 
                     console.log(`Running test: ${name}`);
                     console.log(`Original array: ${printOutput(arr)}`);
 
-                    TestTimer.startTest(getPath(this).concat(name));
+                    TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.addDimensions(arr, depth);
                     TestTimer.stopTest();
 
@@ -71,12 +71,12 @@ suite("Array Utils", () => {
         suite("Valid input", function() {
 
             const _test = (name: string, arr: any[], expected: any[]) => {
-                test(name, () => {
+                test(name, function() {
 
                     console.log(`Running test: ${name}`);
                     console.log(`Flattening array: ${printOutput(arr)}`);
 
-                    TestTimer.startTest(getPath(this).concat(name));
+                    TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.flatten(arr);
                     TestTimer.stopTest();
 
@@ -136,12 +136,12 @@ suite("Array Utils", () => {
         suite("Valid input", function() {
 
             const _test = (name: string, arr: any[], factor: number, elementWise: boolean, expected: any[]) => {
-                test(name, () => {
+                test(name, function() {
 
                     console.log(`Running test: ${name}`);
                     console.log(`Original array: ${printOutput(arr)}`);
 
-                    TestTimer.startTest(getPath(this).concat(name));
+                    TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.multiplyLength(arr, factor, elementWise);
                     TestTimer.stopTest();
 
@@ -193,12 +193,12 @@ suite("Array Utils", () => {
         suite("Valid input", function() {
 
             const _test = (name: string, arr: any[], expected: any[]) => {
-                test(name, () => {
+                test(name, function() {
 
                     console.log(`Running test: ${name}`);
                     console.log(`Flattening array: ${printOutput(arr)}`);
 
-                    TestTimer.startTest(getPath(this).concat(name));
+                    TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.removeDuplicates(arr);
                     TestTimer.stopTest();
 
