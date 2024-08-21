@@ -56,13 +56,13 @@ suite("Generators", function() {
 
             _test(-1, -1);
 
-            for (let i = 0; i < 100; ++i) {
+            for (let i = 0; i < 200; ++i) {
                 const min = Math.floor(Math.random() * 100);
                 const max = min + Math.floor(Math.random() * 100);
                 _test(min, max);
             }
 
-            for (let i = 0; i < 100; ++i) {
+            for (let i = 0; i < 200; ++i) {
                 const min = -Math.floor(Math.random() * 100_000_000);
                 const max = Math.floor(Math.random() * 100_000_000);
                 _test(min, max);
@@ -114,7 +114,7 @@ suite("Generators", function() {
 
             _test(-1, -1, 0);
 
-            for (let i = 0; i < 100; ++i) {
+            for (let i = 0; i < 200; ++i) {
                 const min = Math.floor(Math.random() * 100);
                 const max = min + Math.floor(Math.random() * 100);
                 const precision = Math.floor(Math.random() * 10);
@@ -122,7 +122,7 @@ suite("Generators", function() {
                 _test(min, max, precision);
             }
 
-            for (let i = 0; i < 100; ++i) {
+            for (let i = 0; i < 200; ++i) {
                 const min = -Math.random() * 100_000_000;
                 const max = Math.random() * 100_000_000;
                 const precision = Math.floor(Math.random() * 10);
@@ -430,22 +430,32 @@ suite("Generators", function() {
 
         suite("Valid input", function() {
 
-            const _test = (IPv6: boolean = false) => {
-                const testName = `IPv6: ${IPv6}`;
+            const _test = (IPv6: boolean = false, mask: boolean = false) => {
+                const testName = `${IPv6 ? "IPv6" : "IPv4"}${mask ? " with mask" : ""}`;
                 test(testName, function() {
                     console.log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
-                    const value = ipAddress(IPv6)();
+                    const value = ipAddress(IPv6, mask)();
                     TestTimer.stopTest();
 
                     console.log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
 
-                    if (IPv6) {
-                        expect(value).to.match(/^[0-9a-f]{4}(:[0-9a-f]{4}){7}$/, "Value does not match IPv6 format");
+                    const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+                    const ipv6Regex = /^(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}$|^(?:[a-fA-F0-9]{1,4}:){1,7}:$|^(?:[a-fA-F0-9]{1,4}:){1,6}:[a-fA-F0-9]{1,4}$|^(?:[a-fA-F0-9]{1,4}:){1,5}(?::[a-fA-F0-9]{1,4}){1,2}$|^(?:[a-fA-F0-9]{1,4}:){1,4}(?::[a-fA-F0-9]{1,4}){1,3}$|^(?:[a-fA-F0-9]{1,4}:){1,3}(?::[a-fA-F0-9]{1,4}){1,4}$|^(?:[a-fA-F0-9]{1,4}:){1,2}(?::[a-fA-F0-9]{1,4}){1,5}$|^(?:[a-fA-F0-9]{1,4}:){1,6}::$|^(?:[a-fA-F0-9]{1,4}:):(?:[a-fA-F0-9]{1,4}:){1,7}[a-fA-F0-9]{1,4}$|^(?:[a-fA-F0-9]{1,4}:){1,7}[a-fA-F0-9]{1,4}$/;
+
+                    const ipv4CidrRegex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\/([0-9]|[1-2][0-9]|3[0-2]))$/;
+                    const ipv6CidrRegex = /^(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}(\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$|^(?:[a-fA-F0-9]{1,4}:){1,7}:(\/([0-9]|[1-9][0-9]|1[0-1][0-9]|12[0-8]))$/;
+
+                    if (IPv6 && mask) {
+                        expect(value).to.match(ipv6CidrRegex, "Value does not match IPv6 CIDR format");
+                    } else if (IPv6 && !mask) {
+                        expect(value).to.match(ipv6Regex, "Value does not match IPv6 format");
+                    } else if (!IPv6 && mask) {
+                        expect(value).to.match(ipv4CidrRegex, "Value does not match IPv4 CIDR format");
                     } else {
-                        expect(value).to.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, "Value does not match IPv4 format");
+                        expect(value).to.match(ipv4Regex, "Value does not match IPv4 format");
                     }
 
                     console.log("Verified successfully!\n");
@@ -458,9 +468,10 @@ suite("Generators", function() {
 
             _test(false);
 
-            for (let i = 0; i < 200; ++i) {
+            for (let i = 0; i < 500; ++i) {
                 const IPv6 = Math.random() < 0.5;
-                _test(IPv6);
+                const mask = Math.random() < 0.5;
+                _test(IPv6, mask);
             }
         });
     });
