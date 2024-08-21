@@ -50,4 +50,14 @@ suite("Array Utils", () => {
         }
         TestFailures.run(failureTestData);
     });
+
+    suite("Remove Duplicates", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: ArrayUtils.removeDuplicates,
+            parameters: new ArrayParameter("arr")
+        }
+        TestFailures.run(failureTestData);
+    });
 });
