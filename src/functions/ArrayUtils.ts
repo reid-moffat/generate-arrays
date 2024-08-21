@@ -35,6 +35,9 @@ class ArrayUtils {
      * @param arr
      */
     public static flatten(arr: any[]): any[] {
+
+        Validation.array(arr, "arr");
+
         return arr.flat(Infinity);
     }
 
@@ -54,6 +57,7 @@ class ArrayUtils {
 
         Validation.array(arr, "arr");
         Validation.integer(factor, "factor", 2);
+        Validation.boolean(elementWise, "elementWise");
 
         const result: any[] = [];
 
