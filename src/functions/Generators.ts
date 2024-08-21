@@ -136,16 +136,16 @@ const ipAddress = (IPv6 = false): () => string => {
     Validation.boolean(IPv6, 'IPv6');
 
     if (IPv6) {
-        return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
+        return () => {
+            let address = [];
+            for (let i = 0; i < 8; i++) {
+                address.push(integer(0, 65535)().toString(16).padStart(4, '0'));
+            }
+            return address.join(':');
+        };
     }
 
-    return () => {
-        let address = [];
-        for (let i = 0; i < 8; i++) {
-            address.push(integer(0, 65535)().toString(16).padStart(4, '0'));
-        }
-        return address.join(':');
-    };
+    return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
 }
 
 /**
