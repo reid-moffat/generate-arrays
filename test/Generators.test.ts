@@ -499,7 +499,17 @@ suite("Generators", function() {
 
                     console.log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
-                    expect(value).to.match(/^[0-9a-zA-Z]{5,15}@[a-zA-Z0-9.]*$/, "Value does not match email format");
+                    if (rngUsername) {
+                        const username = value.split('@')[0];
+                        if (Array.isArray(rngUsername)) {
+                            expect(username.length).to.be.at.least(rngUsername[0], "Value is shorter than min length");
+                            expect(username.length).to.be.at.most(rngUsername[1], "Value is longer than max length");
+                        } else {
+                            expect(username.length).to.equal(rngUsername, "Value does not match expected length");
+                        }
+                    } else {
+                        expect(value).to.match(/^[0-9a-zA-Z]+\.[0-9a-zA-Z]+@[0-9a-zA-Z]+\.[a-zA-Z]+$/, "Value does not match email format");
+                    }
                     console.log("Verified successfully!\n");
                 });
             }
