@@ -443,9 +443,9 @@ suite("Generators", function() {
                     expect(value).to.be.a("string", "Value is not a string");
 
                     if (IPv6) {
-                        expect(value).to.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, "Value does not match IPv6 format");
+                        expect(value).to.match(/^[0-9a-f]{4}(:[0-9a-f]{4}){7}$/, "Value does not match IPv6 format");
                     } else {
-                        expect(value).to.match(/^[0-9a-f]{4}(:[0-9a-f]{4}){7}$/, "Value does not match IPv4 format");
+                        expect(value).to.match(/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/, "Value does not match IPv4 format");
                     }
 
                     console.log("Verified successfully!\n");
