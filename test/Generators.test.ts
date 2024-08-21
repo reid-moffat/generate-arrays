@@ -210,9 +210,61 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
-            const gen = boolean();
-            expect(gen()).to.be.a("boolean");
+        suite("Valid input", function() {
+
+            const _test = (trueChance: number, expected?: boolean) => {
+                test(`True chance: ${trueChance}`, () => {
+                    console.log(`Running test: True chance: ${trueChance}`);
+
+                    TestTimer.startTest(getPath(this).concat(`True chance: ${trueChance}`));
+                    const value = boolean(trueChance)();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("boolean", "Value is not a boolean");
+                    if (expected !== undefined) {
+                        expect(value).to.equal(expected, "Value does not match expected");
+                    } else {
+                        expect(value).to.be.oneOf([true, false], "Value is not true or false");
+                    }
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            for (let i = 0; i < 100; ++i) {
+                _test(0, false);
+                _test(1, true);
+            }
+
+            for (let i = 0; i < 100; ++i) {
+                const trueChance = Math.random();
+                _test(trueChance);
+            }
+
+            const _testChance = (chance: number, iterations: number = 100_000, error: number = 0.02) => {
+                const testName = `Chance: ${chance}, iterations: ${iterations}, error: ${error}`;
+
+                test(testName, () => {
+                    console.log(`Running randomness test: ${testName}`);
+
+                    let numTrue = 0;
+                    const gen = boolean(chance);
+                    for (let i = 0; i < iterations; ++i) {
+                        const value = gen();
+                        if (typeof value !== "boolean") throw new Error("Value is not a boolean");
+
+                        numTrue += value ? 1 : 0;
+                    }
+
+                    const expectedTrue = iterations * chance;
+                    expect(numTrue).to.be.closeTo(expectedTrue, iterations * error);
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            for (let i = 0; i < 100; ++i) {
+                _testChance(Math.random());
+            }
         });
     });
 
