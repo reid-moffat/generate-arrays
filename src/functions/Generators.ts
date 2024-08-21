@@ -150,12 +150,16 @@ const ipAddress = (IPv6: boolean = false, mask: boolean = false): () => string =
 }
 
 /**
- * Generator for a random email address
+ * Generator for a random email address. By default, the username is a name e.g. john.smith@gmail.com
+ *
+ * @param rngUsername Generate a username of random characters each time (e.g. qGTcds9fx@protonmail.com), set this
+ * parameter to the length (or length range) that the username should be
  */
-const email = (): () => string => {
+const email = (rngUsername?: number | [number, number]): () => string => {
     return () => {
-        const domains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'icloud.com', 'protonmail.com'];
-        return `${string([5, 15])()}@${domains[integer(0, domains.length - 1)()]}`;
+        const domains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'protonmail.com', 'icloud.com', 'aol.com', 'zoho.com', 'mail.com', 'yandex.com', 'gmx.com', 'fastmail.com'];
+        const username = rngUsername ? string(rngUsername)() : name()().replace(' ', '.').toLowerCase();
+        return `${username}@${domains[integer(0, domains.length - 1)()]}`;
     }
 }
 
