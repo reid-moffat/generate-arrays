@@ -20,15 +20,16 @@ const integer = (min: number = 0, max: number = 100) => {
  *
  * @param min Minimum value
  * @param max Maximum value (must be >= min)
- * @param precision Number of decimal places
+ * @param precision Number of decimal places (note: if the last decimal place(s) are zeros, they won't be displayed
+ * in the return value as it's a number)
  */
-const decimal = (min: number = 0, max: number = 100, precision: number = 5) => {
+const decimal = (min: number = 0, max: number = 100, precision: number = 5): () => number => {
 
     Validation.number(min, 'Min');
     Validation.number(max, 'Max', min);
     Validation.integer(precision, 'precision', 0);
 
-    return () => (Math.random() * (max - min) + min).toFixed(precision);
+    return () => Number((Math.random() * (max - min) + min).toFixed(precision));
 }
 
 /**

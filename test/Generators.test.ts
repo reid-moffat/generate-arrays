@@ -31,14 +31,18 @@ suite("Generators", () => {
             const _test = (min: number, max: number) => {
                 test(`Min: ${min}, max: ${max}`, () => {
 
+                    console.log(`Running test: Min: ${min}, max: ${max}`);
+
                     TestTimer.startTest(getPath(this).concat(`Min: ${min}, max: ${max}`));
                     const value = integer(min, max)();
                     TestTimer.stopTest();
 
+                    console.log(`Result: ${value}`);
                     expect(value).to.be.a("number", "Value is not a number");
                     expect(value).to.satisfy(Number.isInteger, "Value is not an integer");
                     expect(value).to.be.at.least(min, "Value is less than min");
                     expect(value).to.be.at.most(max, "Value is greater than max");
+                    console.log("Verified successfully!\n");
                 });
             }
 
@@ -79,21 +83,52 @@ suite("Generators", () => {
         };
         TestFailures.run(failureTestData);
 
-        test("default", () => {
-            const gen = decimal();
-            expect(gen()).to.be.a("string");
-        });
-        test("min", () => {
-            const gen = decimal(10);
-            expect(parseFloat(gen())).to.be.at.least(10);
-        });
-        test("max", () => {
-            const gen = decimal(0, 10);
-            expect(parseFloat(gen())).to.be.at.most(10);
-        });
-        test("precision", () => {
-            const gen = decimal(0, 10, 2);
-            expect(gen()).to.match(/\d+\.\d{2}/);
+        suite("Valid input", function() {
+
+            const _test = (min: number, max: number, precision: number) => {
+                test(`Min: ${min}, max: ${max}, precision: ${precision}`, () => {
+
+                    console.log(`Running test: Min: ${min}, max: ${max}, precision: ${precision}`);
+
+                    TestTimer.startTest(getPath(this).concat(`Min: ${min}, max: ${max}, precision: ${precision}`));
+                    const value = decimal(min, max, precision)();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("number", "Value is not a number");
+                    expect(value).to.be.at.least(min, "Value is less than min");
+                    expect(value).to.be.at.most(max, "Value is greater than max");
+                    expect((value.toString().split('.')[1] ?? '').length)
+                        .to.be.at.most(precision, "Value has more precision than expected"); // May have zeros at end, so less digits is ok
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            _test(0, 10, 2);
+
+            _test(-10, 0, 5);
+
+            _test(-10, 10, 3);
+
+            _test(0, 0, 0);
+
+            _test(-1, -1, 0);
+
+            for (let i = 0; i < 100; ++i) {
+                const min = Math.floor(Math.random() * 100);
+                const max = min + Math.floor(Math.random() * 100);
+                const precision = Math.floor(Math.random() * 10);
+
+                _test(min, max, precision);
+            }
+
+            for (let i = 0; i < 100; ++i) {
+                const min = -Math.random() * 100_000_000;
+                const max = Math.random() * 100_000_000;
+                const precision = Math.floor(Math.random() * 10);
+
+                _test(min, max, precision);
+            }
         });
     });
 
