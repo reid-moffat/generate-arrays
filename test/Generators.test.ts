@@ -485,11 +485,31 @@ suite("Generators", function() {
         }
         TestFailures.run(failureTestData);
 
-        test("default", function() {
-            const gen = email();
-            expect(gen()).to.be.a("string");
-        });
+        suite("Valid input", function() {
 
+            let testNum = 1;
+            const _test = () => {
+                const testName = `Test #${testNum++}`;
+                test(testName, function() {
+                    console.log(`Running test: ${testName}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const value = email()();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("string", "Value is not a string");
+                    expect(value).to.match(/^[0-9a-zA-Z]{5,15}@[a-zA-Z0-9.]*$/, "Value does not match email format");
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            _test();
+
+            for (let i = 0; i < 1000; ++i) {
+                _test();
+            }
+        });
     });
 
     suite("url", function() {
