@@ -1,4 +1,4 @@
-import { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, name } from "../src/index.ts";
+import { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, word, name } from "../src/functions/Generators.ts";
 import { expect } from "chai";
 import {
     ArrayLengthParameter,
@@ -545,6 +545,40 @@ suite("Generators", function() {
         test("default", function() {
             const gen = url();
             expect(gen()).to.be.a("string");
+        });
+    });
+
+    suite("word", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: word,
+            parameters: []
+        }
+        TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            let testNum = 1;
+            const _test = () => {
+                const testName = `Test #${testNum++}`;
+                test(testName, function() {
+                    console.log(`Running test: ${testName}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const value = word()();
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${value}`);
+                    expect(value).to.be.a("string", "Value is not a string");
+                    expect(value).to.match(/^[a-z]+$/, "Value contains non-alphabet characters");
+                    console.log("Verified successfully!\n");
+                });
+            }
+
+            for (let i = 0; i < 1000; ++i) {
+                _test();
+            }
         });
     });
 
