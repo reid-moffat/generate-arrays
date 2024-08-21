@@ -40,22 +40,22 @@ const decimal = (min: number = 0, max: number = 100, precision: number = 5): () 
  */
 const string = (length: number | [number, number] = 10, specialChars: boolean = false): () => string => {
 
-    // ASCII min/max
     Validation.arrayLength(length, 'length');
     Validation.boolean(specialChars, 'specialChars');
-    const min = specialChars ? 33 : 48;
-    const max = specialChars ? 126 : 122;
+
+    const chars = specialChars ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+        : 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     // Variable length
     if (Array.isArray(length)) {
         return () => { // @ts-ignore
             length = Math.floor(Math.random() * (length[1] - length[0] + 1) + length[0]);
-            return Array.from({ length }, () => String.fromCharCode(Math.floor(Math.random() * (max - min + 1)) + min)).join('');
+            return Array.from({ length }, () => chars.charAt(Math.floor(Math.random() * chars.length)).toString()).join('');
         }
     }
 
     // @ts-ignore
-    return () => Array.from({ length }, () => String.fromCharCode(Math.floor(Math.random() * (max - min + 1)) + min)).join('');
+    return () => Array.from({ length }, () => chars.charAt(Math.floor(Math.random() * chars.length)).toString()).join('');
 }
 
 /**
