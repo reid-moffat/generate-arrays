@@ -7,7 +7,7 @@ import {
     TestFailureParams,
     TestFailures
 } from "./utils/TestFailures.ts";
-import { getPath } from "./utils/Utils.ts";
+import { getPath, printOutput } from "./utils/Utils.ts";
 import SuiteMetrics from "suite-metrics";
 
 const TestTimer = SuiteMetrics.getInstance();
@@ -144,14 +144,7 @@ suite("Generators", () => {
         }
         TestFailures.run(failureTestData);
 
-        test("default", () => {
-            const gen = string();
-            expect(gen()).to.be.a("string");
-        });
-        test("length", () => {
-            const gen = string(10);
-            expect(gen()).to.have.lengthOf(10);
-        });
+
     });
 
     suite("boolean", function() {

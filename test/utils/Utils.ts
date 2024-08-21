@@ -22,14 +22,18 @@ const getPath = function(suite: Mocha.Suite | Mocha.Context): string[] {
 };
 
 /**
- * Prints an array in a clear format up to the first 100 elements to not clog the console
+ * Formats tes output, truncating output that is very long to not clog up the console
  */
-const printArray = (arr: any[]) => {
-    if (arr.length < 100) {
-        return JSON.stringify(arr);
+const printOutput = (obj: any) => {
+    if (Array.isArray(obj) && obj.length > 100) {
+        return "[" + obj.slice(0, 100).join(", ") + `, ... (${obj.length - 100} more elements)]`;
     }
 
-    return "[" + arr.slice(0, 100).join(", ") + `, ... (${arr.length - 100} more elements)]`;
+    if (typeof obj === 'string' && obj.length > 100) {
+        return obj.slice(0, 100) + ` ... (truncated, ${obj.length - 100} more characters)`;
+    }
+
+    return JSON.stringify(obj);
 }
 
-export { getPath, printArray };
+export { getPath, printOutput };
