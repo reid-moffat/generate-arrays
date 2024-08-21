@@ -1,5 +1,6 @@
 import GenerateArrayError from "../utils/GenerateArrayError.ts";
 import Validation from "../utils/Validation.ts";
+import words from "../utils/words.ts";
 
 /**
  * Generator for a random integer. By default, the number is between 0 and 100 (both inclusive)
@@ -176,6 +177,15 @@ const url = (protocol: boolean = true): () => string => {
 }
 
 /**
+ * Generator for a random word. Uses a list of around 2,000 common english words
+ */
+const word = (): () => string => {
+    return () => {
+        return words[integer(0, words.length - 1)()];
+    }
+}
+
+/**
  * Generator for a random name
  */
 const name = (): () => string => {
@@ -186,4 +196,4 @@ const name = (): () => string => {
     }
 }
 
-export { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, name };
+export { integer, decimal, string, boolean, date, phone, uuid, ipAddress, email, url, word, name };
