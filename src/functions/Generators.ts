@@ -133,7 +133,7 @@ const uuid = (): () => string => {
  */
 const ipAddress = (IPv6 = false): () => string => {
 
-    Validation.boolean(IPv6, 'IPv4');
+    Validation.boolean(IPv6, 'IPv6');
 
     if (IPv6) {
         return () => `${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}.${integer(0, 255)()}`;
