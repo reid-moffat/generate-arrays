@@ -35,6 +35,57 @@ suite("Array Utils", () => {
             parameters: new ArrayParameter("arr")
         }
         TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (name: string, arr: any[], expected: any[]) => {
+                test(name, () => {
+
+                    console.log(`Running test: ${name}`);
+                    console.log(`Flattening array: ${printArray(arr)}`);
+
+                    TestTimer.startTest(getPath(this).concat(name));
+                    const result = ArrayUtils.flatten(arr);
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${printArray(result)}`);
+                    console.log(`Verifying it equals ${printArray(expected)}...`);
+                    expect(result).to.deep.equal(expected);
+                    console.log("Success!\n");
+                });
+            }
+
+            _test("Empty array", [], []);
+
+            _test("Single element", [1], [1]);
+
+            _test("Single nested array", [[1]], [1]);
+
+            _test("Two nested arrays", [[1], [2]], [1, 2]);
+
+            _test("Three nested arrays", [[1], [2], [3]], [1, 2, 3]);
+
+            _test("Nested arrays", [1, [2, 3], [4, [5, 6]]], [1, 2, 3, 4, 5, 6]);
+
+            _test("Two levels of nesting", [1, [2, [3, 4], 5], 6], [1, 2, 3, 4, 5, 6]);
+
+            _test("Three levels of nesting", [1, [2, [3, [4, 5], 6], 7], 8], [1, 2, 3, 4, 5, 6, 7, 8]);
+
+            _test("Four levels of nesting", [1, [2, [3, [4, [5, 6], 7], 8], 9], 10], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+            _test("Five levels of nesting", [1, [2, [3, [4, [5, [6, 7], 8], 9], 10], 11], 12], [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+
+            _test("1 million elements", Array(1_000_000).fill(7), Array(1_000_000).fill(7));
+
+            _test("1 million elements, nested", Array(1_000_000).fill([7]), Array(1_000_000).fill(7));
+
+            _test("1 million elements, 2 levels of nesting", Array(1_000_000).fill([7, [8]]), Array(2_000_000).fill(1).map((_, i) => i % 2 === 0 ? 7 : 8));
+
+            _test("1 million nested arrays", Array(1_000_000).fill([7, 8]), Array(2_000_000).fill(1).map((_, i) => i % 2 === 0 ? 7 : 8));
+
+            _test("Element nested in 1,000 layers", Array(1_000).fill(undefined).reduce(acc => [acc], 13), [13]);
+
+        });
     });
 
     suite("Multiply Length", function() {
