@@ -488,13 +488,13 @@ suite("Generators", function() {
         suite("Valid input", function() {
 
             let testNum = 1;
-            const _test = () => {
+            const _test = (rngUsername?: number | [number, number]) => {
                 const testName = `Test #${testNum++}`;
                 test(testName, function() {
                     console.log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
-                    const value = email()();
+                    const value = email(rngUsername)();
                     TestTimer.stopTest();
 
                     console.log(`Result: ${value}`);
@@ -507,7 +507,12 @@ suite("Generators", function() {
             _test();
 
             for (let i = 0; i < 1000; ++i) {
-                _test();
+                const rngUsername: undefined | number | [number, number] = Math.random() < 0.5
+                    ? undefined
+                    : Math.random() < 0.5
+                        ? Math.floor(Math.random() * 10) + 5
+                        : [Math.floor(Math.random() * 10) + 5, Math.floor(Math.random() * 100) + 5];
+                _test(rngUsername);
             }
         });
     });
