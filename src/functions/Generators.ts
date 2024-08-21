@@ -78,6 +78,7 @@ const boolean = (trueChance: number = 0.5): () => boolean => {
  */
 const date = (min: Date | number = new Date(0), max: Date | number = new Date()): () => Date => {
 
+    // Convert number -> Date object if necessary
     if (typeof min === 'number') {
         min = new Date(min);
     }

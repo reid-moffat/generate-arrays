@@ -279,8 +279,8 @@ suite("Generators", function() {
 
         suite("Valid input", function() {
 
-            const _test = (min: Date = new Date(0), max: Date = new Date()) => {
-                const testName = `Min: ${min.toISOString()}, max: ${max.toISOString()}`;
+            const _test = (min: Date | number = new Date(0), max: Date | number = new Date()) => {
+                const testName = `Min: ${new Date(min).toISOString()}, max: ${new Date(max).toISOString()}`;
                 test(testName, function() {
                     console.log(`Running test: ${testName}`);
 
@@ -290,8 +290,8 @@ suite("Generators", function() {
 
                     console.log(`Result: ${value}`);
                     expect(value).to.be.a("Date", "Value is not a Date");
-                    expect(value.getTime()).to.be.at.least(min.getTime(), "Value is before min");
-                    expect(value.getTime()).to.be.at.most(max.getTime(), "Value is after max");
+                    expect(value.getTime()).to.be.at.least(typeof min === 'number' ? min : min.getTime(), "Value is before min");
+                    expect(value.getTime()).to.be.at.most(typeof max === 'number' ? max : max.getTime(), "Value is after max");
                     console.log("Verified successfully!\n");
                 });
             }
@@ -299,6 +299,17 @@ suite("Generators", function() {
             _test();
 
             const maxMillis = 1000 * (Math.pow(2, 31) - 1); // year 2038 problem
+            for (let i = 0; i < 100; ++i) {
+                const d1 = Math.floor(Math.random() * maxMillis);
+                const d2 = Math.floor(Math.random() * maxMillis);
+
+                if (d1 > d2) {
+                    _test(d2, d1);
+                } else {
+                    _test(d1, d2);
+                }
+            }
+
             for (let i = 0; i < 100; ++i) {
                 const d1 = new Date(Math.floor(Math.random() * maxMillis));
                 const d2 = new Date(Math.floor(Math.random() * maxMillis));
@@ -362,7 +373,7 @@ suite("Generators", function() {
 
             _test(false, false);
 
-            for (let i = 0; i < 100; ++i) {
+            for (let i = 0; i < 200; ++i) {
                 const countryCode = Math.random() < 0.5;
                 const format = Math.random() < 0.5;
                 _test(countryCode, format);
