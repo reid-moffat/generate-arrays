@@ -49,6 +49,53 @@ suite("Array Utils", () => {
             ]
         }
         TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (name: string, arr: any[], factor: number, elementWise: boolean, expected: any[]) => {
+                test(name, () => {
+
+                    console.log(`Running test: ${name}`);
+                    console.log(`Original array: ${printArray(arr)}`);
+
+                    TestTimer.startTest(getPath(this).concat(name));
+                    const result = ArrayUtils.multiplyLength(arr, factor, elementWise);
+                    TestTimer.stopTest();
+
+                    console.log(`Result: ${printArray(result)}`);
+                    console.log(`Verifying it equals ${printArray(expected)}...`);
+                    expect(result).to.deep.equal(expected);
+                    console.log("Success!\n");
+                });
+            }
+
+            _test("Empty array", [], 2, false, []);
+
+            _test("Empty array, element-wise", [], 2, true, []);
+
+            _test("Single element", [1], 3, false, [1, 1, 1]);
+
+            _test("Single element, element-wise", [1], 3, true, [1, 1, 1]);
+
+            _test("Multiple elements", [1, 2], 3, false, [1, 2, 1, 2, 1, 2]);
+
+            _test("Multiple elements, element-wise", [1, 2], 3, true, [1, 1, 1, 2, 2, 2]);
+
+            _test("Multiple elements, factor 4", [1, 2, 3], 4, false, [1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]);
+
+            _test("Multiple elements, factor 4, element-wise", [1, 2, 3], 4, true, [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]);
+
+            _test("Multiple elements, factor 2, element-wise", [1, 2, 3], 2, true, [1, 1, 2, 2, 3, 3]);
+
+            _test("Multiple elements, factor 3, element-wise", [1, 2, 3], 3, true, [1, 1, 1, 2, 2, 2, 3, 3, 3]);
+
+            _test("Single element, factor of 10 million", [1], 10_000_000, false, Array(10_000_000).fill(1));
+
+            _test("Three elements, factor of 10 million", [1, 2, 3], 10_000_000, false, Array(30_000_000).fill(1).map((_, i) => i % 3 + 1));
+
+            _test("Three elements, factor of 10 million, element-wise", [1, 2, 3], 10_000_000, true, Array(30_000_000).fill(1).map((_, i) => Math.floor(i / 10_000_000) + 1));
+
+        });
     });
 
     suite("Remove Duplicates", function() {
