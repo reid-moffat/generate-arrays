@@ -1,5 +1,15 @@
 # generate-array
 
+## 2.0.0
+
+### Major Changes
+
+- 11fb72d: - Added many generator functions for easy generation of values
+  - Added 10,000+ tests, catching and fixing several bugs in validation and logic
+  - Added option to specific a length range for array generation
+  - Added function to create an array from any value
+  - Many more minor changes
+
 ## 1.0.0
 
 ### Major Changes
