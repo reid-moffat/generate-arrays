@@ -10,7 +10,7 @@ import {
     TestFailureParams,
     ArrayLengthParameter, Parameter
 } from "./utils/TestFailures.ts";
-import { formatNumber, getPath, printOutput } from "./utils/Utils.ts";
+import { formatNumber, getPath, printOutput, stringify } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -79,7 +79,7 @@ suite("Basic array functions", function() {
         suite("Valid input", function() {
 
             const _test = (value: any, length: number) => {
-                const name = `Value ${typeof value === "bigint" ? value + " (BigInt)" : JSON.stringify(value)} Length ${formatNumber(length)}`;
+                const name = `Value ${stringify(value)} Length ${formatNumber(length)}`;
                 test(name, function() {
 
                     console.log(`Running test: ${name}`);
