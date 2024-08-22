@@ -3,6 +3,21 @@ import Validation from "../utils/Validation.ts";
 class ArrayUtils {
 
     /**
+     * Flattens the array to a single dimension. This removes all nested arrays, placing all non-array elemnts in a single array
+     *
+     * Example:
+     * flatten([1, [2, 3], [4, [5, 6]]]) -> [1, 2, 3, 4, 5, 6]
+     *
+     * @param arr
+     */
+    public static flatten(arr: any[]): any[] {
+
+        Validation.array(arr, "arr");
+
+        return arr.flat(Infinity);
+    }
+
+    /**
      * Adds the specified number of dimensions to the array (i.e. wraps the array in arrays the specified number of times)
      *
      * Example:
@@ -24,21 +39,6 @@ class ArrayUtils {
         }
 
         return newArr;
-    }
-
-    /**
-     * Flattens the array to a single dimension. This removes all nested arrays, placing all non-array elemnts in a single array
-     *
-     * Example:
-     * flatten([1, [2, 3], [4, [5, 6]]]) -> [1, 2, 3, 4, 5, 6]
-     *
-     * @param arr
-     */
-    public static flatten(arr: any[]): any[] {
-
-        Validation.array(arr, "arr");
-
-        return arr.flat(Infinity);
     }
 
     /**
