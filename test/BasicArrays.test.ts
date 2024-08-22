@@ -8,7 +8,7 @@ import {
     BooleanParameter,
     FunctionParameter,
     TestFailureParams,
-    ArrayLengthParameter
+    ArrayLengthParameter, Parameter
 } from "./utils/TestFailures.ts";
 import { formatNumber, getPath, printOutput } from "./utils/Utils.ts";
 
@@ -58,7 +58,7 @@ suite("Basic array functions", function() {
             _test(10_000_000);
 
             for (let i = 1; i <= 100; ++i) {
-                const length = Math.floor(Math.random() * 10_000_000);
+                const length = Math.floor(Math.random() * 10_000_000) + 1;
                 _test(length);
             }
         });
@@ -79,7 +79,7 @@ suite("Basic array functions", function() {
         suite("Valid input", function() {
 
             const _test = (value: any, length: number) => {
-                const name = `Value ${JSON.stringify(value)} Length ${formatNumber(length)}`;
+                const name = `Value ${typeof value === "bigint" ? value + " (BigInt)" : JSON.stringify(value)} Length ${formatNumber(length)}`;
                 test(name, function() {
 
                     console.log(`Running test: ${name}`);
@@ -107,6 +107,18 @@ suite("Basic array functions", function() {
             _test([1, 2, 3], 3);
 
             _test([1, 2, 3], 1);
+
+            for (let i = 1; i <= 100; ++i) {
+                const length = Math.floor(Math.sqrt(Math.random()) * 10_000) + 1;
+                const value = Math.floor(Math.random() * 100);
+                _test(value, length);
+            }
+
+            for (let i = 1; i <= 500; ++i) {
+                const length = Math.floor(Math.sqrt(Math.random()) * 10_000) + 1;
+                const value = Parameter.allValues[Math.floor(Math.random() * Parameter.allValues.length)];
+                _test(value, length);
+            }
         });
     });
 
