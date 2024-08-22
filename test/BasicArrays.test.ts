@@ -58,7 +58,7 @@ suite("Basic array functions", function() {
             _test(10_000_000);
 
             for (let i = 1; i <= 100; ++i) {
-                const length = Math.floor(Math.random() * 10_000_000) + 1;
+                const length = biasRandom(10_000_000);
                 _test(length);
             }
         });
@@ -114,7 +114,7 @@ suite("Basic array functions", function() {
                 _test(value, length);
             }
 
-            for (let i = 1; i <= 500; ++i) {
+            for (let i = 1; i <= 1000; ++i) {
                 const length = biasRandom(10_000);
                 const value = Parameter.allValues[Math.floor(Math.random() * Parameter.allValues.length)];
                 _test(value, length);
