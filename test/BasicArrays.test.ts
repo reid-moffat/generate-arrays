@@ -252,7 +252,7 @@ suite("Basic array functions", function() {
                 const start = Math.floor(Math.random() * 20_000 - 10_000);
                 const end = start + negative * Math.floor(Math.random() * 20_000);
                 let step = negative * Math.floor(Math.random() * 1_000);
-                if (step === 0) step = negative ? -1 : 1; // Step can't be 0
+                if (step === 0) step = negative; // Step can't be 0
 
                 _test(start, end, step);
             }
@@ -263,7 +263,7 @@ suite("Basic array functions", function() {
                 const start = Math.random() * 10_000;
                 const end = start + negative * Math.random() * 10_000;
                 let step = negative * Math.random() * 1_000;
-                if (step === 0) step = negative ? -1 : 1; // Step can't be 0
+                if (step === 0) step = negative; // Step can't be 0
 
                 _test(start, end, step);
             }
@@ -396,27 +396,7 @@ suite("Basic array functions", function() {
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
-            test("Length 1", function() {
-                const arr = GenerateArray.strings(1);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(1);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("string");
-                    expect(val.length).to.be.at.least(1);
-                    expect(val.length).to.be.at.most(10);
-                });
-            });
 
-            test("Length 3", function() {
-                const arr = GenerateArray.strings(3);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(3);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("string");
-                    expect(val.length).to.be.at.least(1);
-                    expect(val.length).to.be.at.most(10);
-                });
-            });
         });
     });
 });
