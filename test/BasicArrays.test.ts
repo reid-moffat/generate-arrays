@@ -10,7 +10,7 @@ import {
     TestFailureParams,
     ArrayLengthParameter
 } from "./utils/TestFailures.ts";
-import { getPath } from "./utils/Utils.ts";
+import { formatNumber, getPath } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -50,6 +50,11 @@ suite("Basic array functions", function() {
             _test("Length 100,000", 100_000);
 
             _test("Length 10 million", 10_000_000);
+
+            for (let i = 1; i <= 100; ++i) {
+                const length = Math.floor(Math.random() * 10_000_000);
+                _test(`Length ${formatNumber(length)}`, length);
+            }
         });
     });
 

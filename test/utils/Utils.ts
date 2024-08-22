@@ -36,4 +36,11 @@ const printOutput = (obj: any) => {
     return JSON.stringify(obj);
 }
 
-export { getPath, printOutput };
+/**
+ * Formats a number with commas to make it easy-to-read
+ */
+const formatNumber = (num: number) => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+export { getPath, printOutput, formatNumber };
