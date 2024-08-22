@@ -135,25 +135,68 @@ suite("Basic array functions", function() {
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
-            test("Value 7 Length 1", function() {
-                const arr = GenerateArray.custom(() => 7, 1);
-                expect(arr).to.deep.equal([7]);
-            });
 
-            test("Value 7 Length 3", function() {
-                const arr = GenerateArray.custom(() => 7, 3);
-                expect(arr).to.deep.equal([7, 7, 7]);
-            });
+            type generator = { generator: () => any, validator: (value: any) => void };
+            const generators: generator[] = [
+                {
+                    generator: () => Math.floor(Math.random() * 100),
+                    validator: (value: any) => {
+                        expect(value).to.be.a("number");
+                        expect(value).to.be.at.least(0);
+                        expect(value).to.be.lessThan(100);
+                    }
+                },
+                {
+                    generator: () => Math.random(),
+                    validator: (value: any) => {
+                        expect(value).to.be.a("number");
+                        expect(value).to.be.at.least(0);
+                        expect(value).to.be.lessThan(1);
+                    }
+                },
+                {
+                    generator: () => Math.random() > 0.5,
+                    validator: (value: any) => {
+                        expect(value).to.be.a("boolean");
+                    }
+                },
+                {
+                    generator: () => Math.random().toString(36).substring(7),
+                    validator: (value: any) => {
+                        expect(value).to.be.a("string");
+                        expect(value.length).to.be.at.least(1);
+                        expect(value.length).to.be.at.most(10);
+                    }
+                }
+            ];
 
-            test("Value [1, 2, 3] Length 3", function() {
-                const arr = GenerateArray.custom(() => [1, 2, 3], 3);
-                expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
-            });
+            const _test = (generator: generator, length: number) => {
+                const name = `Function: ${stringify(generator.generator)} Length ${formatNumber(length)}`;
+                test(name, function() {
 
-            test("Value [1, 2, 3] Length 1", function() {
-                const arr = GenerateArray.custom(() => [1, 2, 3], 1);
-                expect(arr).to.deep.equal([[1, 2, 3]]);
-            });
+                    console.log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.custom(generator.generator, length);
+                    TestTimer.stopTest();
+
+                    console.log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        generator.validator(val);
+                    });
+
+                    console.log("Test passed!\n");
+                });
+            }
+
+            for (let i = 1; i <= 200; ++i) {
+                const generator = generators[Math.floor(Math.random() * generators.length)];
+                const length = biasRandom(10_000);
+                _test(generator, length);
+            }
         });
     });
 
