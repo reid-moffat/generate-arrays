@@ -231,7 +231,7 @@ suite("Basic array functions", function() {
                     expect(arr.length).to.equal(Math.floor((end - start) / step) + 1);
                     arr.forEach((val, index) => {
                         expect(val).to.be.a("number");
-                        expect(val).to.equal(start + index * step);
+                        expect(val).to.be.closeTo(start + index * step, 0.000001);
                     });
 
                     console.log("Test passed!\n");
@@ -250,6 +250,14 @@ suite("Basic array functions", function() {
                 const start = Math.floor(Math.random() * 10_000);
                 const end = start + Math.floor(Math.random() * 10_000);
                 const step = biasRandom(1_000);
+
+                _test(start, end, step);
+            }
+
+            for (let i = 1; i <= 500; ++i) {
+                const start = Math.random() * 10_000;
+                const end = start + Math.random() * 10_000;
+                const step = Math.random() * 1_000;
 
                 _test(start, end, step);
             }
