@@ -28,8 +28,11 @@ const stringify = (value: any): string => {
     if (typeof value === 'bigint') {
         return value + " (BigInt)"
     }
-    if (Array.isArray(value) || typeof value === "object" || typeof value === "string") {
+    if (!Array.isArray(value) && (typeof value === "object" || typeof value === "string")) {
         return JSON.stringify(value);
+    }
+    if (Array.isArray(value)) {
+        return "[" + value.map(v => stringify(v)).join(", ") + "]";
     }
 
     return String(value);
