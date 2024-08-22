@@ -57,7 +57,9 @@ const printOutput = (obj: any) => {
  * Formats a number with commas to make it easy-to-read
  */
 const formatNumber = (num: number) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const parts = num.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
 }
 
 /**
