@@ -47,7 +47,7 @@ const printOutput = (obj: any) => {
         return obj.slice(0, 100) + ` ... (truncated, ${obj.length - 100} more characters)`;
     }
 
-    return JSON.stringify(obj);
+    return stringify(obj);
 }
 
 /**
