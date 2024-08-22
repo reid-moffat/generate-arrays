@@ -2,7 +2,7 @@ import SuiteMetrics from "suite-metrics";
 import GenerateArrayError from "../../src/utils/GenerateArrayError.ts";
 import { expect } from "chai";
 import Validation from "../../src/utils/Validation.ts";
-import { stringify } from "./Utils.ts";
+import { log, stringify } from "./Utils.ts";
 
 type TestFailureParams = {
     path: string[],
@@ -30,7 +30,7 @@ class TestFailures {
                     test(testName, () => {
                         const pathWithTest = [...data.path, TestFailures.SuiteName, testName];
 
-                        console.log(`Running test: ${pathWithTest.join(" > ")}`);
+                        log(`Running test: ${pathWithTest.join(" > ")}`);
                         let err;
                         try {
                             TestFailures.TestTimer.startTest(pathWithTest);
@@ -40,18 +40,18 @@ class TestFailures {
                             err = e;
                         }
 
-                        console.log(`\nFunction execution completed, verifying...`);
+                        log(`\nFunction execution completed, verifying...`);
 
                         expect(err).to.be.an.instanceOf(Error);
-                        console.log(`(1/3) Error was caught`);
+                        log(`(1/3) Error was caught`);
 
                         expect(err).to.be.an.instanceOf(GenerateArrayError);
-                        console.log(`(2/3) Error is an instance of GenerateArrayError`);
+                        log(`(2/3) Error is an instance of GenerateArrayError`);
 
                         expect(err.message).to.be.a("string");
-                        console.log(`(3/3) Error message is a string`);
+                        log(`(3/3) Error message is a string`);
 
-                        console.log(`Test passed!\n\n`);
+                        log(`Test passed!\n\n`);
                     });
                 }
             }

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import SuiteMetrics from "suite-metrics";
-import { getPath, printOutput } from "./utils/Utils.ts";
+import { getPath, log, printOutput } from "./utils/Utils.ts";
 import ArrayUtils from "../src/functions/ArrayUtils.ts";
 import {
     ArrayParameter,
@@ -31,17 +31,17 @@ suite("Array Utils", function() {
             const _test = (name: string, arr: any[], depth: number, expected: any[]) => {
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
-                    console.log(`Original array: ${printOutput(arr)}`);
+                    log(`Running test: ${name}`);
+                    log(`Original array: ${printOutput(arr)}`);
 
                     TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.addDimensions(arr, depth);
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${printOutput(result)}`);
-                    console.log(`Verifying it equals ${printOutput(expected)}...`);
+                    log(`Result: ${printOutput(result)}`);
+                    log(`Verifying it equals ${printOutput(expected)}...`);
                     expect(result).to.deep.equal(expected);
-                    console.log("Success!\n");
+                    log("Success!\n");
                 });
             }
 
@@ -73,17 +73,17 @@ suite("Array Utils", function() {
             const _test = (name: string, arr: any[], expected: any[]) => {
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
-                    console.log(`Flattening array: ${printOutput(arr)}`);
+                    log(`Running test: ${name}`);
+                    log(`Flattening array: ${printOutput(arr)}`);
 
                     TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.flatten(arr);
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${printOutput(result)}`);
-                    console.log(`Verifying it equals ${printOutput(expected)}...`);
+                    log(`Result: ${printOutput(result)}`);
+                    log(`Verifying it equals ${printOutput(expected)}...`);
                     expect(result).to.deep.equal(expected);
-                    console.log("Success!\n");
+                    log("Success!\n");
                 });
             }
 
@@ -138,17 +138,17 @@ suite("Array Utils", function() {
             const _test = (name: string, arr: any[], factor: number, elementWise: boolean, expected: any[]) => {
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
-                    console.log(`Original array: ${printOutput(arr)}`);
+                    log(`Running test: ${name}`);
+                    log(`Original array: ${printOutput(arr)}`);
 
                     TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.multiplyLength(arr, factor, elementWise);
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${printOutput(result)}`);
-                    console.log(`Verifying it equals ${printOutput(expected)}...`);
+                    log(`Result: ${printOutput(result)}`);
+                    log(`Verifying it equals ${printOutput(expected)}...`);
                     expect(result).to.deep.equal(expected);
-                    console.log("Success!\n");
+                    log("Success!\n");
                 });
             }
 
@@ -195,17 +195,17 @@ suite("Array Utils", function() {
             const _test = (name: string, arr: any[], expected: any[]) => {
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
-                    console.log(`Flattening array: ${printOutput(arr)}`);
+                    log(`Running test: ${name}`);
+                    log(`Flattening array: ${printOutput(arr)}`);
 
                     TestTimer.startTest(getPath(this));
                     const result = ArrayUtils.removeDuplicates(arr);
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${printOutput(result)}`);
-                    console.log(`Verifying it equals ${printOutput(expected)}...`);
+                    log(`Result: ${printOutput(result)}`);
+                    log(`Verifying it equals ${printOutput(expected)}...`);
                     expect(result).to.deep.equal(expected);
-                    console.log("Success!\n");
+                    log("Success!\n");
                 });
             }
 

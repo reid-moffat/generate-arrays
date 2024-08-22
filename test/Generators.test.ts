@@ -31,18 +31,18 @@ suite("Generators", function() {
             const _test = (min: number, max: number) => {
                 test(`Min: ${min}, max: ${max}`, function() {
 
-                    console.log(`Running test: Min: ${min}, max: ${max}`);
+                    log(`Running test: Min: ${min}, max: ${max}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = integer(min, max)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("number", "Value is not a number");
                     expect(value).to.satisfy(Number.isInteger, "Value is not an integer");
                     expect(value).to.be.at.least(min, "Value is less than min");
                     expect(value).to.be.at.most(max, "Value is greater than max");
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -88,19 +88,19 @@ suite("Generators", function() {
             const _test = (min: number, max: number, precision: number) => {
                 test(`Min: ${min}, max: ${max}, precision: ${precision}`, function() {
 
-                    console.log(`Running test: Min: ${min}, max: ${max}, precision: ${precision}`);
+                    log(`Running test: Min: ${min}, max: ${max}, precision: ${precision}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = decimal(min, max, precision)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("number", "Value is not a number");
                     expect(value).to.be.at.least(min, "Value is less than min");
                     expect(value).to.be.at.most(max, "Value is greater than max");
                     expect((value.toString().split('.')[1] ?? '').length)
                         .to.be.at.most(precision, "Value has more precision than expected"); // May have zeros at end, so less digits is ok
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -150,13 +150,13 @@ suite("Generators", function() {
                 const testName = `Length: ${printOutput(length)}, specialChars: ${specialChars}`;
                 test(testName, function() {
 
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = string(length, specialChars)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${printOutput(value)}`);
+                    log(`Result: ${printOutput(value)}`);
                     expect(value).to.be.a("string", "Value is not a string");
 
                     if (Array.isArray(length)) {
@@ -170,7 +170,7 @@ suite("Generators", function() {
                         expect(value).to.match(/^[0-9a-zA-Z]*$/, "Value contains special characters");
                     }
 
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -214,20 +214,20 @@ suite("Generators", function() {
 
             const _test = (trueChance: number, expected?: boolean) => {
                 test(`True chance: ${trueChance}`, function() {
-                    console.log(`Running test: True chance: ${trueChance}`);
+                    log(`Running test: True chance: ${trueChance}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = boolean(trueChance)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("boolean", "Value is not a boolean");
                     if (expected !== undefined) {
                         expect(value).to.equal(expected, "Value does not match expected");
                     } else {
                         expect(value).to.be.oneOf([true, false], "Value is not true or false");
                     }
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -245,7 +245,7 @@ suite("Generators", function() {
                 const testName = `Chance: ${chance}, iterations: ${iterations}, error: ${error}`;
 
                 test(testName, function() {
-                    console.log(`Running randomness test: ${testName}`);
+                    log(`Running randomness test: ${testName}`);
 
                     let numTrue = 0;
                     const gen = boolean(chance);
@@ -258,7 +258,7 @@ suite("Generators", function() {
 
                     const expectedTrue = iterations * chance;
                     expect(numTrue).to.be.closeTo(expectedTrue, iterations * error);
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -282,17 +282,17 @@ suite("Generators", function() {
             const _test = (min: Date | number = new Date(0), max: Date | number = new Date()) => {
                 const testName = `Min: ${new Date(min).toISOString()}, max: ${new Date(max).toISOString()}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = date(min, max)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("Date", "Value is not a Date");
                     expect(value.getTime()).to.be.at.least(typeof min === 'number' ? min : min.getTime(), "Value is before min");
                     expect(value.getTime()).to.be.at.most(typeof max === 'number' ? max : max.getTime(), "Value is after max");
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -340,13 +340,13 @@ suite("Generators", function() {
             const _test = (countryCode: boolean = false, format: boolean = false) => {
                 const testName = `Country code: ${countryCode}, format: ${format}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = phone(countryCode, format)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
 
                     if (countryCode && format) {
@@ -359,7 +359,7 @@ suite("Generators", function() {
                         expect(value).to.match(/^[0-9]{10}$/, "Value does not match expected format");
                     }
 
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -396,16 +396,16 @@ suite("Generators", function() {
             const _test = () => {
                 const testName = `Test #${testNum++}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = uuid()();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
                     expect(value).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/, "Value does not match UUID format");
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -433,13 +433,13 @@ suite("Generators", function() {
             const _test = (IPv6: boolean = false, mask: boolean = false) => {
                 const testName = `${IPv6 ? "IPv6" : "IPv4"}${mask ? " with mask" : ""}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = ipAddress(IPv6, mask)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
 
                     const ipv4Regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -458,7 +458,7 @@ suite("Generators", function() {
                         expect(value).to.match(ipv4Regex, "Value does not match IPv4 format");
                     }
 
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -491,13 +491,13 @@ suite("Generators", function() {
             const _test = (rngUsername?: number | [number, number]) => {
                 const testName = `Test #${testNum++}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = email(rngUsername)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
                     if (rngUsername) {
                         const username = value.split('@')[0];
@@ -510,7 +510,7 @@ suite("Generators", function() {
                     } else {
                         expect(value).to.match(/^[0-9a-zA-Z]+\.[0-9a-zA-Z]+@[0-9a-zA-Z]+\.[a-zA-Z]+$/, "Value does not match email format");
                     }
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 
@@ -563,20 +563,20 @@ suite("Generators", function() {
             const _test = (capitalize: boolean = false) => {
                 const testName = `Test #${testNum++}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = word(capitalize)();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
                     if (capitalize) {
                         expect(value).to.match(/^[A-Z][a-z]+$/, "Value does not match capitalized word format");
                     } else {
                         expect(value).to.match(/^[a-z]+$/, "Value contains non-alphabet characters");
                     }
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 

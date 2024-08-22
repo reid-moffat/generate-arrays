@@ -10,7 +10,7 @@ import {
     TestFailureParams,
     ArrayLengthParameter, Parameter
 } from "./utils/TestFailures.ts";
-import { biasRandom, formatNumber, getPath, printOutput, stringify } from "./utils/Utils.ts";
+import { biasRandom, formatNumber, getPath, log, printOutput, stringify } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -31,19 +31,19 @@ suite("Basic array functions", function() {
                 const testName = `Length ${formatNumber(length)}`;
                 test(testName, function() {
 
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.blank(length);
                     TestTimer.stopTest();
-                    console.log(`Test completed, length: ${formatNumber(arr.length)}`);
+                    log(`Test completed, length: ${formatNumber(arr.length)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
                     arr.forEach((val) => {
                         expect(val).to.be.undefined;
                     });
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
@@ -82,13 +82,13 @@ suite("Basic array functions", function() {
                 const name = `Value ${stringify(value)} Length ${formatNumber(length)}`;
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
+                    log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.uniform(length, value);
                     TestTimer.stopTest();
 
-                    console.log(`Test completed, result: ${printOutput(arr)}`);
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
@@ -96,7 +96,7 @@ suite("Basic array functions", function() {
                         expect(val).to.deep.equal(value);
                     });
 
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
@@ -174,13 +174,13 @@ suite("Basic array functions", function() {
                 const name = `Function: ${stringify(generator.generator)} Length ${formatNumber(length)}`;
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
+                    log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.custom(generator.generator, length);
                     TestTimer.stopTest();
 
-                    console.log(`Test completed, result: ${printOutput(arr)}`);
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
@@ -188,7 +188,7 @@ suite("Basic array functions", function() {
                         generator.validator(val);
                     });
 
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
@@ -219,13 +219,13 @@ suite("Basic array functions", function() {
                 const name = `Start ${formatNumber(start)} End ${formatNumber(end)} Step ${formatNumber(step)}`;
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
+                    log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.counting(start, end, step);
                     TestTimer.stopTest();
 
-                    console.log(`Test completed, result: ${printOutput(arr)}`);
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(Math.floor((end - start) / step) + 1);
@@ -234,7 +234,7 @@ suite("Basic array functions", function() {
                         expect(val).to.be.closeTo(start + index * step, 0.000001);
                     });
 
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
@@ -289,13 +289,13 @@ suite("Basic array functions", function() {
                 const name = `Min ${formatNumber(min)} Max ${formatNumber(max)} Length ${formatNumber(length)}`;
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
+                    log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.integers(length, min, max);
                     TestTimer.stopTest();
 
-                    console.log(`Test completed, result: ${printOutput(arr)}`);
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
@@ -306,7 +306,7 @@ suite("Basic array functions", function() {
                         expect(val).to.be.at.most(max);
                     });
 
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
@@ -349,13 +349,13 @@ suite("Basic array functions", function() {
                 const name = `Min ${formatNumber(min)} Max ${formatNumber(max)} Length ${formatNumber(length)}`;
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
+                    log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.decimals(length, min, max);
                     TestTimer.stopTest();
 
-                    console.log(`Test completed, result: ${printOutput(arr)}`);
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
@@ -365,7 +365,7 @@ suite("Basic array functions", function() {
                         expect(val).to.be.at.most(max);
                     });
 
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
@@ -401,13 +401,13 @@ suite("Basic array functions", function() {
                 const name = `Min ${formatNumber(minLength)} Max ${formatNumber(maxLength)} Length ${formatNumber(length)} Special chars ${specialChars}`;
                 test(name, function() {
 
-                    console.log(`Running test: ${name}`);
+                    log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.strings(length, minLength, maxLength, specialChars);
                     TestTimer.stopTest();
 
-                    console.log(`Test completed, result: ${printOutput(arr)}`);
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
@@ -422,7 +422,7 @@ suite("Basic array functions", function() {
                         }
                     });
 
-                    console.log("Test passed!\n");
+                    log("Test passed!\n");
                 });
             }
 
