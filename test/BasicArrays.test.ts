@@ -10,7 +10,7 @@ import {
     TestFailureParams,
     ArrayLengthParameter
 } from "./utils/TestFailures.ts";
-import { formatNumber, getPath } from "./utils/Utils.ts";
+import { formatNumber, getPath, printOutput } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -78,28 +78,35 @@ suite("Basic array functions", function() {
 
         suite("Valid input", function() {
 
-            const _test = (name: string, value: any, length: number) => {
+            const _test = (value: any, length: number) => {
+                const name = `Value ${JSON.stringify(value)} Length ${formatNumber(length)}`;
                 test(name, function() {
+
+                    console.log(`Running test: ${name}`);
 
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.uniform(length, value);
                     TestTimer.stopTest();
+
+                    console.log(`Test completed, result: ${printOutput(arr)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
                     arr.forEach((val) => {
                         expect(val).to.deep.equal(value);
                     });
+
+                    console.log("Test passed!\n");
                 });
             }
 
-            _test("Value 7 Length 1", 7, 1);
+            _test(7, 1);
 
-            _test("Value 7 Length 3", 7, 3);
+            _test(7, 3);
 
-            _test("Value [1, 2, 3] Length 3", [1, 2, 3], 3);
+            _test([1, 2, 3], 3);
 
-            _test("Value [1, 2, 3] Length 1", [1, 2, 3], 1);
+            _test([1, 2, 3], 1);
         });
     });
 
