@@ -7,7 +7,7 @@ import {
     TestFailureParams,
     TestFailures
 } from "./utils/TestFailures.ts";
-import { getPath, printOutput } from "./utils/Utils.ts";
+import { getPath, log, printOutput } from "./utils/Utils.ts";
 import SuiteMetrics from "suite-metrics";
 
 const TestTimer = SuiteMetrics.getInstance();
@@ -602,16 +602,16 @@ suite("Generators", function() {
             const _test = () => {
                 const testName = `Test #${testNum++}`;
                 test(testName, function() {
-                    console.log(`Running test: ${testName}`);
+                    log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
                     const value = name()();
                     TestTimer.stopTest();
 
-                    console.log(`Result: ${value}`);
+                    log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
                     expect(value).to.match(/^[A-Z][a-z]+ [A-Z][a-z]+$/, "Value does not match name format");
-                    console.log("Verified successfully!\n");
+                    log("Verified successfully!\n");
                 });
             }
 

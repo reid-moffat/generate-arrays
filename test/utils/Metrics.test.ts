@@ -1,10 +1,11 @@
 import SuiteMetrics from "suite-metrics";
+import { log } from "./Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
 suite("Test metrics", function() {
     test("All suite metrics", function() {
-        console.log(TestTimer.printAllSuiteMetrics(true));
+        log(TestTimer.printAllSuiteMetrics(true));
     });
 
     test("All test metrics", function() {

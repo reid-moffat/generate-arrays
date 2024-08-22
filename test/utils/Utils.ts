@@ -1,6 +1,15 @@
 import * as Mocha from 'mocha';
 
 /**
+ * Logs a message if the DETAILED_LOGS environment variable is set
+ * This should be used when logging information necessary for running tests in the IDE, but not in github actions
+ */
+const log = (text: string) => {
+    if (process.env.SUPRESS_PASSING_OUTPUT) return;
+    console.log(text);
+}
+
+/**
  * Gets the path of the current suite for TestMetrics
  */
 const getPath = function(suite: Mocha.Suite | Mocha.Context): string[] {
@@ -69,4 +78,4 @@ const biasRandom = (max: number, min: number = 1, factor: number = 5) => {
     return Math.floor(Math.pow(Math.random(), factor) * (max - min)) + min;
 }
 
-export { getPath, stringify, printOutput, formatNumber, biasRandom };
+export { log, getPath, stringify, printOutput, formatNumber, biasRandom };
