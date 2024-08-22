@@ -344,27 +344,40 @@ suite("Basic array functions", function() {
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
-            test("Length 1", function() {
-                const arr = GenerateArray.decimals(1);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(1);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(1);
-                });
-            });
 
-            test("Length 3", function() {
-                const arr = GenerateArray.decimals(3);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(3);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(1);
+            const _test = (min: number, max: number, length: number) => {
+                const name = `Min ${formatNumber(min)} Max ${formatNumber(max)} Length ${formatNumber(length)}`;
+                test(name, function() {
+
+                    console.log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.decimals(length, min, max);
+                    TestTimer.stopTest();
+
+                    console.log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.a("number");
+                        expect(val).to.be.at.least(min);
+                        expect(val).to.be.at.most(max);
+                    });
+
+                    console.log("Test passed!\n");
                 });
-            });
+            }
+
+            _test(0, 0, 1);
+
+            for (let i = 1; i <= 500; ++i) {
+                const min = Math.random() * 20_000 - 10_000;
+                const max = min + Math.random() * 20_000;
+                const length = biasRandom(10_000, 1, 10);
+
+                _test(min, max, length);
+            }
         });
     });
 
