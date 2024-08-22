@@ -71,25 +71,29 @@ suite("Basic array functions", function() {
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
-            test("Value 1 Length 1", function() {
-                const arr = GenerateArray.uniform(1, 1);
-                expect(arr).to.deep.equal([1]);
-            });
 
-            test("Value 7 Length 3", function() {
-                const arr = GenerateArray.uniform(3, 7);
-                expect(arr).to.deep.equal([7, 7, 7]);
-            });
+            const _test = (name: string, value: any, length: number) => {
+                test(name, function() {
 
-            test("Value [1, 2, 3] Length 3", function() {
-                const arr = GenerateArray.uniform(3, [1, 2, 3]);
-                expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
-            });
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.uniform(length, value);
+                    TestTimer.stopTest();
 
-            test("Value [1, 2, 3] Length 1", function() {
-                const arr = GenerateArray.uniform(1, [1, 2, 3]);
-                expect(arr).to.deep.equal([[1, 2, 3]]);
-            });
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.deep.equal(value);
+                    });
+                });
+            }
+
+            _test("Value 7 Length 1", 7, 1);
+
+            _test("Value 7 Length 3", 7, 3);
+
+            _test("Value [1, 2, 3] Length 3", [1, 2, 3], 3);
+
+            _test("Value [1, 2, 3] Length 1", [1, 2, 3], 1);
         });
     });
 
