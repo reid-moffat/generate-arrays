@@ -95,7 +95,7 @@ class GenerateArray {
      *
      * @param start Number to start at
      * @param end Value to stop at (may not be included in resulting array)
-     * @param step Value added at each step (default 1). Always positive - is subtract is 2, this number is just subtracted
+     * @param step Value added at each step (default 1). Can be negative is end < start
      */
     public static counting = (start: number, end: number, step: number = 1): number[] => {
 
@@ -108,7 +108,7 @@ class GenerateArray {
         if (step === 0) {
             throw new GenerateArrayError(`Parameter 'step' must be a non-zero number`);
         }
-        if (Math.abs(end - start) / step > Validation.maxArrayLength) {
+        if (Math.floor(Math.abs((end - start) / step)) + 1 > Validation.maxArrayLength) {
             throw new GenerateArrayError(`Invalid array length: ${end} to ${start} with step ${step} exceeds ${Validation.maxArrayLength} elements`);
         }
 

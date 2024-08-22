@@ -247,17 +247,23 @@ suite("Basic array functions", function() {
             _test(45, 3253, 7);
 
             for (let i = 1; i <= 500; ++i) {
-                const start = Math.floor(Math.random() * 10_000);
-                const end = start + Math.floor(Math.random() * 10_000);
-                const step = biasRandom(1_000);
+                const negative = Math.random() > 0.5 ? -1 : 1;
+
+                const start = Math.floor(Math.random() * 20_000 - 10_000);
+                const end = start + negative * Math.floor(Math.random() * 20_000);
+                let step = negative * Math.floor(Math.random() * 1_000);
+                if (step === 0) step = 1; // Step can't be 0
 
                 _test(start, end, step);
             }
 
             for (let i = 1; i <= 500; ++i) {
+                const negative = Math.random() > 0.5 ? -1 : 1;
+
                 const start = Math.random() * 10_000;
-                const end = start + Math.random() * 10_000;
-                const step = Math.random() * 1_000;
+                const end = start + negative * Math.random() * 10_000;
+                let step = negative * Math.random() * 1_000;
+                if (step === 0) step = 1; // Step can't be 0
 
                 _test(start, end, step);
             }
