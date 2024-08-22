@@ -1,6 +1,10 @@
 # generate-arrays
 
-Simple, flexible, lightweight and fast array generation
+[![npm](https://img.shields.io/npm/v/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+[![npm](https://img.shields.io/npm/dt/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+[![npm](https://img.shields.io/npm/l/generate-arrays)](https://www.npmjs.com/package/generate-arrays)
+
+Simple, flexible and lightweight array generation
 
 ## 📦 Installation
 
@@ -18,8 +22,12 @@ yarn add generate-arrays
 
 ### Basic functions
 
-```js
+```ts
 import { GenerateArray } from 'generate-arrays';
+
+GenerateArray.from(value); // Turns any value into an array
+
+GenerateArray.empty(4); // [undefined, undefined, undefined, undefined]
 
 GenerateArray.uniform(4, "Test"); // ["Test", "Test", "Test", "Test"]
 
@@ -36,33 +44,38 @@ GenerateArray.strings(3, 4, 6, true); // ["s5%s#", "kAs*#4", "k2($"]
 
 ### Custom generators
 
-```js
+```ts
 import { GenerateArray } from 'generate-arrays';
+import { integer, decimal, string, boolean, date,
+    phone, uuid, ipAddress, email, url, name } from 'generate-arrays';
 
+// You can define your own generators, or use built-in ones (above) for simplicity
 const generators = [
     () => Math.floor(Math.random() * 100),
-    () => Math.random() * 100, () => Math.random() > 0.5
+    () => `User${Math.floor(Math.random() * 100)}`,
+    integer(1, 10),
+    phone(true, true)
 ];
-GenerateArray.generators(3, generators); // [37, 93.2, true]
+GenerateArray.generators(3, generators); // [7, "User37", "1-253-926-7302"]
 
 const weightedGenerators = [
     { generator: () => Math.floor(Math.random() * 100), weight: 0.5 },
-    { generator: () => Math.random() * 100, weight: 0.3 },
-    { generator: () => Math.random() > 0.5, weight: 0.2 }
+    { generator: name(), weight: 0.3 },
+    { generator: boolean(), weight: 0.2 }
 ];
-GenerateArray.weightedGenerators(5, weightedGenerators); // [37, 93.2, true, 37, 93.2]
+GenerateArray.weightedGenerators(4, weightedGenerators); // [false, 37, "John Smith" 75]
 
 const fixedCountGenerators = [
     { generator: () => Math.floor(Math.random() * 100), count: 2 },
-    { generator: () => Math.random() * 100, count: 2 },
-    { generator: () => Math.random() > 0.5, count: 1 }
+    { generator: () => ipAddress(), count: 1 },
+    { generator: () => decimal(), count: 1 }
 ];
-GenerateArray.fixedCountGenerators(5, fixedCountGenerators); // [17.2, false, 92, 28, 67.3]
+GenerateArray.fixedCountGenerators(fixedCountGenerators); // [17.24326, "192.158.1.38", 92, 28]
 ```
 
 ### Multi-dimensional arrays
 
-```js
+```ts
 import { GenerateArray } from 'generate-arrays';
 
 GenerateArray.emptyND(2, 3); // [[[], []], [[], []]]
@@ -70,4 +83,18 @@ GenerateArray.emptyND(2, 3); // [[[], []], [[], []]]
 GenerateArray.uniformND(7, 3, 2) // [[7], [7], [7]]
 
 GenerateArray.customND(() => Math.floor(Math.random() * 100), 3, 2); // [[37], [93], [12]]
+```
+
+### Utils
+
+```ts
+import { ArrayUtils } from 'generate-arrays';
+
+ArrayUtils.flatten([[1, 2], [3, 4]]); // [1, 2, 3, 4]
+
+ArrayUtils.addDimensions([1], 2); // [[[1]]]
+
+ArrayUtils.multiplyLength([1, 2], 3); // [1, 2, 1, 2, 1, 2]
+
+ArrayUtils.removeDuplicates([1, 2, 1, 3, 2]); // [1, 2, 3]
 ```

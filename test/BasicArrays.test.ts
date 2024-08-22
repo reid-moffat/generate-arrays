@@ -1,297 +1,441 @@
 import { GenerateArray } from "../src/index.ts";
 import { expect } from "chai";
-import GenerateArrayError from "../src/GenerateArrayError.ts";
 import SuiteMetrics from "suite-metrics";
+import {
+    TestFailures,
+    NumberParameter,
+    GenericParameter,
+    BooleanParameter,
+    FunctionParameter,
+    TestFailureParams,
+    ArrayLengthParameter, Parameter
+} from "./utils/TestFailures.ts";
+import { biasRandom, formatNumber, getPath, log, printOutput, stringify } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
-suite("Basic array functions", () => {
+suite("Basic array functions", function() {
 
-    suite("Blank array", () => {
+    suite("Blank array", function() {
 
-        suite("Invalid input", () => {
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.blank,
+            parameters: new ArrayLengthParameter("length")
+        };
+        TestFailures.run(failureTestData);
 
-            const _test = (name: string, length: any) => {
-                test(name, () => {
-                    const path = ["Basic functions", "Blank array", "Invalid", name];
+        suite("Valid input", function() {
 
-                    let err;
-                    try {
-                        TestTimer.startTest(path);
-                        GenerateArray.blank(length);
-                    } catch (e: any) {
-                        TestTimer.stopTest();
-                        err = e;
-                    }
+            const _test = (length: number) => {
+                const testName = `Length ${formatNumber(length)}`;
+                test(testName, function() {
 
-                    const message = Number.isInteger(length)
-                        ? `Parameter 'length' must be at least 1: value '${length}' is invalid`
-                        : `Parameter 'length' must be an integer: value '${length}' is invalid`;
+                    log(`Running test: ${testName}`);
 
-                    expect(err).to.be.an.instanceOf(GenerateArrayError);
-                    expect(err.message).to.be.a("string");
-                    expect(err.message).to.equal(message);
-                });
-            }
-
-            _test("Length undefined", undefined);
-
-            _test("Length null", null);
-
-            _test("Length object", {});
-
-            _test("Length array", []);
-
-            _test("Length string ('1')", "1");
-
-            _test("Length decimal (1.7)",1.7);
-
-            _test("Length decimal (0.3)",0.3);
-
-            _test("Length of zero",0);
-
-            _test("Length negative (-1)",-1);
-
-            _test("Length negative decimal (-3.6)", -3.6);
-
-            _test("Length large decimal (1e+15 + 0.1)", 1e+15 + 0.1);
-
-            _test("Length large negative decimal (-1e+15 + 0.1)", -1e+15 + 0.1);
-
-            _test("Length large negative integer (-1e+20)", -1e+20);
-        })
-
-        suite("Valid input", () => {
-
-            const _test = (name: string, length: number) => {
-                test(name, () => {
-                    const path = ["Basic functions", "Blank array", "Valid", name];
-
-                    TestTimer.startTest(path);
+                    TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.blank(length);
                     TestTimer.stopTest();
+                    log(`Test completed, length: ${formatNumber(arr.length)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
                     arr.forEach((val) => {
                         expect(val).to.be.undefined;
                     });
+                    log("Test passed!\n");
                 });
             }
 
-            _test("Length 1", 1);
+            _test(1);
 
-            _test("Length 3", 3);
+            _test(3);
 
-            _test("Length 1,000", 1_000);
+            _test(1_000);
 
-            _test("Length 100,000", 100_000);
+            _test(100_000);
 
-            _test("Length 100 million", 100_000_000);
+            _test(10_000_000);
+
+            for (let i = 1; i <= 100; ++i) {
+                const length = biasRandom(10_000_000);
+                _test(length);
+            }
         });
     });
 
-    suite("Uniform array", () => {
+    suite("Uniform array", function() {
 
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.uniform(1.2, 7)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.uniform,
+            parameters: [
+                new ArrayLengthParameter("length"),
+                new GenericParameter("value")
+            ]
+        };
+        TestFailures.run(failureTestData);
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.uniform(0, 7)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        suite("Valid input", function() {
 
-        suite("Valid input", () => {
-            test("Value 1 Length 1", () => {
-                const arr = GenerateArray.uniform(1, 1);
-                expect(arr).to.deep.equal([1]);
-            });
+            const _test = (value: any, length: number) => {
+                const name = `Value ${stringify(value)} Length ${formatNumber(length)}`;
+                test(name, function() {
 
-            test("Value 7 Length 3", () => {
-                const arr = GenerateArray.uniform(3, 7);
-                expect(arr).to.deep.equal([7, 7, 7]);
-            });
+                    log(`Running test: ${name}`);
 
-            test("Value [1, 2, 3] Length 3", () => {
-                const arr = GenerateArray.uniform(3, [1, 2, 3]);
-                expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
-            });
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.uniform(length, value);
+                    TestTimer.stopTest();
 
-            test("Value [1, 2, 3] Length 1", () => {
-                const arr = GenerateArray.uniform(1, [1, 2, 3]);
-                expect(arr).to.deep.equal([[1, 2, 3]]);
-            });
-        });
-    });
+                    log(`Test completed, result: ${printOutput(arr)}`);
 
-    suite("Custom array", () => {
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.deep.equal(value);
+                    });
 
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.custom(() => 1, 1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
-
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.custom(() => 1, 0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
-
-        suite("Valid input", () => {
-            test("Value 7 Length 1", () => {
-                const arr = GenerateArray.custom(() => 7, 1);
-                expect(arr).to.deep.equal([7]);
-            });
-
-            test("Value 7 Length 3", () => {
-                const arr = GenerateArray.custom(() => 7, 3);
-                expect(arr).to.deep.equal([7, 7, 7]);
-            });
-
-            test("Value [1, 2, 3] Length 3", () => {
-                const arr = GenerateArray.custom(() => [1, 2, 3], 3);
-                expect(arr).to.deep.equal([[1, 2, 3], [1, 2, 3], [1, 2, 3]]);
-            });
-
-            test("Value [1, 2, 3] Length 1", () => {
-                const arr = GenerateArray.custom(() => [1, 2, 3], 1);
-                expect(arr).to.deep.equal([[1, 2, 3]]);
-            });
-        });
-    });
-
-    suite("Counting array", () => {
-        suite("Invalid input", () => {
-
-        });
-
-        suite("Valid input", () => {
-            test("Length 1", () => {
-                const arr = GenerateArray.counting(1, 7);
-                expect(arr).to.deep.equal([1, 2, 3, 4, 5, 6, 7]);
-            });
-
-            test("Length 3", () => {
-                const arr = GenerateArray.counting(3, 4);
-                expect(arr).to.deep.equal([3, 4]);
-            });
-
-            test("Reverse 7 to 3", () => {
-                const arr = GenerateArray.counting(7, 2, 2, true);
-                expect(arr).to.deep.equal([7, 5, 3]);
-            });
-        });
-    });
-
-    suite("Integer array", () => {
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.integers(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
-
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.integers(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
-
-        suite("Valid input", () => {
-            test("Length 1", () => {
-                const arr = GenerateArray.integers(1);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(1);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.satisfy((num: number) => Number.isInteger(num));
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(100);
+                    log("Test passed!\n");
                 });
-            });
+            }
 
-            test("Length 3", () => {
-                const arr = GenerateArray.integers(3);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(3);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.satisfy((num: number) => Number.isInteger(num));
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(100);
-                });
-            });
+            _test(7, 1);
+
+            _test(7, 3);
+
+            _test([1, 2, 3], 3);
+
+            _test([1, 2, 3], 1);
+
+            for (let i = 1; i <= 100; ++i) {
+                const length = biasRandom(10_000);
+                const value = Math.floor(Math.random() * 100);
+                _test(value, length);
+            }
+
+            for (let i = 1; i <= 1000; ++i) {
+                const length = biasRandom(10_000);
+                const value = Parameter.allValues[Math.floor(Math.random() * Parameter.allValues.length)];
+                _test(value, length);
+            }
         });
     });
 
-    suite("Decimal array", () => {
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.decimals(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
+    suite("Custom array", function() {
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.decimals(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.custom,
+            parameters: [
+                new FunctionParameter("value"),
+                new ArrayLengthParameter("length")
+            ]
+        };
+        TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Length 1", () => {
-                const arr = GenerateArray.decimals(1);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(1);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(1);
+        suite("Valid input", function() {
+
+            type generator = { generator: () => any, validator: (value: any) => void };
+            const generators: generator[] = [
+                {
+                    generator: () => Math.floor(Math.random() * 100),
+                    validator: (value: any) => {
+                        expect(value).to.be.a("number");
+                        expect(value).to.be.at.least(0);
+                        expect(value).to.be.lessThan(100);
+                    }
+                },
+                {
+                    generator: () => Math.random(),
+                    validator: (value: any) => {
+                        expect(value).to.be.a("number");
+                        expect(value).to.be.at.least(0);
+                        expect(value).to.be.lessThan(1);
+                    }
+                },
+                {
+                    generator: () => Math.random() > 0.5,
+                    validator: (value: any) => {
+                        expect(value).to.be.a("boolean");
+                    }
+                },
+                {
+                    generator: () => Math.random().toString(36).substring(7),
+                    validator: (value: any) => {
+                        expect(value).to.be.a("string");
+                        expect(value.length).to.be.at.least(1);
+                        expect(value.length).to.be.at.most(10);
+                    }
+                }
+            ];
+
+            const _test = (generator: generator, length: number) => {
+                const name = `Function: ${stringify(generator.generator)} Length ${formatNumber(length)}`;
+                test(name, function() {
+
+                    log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.custom(generator.generator, length);
+                    TestTimer.stopTest();
+
+                    log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        generator.validator(val);
+                    });
+
+                    log("Test passed!\n");
                 });
-            });
+            }
 
-            test("Length 3", () => {
-                const arr = GenerateArray.decimals(3);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(3);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(1);
-                });
-            });
+            for (let i = 1; i <= 200; ++i) {
+                const generator = generators[Math.floor(Math.random() * generators.length)];
+                const length = biasRandom(10_000);
+                _test(generator, length);
+            }
         });
     });
 
-    suite("Strings array", () => {
-        suite("Invalid input", () => {
-            test("Length not an integer", () => {
-                expect(() => GenerateArray.strings(1.2)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
+    suite("Counting array", function() {
 
-            test("Length less than 1", () => {
-                expect(() => GenerateArray.strings(0)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-        });
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.counting,
+            parameters: [
+                new NumberParameter({ name: "start" }),
+                new NumberParameter({ name: "end" }),
+                new NumberParameter({ name: "step", optional: true })
+            ]
+        };
+        TestFailures.run(failureTestData);
 
-        suite("Valid input", () => {
-            test("Length 1", () => {
-                const arr = GenerateArray.strings(1);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(1);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("string");
-                    expect(val.length).to.be.at.least(1);
-                    expect(val.length).to.be.at.most(10);
+        suite("Valid input", function() {
+
+            const _test = (start: number, end: number, step: number) => {
+                const name = `Start ${formatNumber(start)} End ${formatNumber(end)} Step ${formatNumber(step)}`;
+                test(name, function() {
+
+                    log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.counting(start, end, step);
+                    TestTimer.stopTest();
+
+                    log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(Math.floor((end - start) / step) + 1);
+                    arr.forEach((val, index) => {
+                        expect(val).to.be.a("number");
+                        expect(val).to.be.closeTo(start + index * step, 0.000001);
+                    });
+
+                    log("Test passed!\n");
                 });
-            });
+            }
 
-            test("Length 3", () => {
-                const arr = GenerateArray.strings(3);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(3);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("string");
-                    expect(val.length).to.be.at.least(1);
-                    expect(val.length).to.be.at.most(10);
-                });
-            });
+            _test(0, 0, 1);
+
+            _test(1, 10, 1);
+
+            _test(7, 12, 2);
+
+            _test(45, 3253, 7);
+
+            for (let i = 1; i <= 500; ++i) {
+                const negative = Math.random() > 0.5 ? -1 : 1;
+
+                const start = Math.floor(Math.random() * 20_000 - 10_000);
+                const end = start + negative * Math.floor(Math.random() * 20_000);
+                let step = negative * Math.floor(Math.random() * 1_000);
+                if (step === 0) step = negative; // Step can't be 0
+
+                _test(start, end, step);
+            }
+
+            for (let i = 1; i <= 500; ++i) {
+                const negative = Math.random() > 0.5 ? -1 : 1;
+
+                const start = Math.random() * 10_000;
+                const end = start + negative * Math.random() * 10_000;
+                let step = negative * Math.random() * 1_000;
+                if (step === 0) step = negative; // Step can't be 0
+
+                _test(start, end, step);
+            }
         });
     });
 
+    suite("Integer array", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.integers,
+            parameters: [
+                new ArrayLengthParameter("length"),
+                new NumberParameter({ name: "min", optional: true }),
+                new NumberParameter({ name: "max", optional: true })
+            ]
+        };
+        TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (min: number, max: number, length: number) => {
+                const name = `Min ${formatNumber(min)} Max ${formatNumber(max)} Length ${formatNumber(length)}`;
+                test(name, function() {
+
+                    log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.integers(length, min, max);
+                    TestTimer.stopTest();
+
+                    log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.a("number");
+                        expect(val).to.satisfy(Number.isInteger);
+                        expect(val).to.be.at.least(min);
+                        expect(val).to.be.at.most(max);
+                    });
+
+                    log("Test passed!\n");
+                });
+            }
+
+            _test(0, 0, 1);
+
+            _test(1, 10, 3);
+
+            _test(7, 12, 3);
+
+            _test(45, 3253, 3);
+
+            _test(-100, 100, 234);
+
+            for (let i = 1; i <= 500; ++i) {
+                const min = Math.floor(Math.random() * 1_000_000 - 500_000);
+                const max = min + Math.floor(Math.random() * 1_000_000);
+                const length = biasRandom(10_000, 1, 10);
+
+                _test(min, max, length);
+            }
+        });
+    });
+
+    suite("Decimal array", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.decimals,
+            parameters: [
+                new ArrayLengthParameter("length"),
+                new NumberParameter({ name: "min", optional: true }),
+                new NumberParameter({ name: "max", optional: true }),
+            ]
+        };
+        TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (min: number, max: number, length: number) => {
+                const name = `Min ${formatNumber(min)} Max ${formatNumber(max)} Length ${formatNumber(length)}`;
+                test(name, function() {
+
+                    log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.decimals(length, min, max);
+                    TestTimer.stopTest();
+
+                    log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.a("number");
+                        expect(val).to.be.at.least(min);
+                        expect(val).to.be.at.most(max);
+                    });
+
+                    log("Test passed!\n");
+                });
+            }
+
+            _test(0, 0, 1);
+
+            for (let i = 1; i <= 500; ++i) {
+                const min = Math.random() * 20_000 - 10_000;
+                const max = min + Math.random() * 20_000;
+                const length = biasRandom(10_000, 1, 10);
+
+                _test(min, max, length);
+            }
+        });
+    });
+
+    suite("Strings array", function() {
+
+        const failureTestData: TestFailureParams = {
+            path: getPath(this),
+            func: GenerateArray.strings,
+            parameters: [
+                new ArrayLengthParameter("length"),
+                new NumberParameter({ name: "minLength", integer: true, min: 1, optional: true }),
+                new NumberParameter({ name: "maxLength", integer: true, optional: true }),
+                new BooleanParameter({ name: "specialChars", optional: true })
+            ]
+        };
+        TestFailures.run(failureTestData);
+
+        suite("Valid input", function() {
+
+            const _test = (minLength: number, maxLength: number, length: number, specialChars: boolean) => {
+                const name = `Min ${formatNumber(minLength)} Max ${formatNumber(maxLength)} Length ${formatNumber(length)} Special chars ${specialChars}`;
+                test(name, function() {
+
+                    log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.strings(length, minLength, maxLength, specialChars);
+                    TestTimer.stopTest();
+
+                    log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.a("string");
+                        expect(val.length).to.be.at.least(minLength);
+                        expect(val.length).to.be.at.most(maxLength);
+                        if (specialChars) {
+                            expect(val).to.match(/[a-zA-Z0-9!"#$%&'()*+,-./:;<=>?@\[\]\\^_`{|}~]/);
+                        } else {
+                            expect(val).to.match(/[a-zA-Z0-9]/);
+                        }
+                    });
+
+                    log("Test passed!\n");
+                });
+            }
+
+            _test(1, 1, 1, false);
+
+            for (let i = 1; i <= 500; ++i) {
+                const minLength = Math.floor(Math.random() * 100) + 1;
+                const maxLength = minLength + Math.floor(Math.random() * 1_000);
+                const length = biasRandom(10_000, 1, 10);
+                const specialChars = Math.random() > 0.5;
+
+                _test(minLength, maxLength, length, specialChars);
+            }
+        });
+    });
 });

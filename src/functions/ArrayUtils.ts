@@ -1,6 +1,21 @@
-import Validation from "./Validation.ts";
+import Validation from "../utils/Validation.ts";
 
 class ArrayUtils {
+
+    /**
+     * Flattens the array to a single dimension. This removes all nested arrays, placing all non-array elemnts in a single array
+     *
+     * Example:
+     * flatten([1, [2, 3], [4, [5, 6]]]) -> [1, 2, 3, 4, 5, 6]
+     *
+     * @param arr
+     */
+    public static flatten(arr: any[]): any[] {
+
+        Validation.array(arr, "arr");
+
+        return arr.flat(Infinity);
+    }
 
     /**
      * Adds the specified number of dimensions to the array (i.e. wraps the array in arrays the specified number of times)
@@ -16,7 +31,7 @@ class ArrayUtils {
     public static addDimensions<T>(arr: T[], depth: number): T[] {
 
         Validation.array(arr, "arr");
-        Validation.integer(depth, 1, "depth");
+        Validation.integer(depth, "depth", 1);
 
         let newArr: any[] = arr.slice();
         for (let i = 0; i < depth; ++i) {
@@ -24,18 +39,6 @@ class ArrayUtils {
         }
 
         return newArr;
-    }
-
-    /**
-     * Flattens the array to a single dimension. This removes all nested arrays, placing all non-array elemnts in a single array
-     *
-     * Example:
-     * flatten([1, [2, 3], [4, [5, 6]]]) -> [1, 2, 3, 4, 5, 6]
-     *
-     * @param arr
-     */
-    public static flatten(arr: any[]): any[] {
-        return arr.flat(Infinity);
     }
 
     /**
@@ -53,7 +56,8 @@ class ArrayUtils {
     public static multiplyLength(arr: any[], factor: number, elementWise = false): any[] {
 
         Validation.array(arr, "arr");
-        Validation.integer(factor, 2, "factor");
+        Validation.integer(factor, "factor", 2);
+        Validation.boolean(elementWise, "elementWise");
 
         const result: any[] = [];
 
