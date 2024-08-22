@@ -41,9 +41,9 @@ const stringify = (value: any): string => {
 /**
  * Formats tes output, truncating output that is very long to not clog up the console
  */
-const printOutput = (obj: any) => {
+const printOutput = (obj: any): string => {
     if (Array.isArray(obj) && obj.length > 100) {
-        return "[" + obj.slice(0, 100).map(o => stringify(o)).join(", ") + `, ... (${obj.length - 100} more elements)]`;
+        return "[" + obj.slice(0, 100).map(o => printOutput(o)).join(", ") + `, ... (${obj.length - 100} more elements)]`;
     }
 
     if (typeof obj === 'string' && obj.length > 100) {

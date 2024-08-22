@@ -397,6 +397,45 @@ suite("Basic array functions", function() {
 
         suite("Valid input", function() {
 
+            const _test = (minLength: number, maxLength: number, length: number, specialChars: boolean) => {
+                const name = `Min ${formatNumber(minLength)} Max ${formatNumber(maxLength)} Length ${formatNumber(length)} Special chars ${specialChars}`;
+                test(name, function() {
+
+                    console.log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.strings(length, minLength, maxLength, specialChars);
+                    TestTimer.stopTest();
+
+                    console.log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.a("string");
+                        expect(val.length).to.be.at.least(minLength);
+                        expect(val.length).to.be.at.most(maxLength);
+                        if (specialChars) {
+                            expect(val).to.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/);
+                        } else {
+                            expect(val).to.match(/[a-zA-Z0-9]/);
+                        }
+                    });
+
+                    console.log("Test passed!\n");
+                });
+            }
+
+            _test(1, 1, 1, false);
+
+            for (let i = 1; i <= 500; ++i) {
+                const minLength = Math.floor(Math.random() * 100) + 1;
+                const maxLength = minLength + Math.floor(Math.random() * 1_000);
+                const length = biasRandom(10_000, 1, 10);
+                const specialChars = Math.random() > 0.5;
+
+                _test(minLength, maxLength, length, specialChars);
+            }
         });
     });
 });
