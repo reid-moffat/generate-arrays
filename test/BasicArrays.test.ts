@@ -416,7 +416,7 @@ suite("Basic array functions", function() {
                         expect(val.length).to.be.at.least(minLength);
                         expect(val.length).to.be.at.most(maxLength);
                         if (specialChars) {
-                            expect(val).to.match(/[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/);
+                            expect(val).to.match(/[a-zA-Z0-9!"#$%&'()*+,-./:;<=>?@\[\]\\^_`{|}~]/);
                         } else {
                             expect(val).to.match(/[a-zA-Z0-9]/);
                         }
