@@ -63,8 +63,8 @@ const formatNumber = (num: number) => {
 /**
  * Returns a random number between min and max, with a bias towards the lower end
  */
-const biasRandom = (max: number, min: number = 1) => {
-    return Math.floor(Math.pow(Math.random(), 5) * (max - min)) + min;
+const biasRandom = (max: number, min: number = 1, factor: number = 5) => {
+    return Math.floor(Math.pow(Math.random(), factor) * (max - min)) + min;
 }
 
 export { getPath, stringify, printOutput, formatNumber, biasRandom };

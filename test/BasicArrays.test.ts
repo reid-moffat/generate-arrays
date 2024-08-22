@@ -284,29 +284,49 @@ suite("Basic array functions", function() {
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
-            test("Length 1", function() {
-                const arr = GenerateArray.integers(1);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(1);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.satisfy((num: number) => Number.isInteger(num));
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(100);
-                });
-            });
 
-            test("Length 3", function() {
-                const arr = GenerateArray.integers(3);
-                expect(arr).to.be.an("array");
-                expect(arr.length).to.equal(3);
-                arr.forEach((val) => {
-                    expect(val).to.be.a("number");
-                    expect(val).to.satisfy((num: number) => Number.isInteger(num));
-                    expect(val).to.be.at.least(0);
-                    expect(val).to.be.lessThan(100);
+            const _test = (min: number, max: number, length: number) => {
+                const name = `Min ${formatNumber(min)} Max ${formatNumber(max)} Length ${formatNumber(length)}`;
+                test(name, function() {
+
+                    console.log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.integers(length, min, max);
+                    TestTimer.stopTest();
+
+                    console.log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(length);
+                    arr.forEach((val) => {
+                        expect(val).to.be.a("number");
+                        expect(val).to.satisfy(Number.isInteger);
+                        expect(val).to.be.at.least(min);
+                        expect(val).to.be.at.most(max);
+                    });
+
+                    console.log("Test passed!\n");
                 });
-            });
+            }
+
+            _test(0, 0, 1);
+
+            _test(1, 10, 3);
+
+            _test(7, 12, 3);
+
+            _test(45, 3253, 3);
+
+            _test(-100, 100, 234);
+
+            for (let i = 1; i <= 500; ++i) {
+                const min = Math.floor(Math.random() * 1_000_000 - 500_000);
+                const max = min + Math.floor(Math.random() * 1_000_000);
+                const length = biasRandom(10_000, 1, 10);
+
+                _test(min, max, length);
+            }
         });
     });
 
