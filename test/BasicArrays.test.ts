@@ -252,7 +252,7 @@ suite("Basic array functions", function() {
                 const start = Math.floor(Math.random() * 20_000 - 10_000);
                 const end = start + negative * Math.floor(Math.random() * 20_000);
                 let step = negative * Math.floor(Math.random() * 1_000);
-                if (step === 0) step = 1; // Step can't be 0
+                if (step === 0) step = negative ? -1 : 1; // Step can't be 0
 
                 _test(start, end, step);
             }
@@ -263,7 +263,7 @@ suite("Basic array functions", function() {
                 const start = Math.random() * 10_000;
                 const end = start + negative * Math.random() * 10_000;
                 let step = negative * Math.random() * 1_000;
-                if (step === 0) step = 1; // Step can't be 0
+                if (step === 0) step = negative ? -1 : 1; // Step can't be 0
 
                 _test(start, end, step);
             }
