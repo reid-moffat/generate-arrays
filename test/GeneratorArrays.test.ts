@@ -1,4 +1,4 @@
-import { GenerateArray } from "../src/index.ts";
+import { GenerateArray, GenerateArrayError } from "../src/index.ts";
 import { expect } from "chai";
 
 suite("Generator array functions", function() {
@@ -89,26 +89,15 @@ suite("Generator array functions", function() {
         ];
 
         suite("Invalid input", function() {
-            test("Length not an integer", function() {
-                expect(() => GenerateArray.fixedCountGenerators(1.2, validCountedGenerators)).to.throw("Parameter 'length' must be an integer: value '1.2' is invalid");
-            });
-
-            test("Length less than 1", function() {
-                expect(() => GenerateArray.fixedCountGenerators(0, validCountedGenerators)).to.throw("Parameter 'length' must be at least 1: value '0' is invalid");
-            });
-
-            test("Depth not an integer", function() {
-                expect(() => GenerateArray.fixedCountGenerators(1, validCountedGenerators)).to.throw("Total count of all generators must equal the length of the array (1): count '12' is invalid");
-            });
-
-            test("Depth less than 1", function() {
-                expect(() => GenerateArray.fixedCountGenerators(1, validCountedGenerators)).to.throw("Total count of all generators must equal the length of the array (1): count '12' is invalid");
+            test("Input not a generator", () => {
+                // @ts-ignore
+                expect(() => GenerateArray.fixedCountGenerators(undefined)).to.throw(GenerateArrayError);
             });
         });
 
         suite("Valid input", function() {
             test("Length 1 Depth 1", function() {
-                const arr = GenerateArray.fixedCountGenerators(12, validCountedGenerators);
+                const arr = GenerateArray.fixedCountGenerators(validCountedGenerators);
                 expect(arr.length).to.equal(12);
                 arr.forEach((value) => {
                     expect(value).to.be.an("number");

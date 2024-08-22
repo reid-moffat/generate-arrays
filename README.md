@@ -70,7 +70,7 @@ const fixedCountGenerators = [
     { generator: () => ipAddress(), count: 1 },
     { generator: () => decimal(), count: 1 }
 ];
-GenerateArray.fixedCountGenerators(5, fixedCountGenerators); // [17.24326, "192.158.1.38", 92, 28]
+GenerateArray.fixedCountGenerators(fixedCountGenerators); // [17.24326, "192.158.1.38", 92, 28]
 ```
 
 ### Multi-dimensional arrays

@@ -275,25 +275,14 @@ class GenerateArray {
      * Generates an array of the specified length with the specified generators. Each generator is called a fixed
      * amount of times
      *
-     * @param length Size of array to be generated >= 1 (or an array range [min, max])
      * @param generators Array of objects in the form { generator: () => any, count: number }. Generators must
      * return a value (any value), and the count of all generators combined must equal the length of the array
      * @param random If true (default), the order of the generated values is random. If false, all values from a
      * specific generator are next to each other in a sequence
      */
-    public static fixedCountGenerators = (length: ArrayLength, generators: { generator: () => any, count: number }[], random: boolean = true) => {
+    public static fixedCountGenerators = (generators: { generator: () => any, count: number }[], random: boolean = true) => {
 
-        const len = Validation.arrayLength(length, "length");
-
-        let totalCount = 0;
-        for (let i = 0; i < generators.length; ++i) {
-            Validation.function(generators[i].generator, "generator");
-            Validation.integer(generators[i].count, "count", 1);
-            totalCount += generators[i].count;
-        }
-        if (Math.abs(totalCount - len) > 1e-6) {
-            throw new Error(`Total count of all generators must equal the length of the array (${length}): count '${totalCount}' is invalid`);
-        }
+        Validation.array(generators, "generators");
 
         const result: any[] = [];
         for (let i = 0; i < generators.length; ++i) {
