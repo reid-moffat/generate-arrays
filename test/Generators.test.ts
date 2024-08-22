@@ -560,24 +560,29 @@ suite("Generators", function() {
         suite("Valid input", function() {
 
             let testNum = 1;
-            const _test = () => {
+            const _test = (capitalize: boolean = false) => {
                 const testName = `Test #${testNum++}`;
                 test(testName, function() {
                     console.log(`Running test: ${testName}`);
 
                     TestTimer.startTest(getPath(this));
-                    const value = word()();
+                    const value = word(capitalize)();
                     TestTimer.stopTest();
 
                     console.log(`Result: ${value}`);
                     expect(value).to.be.a("string", "Value is not a string");
-                    expect(value).to.match(/^[a-z]+$/, "Value contains non-alphabet characters");
+                    if (capitalize) {
+                        expect(value).to.match(/^[A-Z][a-z]+$/, "Value does not match capitalized word format");
+                    } else {
+                        expect(value).to.match(/^[a-z]+$/, "Value contains non-alphabet characters");
+                    }
                     console.log("Verified successfully!\n");
                 });
             }
 
             for (let i = 0; i < 1000; ++i) {
-                _test();
+                const capitalize = Math.random() < 0.5;
+                _test(capitalize);
             }
         });
     });

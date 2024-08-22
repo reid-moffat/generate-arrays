@@ -179,7 +179,15 @@ const url = (protocol: boolean = true): () => string => {
 /**
  * Generator for a random word. Uses a list of around 2,000 common english words
  */
-const word = (): () => string => {
+const word = (capitalize: boolean = false): () => string => {
+
+    if (capitalize) {
+        return () => {
+            const word = words[integer(0, words.length - 1)()];
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+    }
+
     return () => {
         return words[integer(0, words.length - 1)()];
     }
