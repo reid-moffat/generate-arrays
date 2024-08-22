@@ -27,33 +27,39 @@ suite("Basic array functions", function() {
 
         suite("Valid input", function() {
 
-            const _test = (name: string, length: number) => {
-                test(name, function() {
+            const _test = (length: number) => {
+                const testName = `Length ${formatNumber(length)}`;
+                test(testName, function() {
+
+                    console.log(`Running test: ${testName}`);
+
                     TestTimer.startTest(getPath(this));
                     const arr = GenerateArray.blank(length);
                     TestTimer.stopTest();
+                    console.log(`Test completed, length: ${formatNumber(arr.length)}`);
 
                     expect(arr).to.be.an("array");
                     expect(arr.length).to.equal(length);
                     arr.forEach((val) => {
                         expect(val).to.be.undefined;
                     });
+                    console.log("Test passed!\n");
                 });
             }
 
-            _test("Length 1", 1);
+            _test(1);
 
-            _test("Length 3", 3);
+            _test(3);
 
-            _test("Length 1,000", 1_000);
+            _test(1_000);
 
-            _test("Length 100,000", 100_000);
+            _test(100_000);
 
-            _test("Length 10 million", 10_000_000);
+            _test(10_000_000);
 
             for (let i = 1; i <= 100; ++i) {
                 const length = Math.floor(Math.random() * 10_000_000);
-                _test(`Length ${formatNumber(length)}`, length);
+                _test(length);
             }
         });
     });
