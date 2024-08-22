@@ -109,13 +109,13 @@ suite("Basic array functions", function() {
             _test([1, 2, 3], 1);
 
             for (let i = 1; i <= 100; ++i) {
-                const length = Math.floor(Math.sqrt(Math.random()) * 10_000) + 1;
+                const length = Math.floor((1 - Math.sqrt(Math.random())) * 10_000) + 1;
                 const value = Math.floor(Math.random() * 100);
                 _test(value, length);
             }
 
             for (let i = 1; i <= 500; ++i) {
-                const length = Math.floor(Math.sqrt(Math.random()) * 10_000) + 1;
+                const length = Math.floor((1 - Math.sqrt(Math.random())) * 10_000) + 1;
                 const value = Parameter.allValues[Math.floor(Math.random() * Parameter.allValues.length)];
                 _test(value, length);
             }

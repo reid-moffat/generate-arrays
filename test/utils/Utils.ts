@@ -40,7 +40,7 @@ const stringify = (value: any): string => {
  */
 const printOutput = (obj: any) => {
     if (Array.isArray(obj) && obj.length > 100) {
-        return "[" + obj.slice(0, 100).join(", ") + `, ... (${obj.length - 100} more elements)]`;
+        return "[" + obj.slice(0, 100).map(o => stringify(o)).join(", ") + `, ... (${obj.length - 100} more elements)]`;
     }
 
     if (typeof obj === 'string' && obj.length > 100) {
