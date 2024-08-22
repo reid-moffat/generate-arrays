@@ -33,7 +33,6 @@ suite("Multi-dimensional array functions", function() {
                 const arr = GenerateArray.emptyND(3, 3);
                 expect(arr.length).to.equal(3);
                 expect(arr[0].length).to.equal(3);
-                // @ts-ignore
                 expect(arr[0][0].length).to.equal(0);
                 expect(arr).to.deep.equal([[[], [], []], [[], [], []],[[], [], []]]);
             });
