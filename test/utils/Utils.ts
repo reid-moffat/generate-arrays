@@ -57,4 +57,11 @@ const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export { getPath, stringify, printOutput, formatNumber };
+/**
+ * Returns a random number between min and max, with a bias towards the lower end
+ */
+const biasRandom = (max: number, min: number = 1) => {
+    return Math.floor(Math.pow(Math.random(), 5) * (max - min)) + min;
+}
+
+export { getPath, stringify, printOutput, formatNumber, biasRandom };

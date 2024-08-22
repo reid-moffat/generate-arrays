@@ -10,7 +10,7 @@ import {
     TestFailureParams,
     ArrayLengthParameter, Parameter
 } from "./utils/TestFailures.ts";
-import { formatNumber, getPath, printOutput, stringify } from "./utils/Utils.ts";
+import { biasRandom, formatNumber, getPath, printOutput, stringify } from "./utils/Utils.ts";
 
 const TestTimer = SuiteMetrics.getInstance();
 
@@ -109,13 +109,13 @@ suite("Basic array functions", function() {
             _test([1, 2, 3], 1);
 
             for (let i = 1; i <= 100; ++i) {
-                const length = Math.floor((1 - Math.sqrt(Math.random())) * 10_000) + 1;
+                const length = biasRandom(10_000);
                 const value = Math.floor(Math.random() * 100);
                 _test(value, length);
             }
 
             for (let i = 1; i <= 500; ++i) {
-                const length = Math.floor((1 - Math.sqrt(Math.random())) * 10_000) + 1;
+                const length = biasRandom(10_000);
                 const value = Parameter.allValues[Math.floor(Math.random() * Parameter.allValues.length)];
                 _test(value, length);
             }
