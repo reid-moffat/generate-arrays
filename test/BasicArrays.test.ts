@@ -214,20 +214,45 @@ suite("Basic array functions", function() {
         TestFailures.run(failureTestData);
 
         suite("Valid input", function() {
-            test("Length 1", function() {
-                const arr = GenerateArray.counting(1, 7);
-                expect(arr).to.deep.equal([1, 2, 3, 4, 5, 6, 7]);
-            });
 
-            test("Length 3", function() {
-                const arr = GenerateArray.counting(3, 4);
-                expect(arr).to.deep.equal([3, 4]);
-            });
+            const _test = (start: number, end: number, step: number) => {
+                const name = `Start ${formatNumber(start)} End ${formatNumber(end)} Step ${formatNumber(step)}`;
+                test(name, function() {
 
-            test("Reverse 7 to 3", function() {
-                const arr = GenerateArray.counting(7, 2, -2);
-                expect(arr).to.deep.equal([7, 5, 3]);
-            });
+                    console.log(`Running test: ${name}`);
+
+                    TestTimer.startTest(getPath(this));
+                    const arr = GenerateArray.counting(start, end, step);
+                    TestTimer.stopTest();
+
+                    console.log(`Test completed, result: ${printOutput(arr)}`);
+
+                    expect(arr).to.be.an("array");
+                    expect(arr.length).to.equal(Math.floor((end - start) / step) + 1);
+                    arr.forEach((val, index) => {
+                        expect(val).to.be.a("number");
+                        expect(val).to.equal(start + index * step);
+                    });
+
+                    console.log("Test passed!\n");
+                });
+            }
+
+            _test(0, 0, 1);
+
+            _test(1, 10, 1);
+
+            _test(7, 12, 2);
+
+            _test(45, 3253, 7);
+
+            for (let i = 1; i <= 500; ++i) {
+                const start = Math.floor(Math.random() * 10_000);
+                const end = start + Math.floor(Math.random() * 10_000);
+                const step = biasRandom(1_000);
+
+                _test(start, end, step);
+            }
         });
     });
 
