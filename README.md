@@ -22,7 +22,7 @@ yarn add generate-arrays
 
 ### Basic functions
 
-```js
+```ts
 import { GenerateArray } from 'generate-arrays';
 
 GenerateArray.from(value); // Turns any value into an array
@@ -44,7 +44,7 @@ GenerateArray.strings(3, 4, 6, true); // ["s5%s#", "kAs*#4", "k2($"]
 
 ### Custom generators
 
-```js
+```ts
 import { GenerateArray } from 'generate-arrays';
 
 const generators = [
@@ -71,7 +71,7 @@ GenerateArray.fixedCountGenerators(5, fixedCountGenerators); // [17.2, false, 92
 
 ### Multi-dimensional arrays
 
-```js
+```ts
 import { GenerateArray } from 'generate-arrays';
 
 GenerateArray.emptyND(2, 3); // [[[], []], [[], []]]
