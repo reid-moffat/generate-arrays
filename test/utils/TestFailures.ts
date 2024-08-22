@@ -2,6 +2,7 @@ import SuiteMetrics from "suite-metrics";
 import GenerateArrayError from "../../src/utils/GenerateArrayError.ts";
 import { expect } from "chai";
 import Validation from "../../src/utils/Validation.ts";
+import { stringify } from "./Utils.ts";
 
 type TestFailureParams = {
     path: string[],
@@ -69,7 +70,7 @@ abstract class Parameter {
     protected readonly name: string;
     protected readonly optional: boolean;
 
-    private readonly allValues: any[] = [
+    public static readonly allValues: any[] = [
         // Misc
         undefined, null, true, false, BigInt(3), Symbol("1"), () => Math.floor(Math.random() * 100),
         () => { throw new Error("Test error") }, () => { return "string" }, () => { return 1; }, () => { return true; },
@@ -101,7 +102,7 @@ abstract class Parameter {
     }
 
     protected getInvalidValues(filter: (value: any) => boolean): any[] {
-        const values = this.allValues.filter(filter);
+        const values = Parameter.allValues.filter(filter);
         if (this.optional) {
             values.shift(); // Remove undefined if the value is optional (undefined will default to the default param value)
         }
@@ -117,16 +118,7 @@ abstract class Parameter {
 
     // Turns an array of values into an array of proper TestData objects
     protected static makeValuesArray(paramName: string, values: any[]): TestData[] {
-        return values.map((value: any) => {
-            let stringVal = value;
-            if (Array.isArray(value) || typeof value === "object" || typeof value === "string") {
-                stringVal = JSON.stringify(value);
-            } else if (typeof value === "bigint") {
-                stringVal = value + " (BigInt)"; // BigInt(3) is not valid but shows '3', add this to make it clear
-            }
-
-            return { testName: `${paramName}: ${String(stringVal)}`, value: value } as TestData;
-        });
+        return values.map((value: any) => ({ testName: `${paramName}: ${stringify(value)}`, value: value }));
     }
 }
 
@@ -315,4 +307,4 @@ class ArrayParameter extends Parameter {
     }
 }
 
-export { TestFailures, TestFailureParams, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter, ArrayLengthParameter, ArrayParameter };
+export { TestFailures, TestFailureParams, Parameter, NumberParameter, BooleanParameter, FunctionParameter, GenericParameter, ArrayLengthParameter, ArrayParameter };

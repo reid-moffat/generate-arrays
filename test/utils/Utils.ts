@@ -22,6 +22,20 @@ const getPath = function(suite: Mocha.Suite | Mocha.Context): string[] {
 };
 
 /**
+ * Like JSON.stringify, but works with BigInt and Symbols
+ */
+const stringify = (value: any): string => {
+    if (typeof value === 'bigint') {
+        return value + " (BigInt)"
+    }
+    if (Array.isArray(value) || typeof value === "object" || typeof value === "string") {
+        return JSON.stringify(value);
+    }
+
+    return String(value);
+}
+
+/**
  * Formats tes output, truncating output that is very long to not clog up the console
  */
 const printOutput = (obj: any) => {
@@ -43,4 +57,4 @@ const formatNumber = (num: number) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-export { getPath, printOutput, formatNumber };
+export { getPath, stringify, printOutput, formatNumber };
